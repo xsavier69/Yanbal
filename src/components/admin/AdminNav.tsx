@@ -20,7 +20,7 @@ export default function AdminNav() {
   return (
     <header className="bg-white border-b border-border">
       <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between gap-3">
-        <Link href="/mi-tienda" className="font-heading text-xl font-bold text-charcoal">
+        <Link href="/mi-tienda" className="flex items-center min-h-[48px] font-heading text-xl font-bold text-charcoal">
           Mi tienda
         </Link>
         <nav className="flex items-center gap-2">
