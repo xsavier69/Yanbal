@@ -3,6 +3,8 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
+import SetupNotice from "@/components/admin/SetupNotice";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -36,6 +38,8 @@ export default function LoginPage() {
     router.replace("/mi-tienda");
     router.refresh();
   }
+
+  if (!isSupabaseConfigured) return <SetupNotice />;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-cream px-5 py-10">

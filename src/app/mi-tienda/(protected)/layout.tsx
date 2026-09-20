@@ -1,12 +1,16 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import AdminNav from "@/components/admin/AdminNav";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
+import SetupNotice from "@/components/admin/SetupNotice";
 
 export default async function ProtectedAdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  if (!isSupabaseConfigured) return <SetupNotice />;
+
   const supabase = await createClient();
   const {
     data: { user },

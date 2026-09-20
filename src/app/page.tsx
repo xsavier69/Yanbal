@@ -5,10 +5,23 @@ import StoreHeader from "@/components/catalog/StoreHeader";
 import CatalogClient from "@/components/catalog/CatalogClient";
 import AboutSection from "@/components/catalog/AboutSection";
 import WhatsAppFloatingButton from "@/components/catalog/WhatsAppFloatingButton";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { DEMO_SETTINGS, DEMO_PRODUCTS } from "@/lib/demoData";
+
+async function loadCatalog() {
+  if (!isSupabaseConfigured) {
+    return { settings: DEMO_SETTINGS, products: DEMO_PRODUCTS };
+  }
+  const supabase = await createClient();
+  const [settings, products] = await Promise.all([
+    getSettings(supabase),
+    getAllProducts(supabase),
+  ]);
+  return { settings, products };
+}
 
 export async function generateMetadata(): Promise<Metadata> {
-  const supabase = await createClient();
-  const settings = await getSettings(supabase);
+  const { settings } = await loadCatalog();
   const storeName = settings?.store_name?.trim() || "Mi tienda Yanbal";
   const description =
     "Catálogo de productos Yanbal. Pide tus productos favoritos por WhatsApp.";
@@ -26,17 +39,19 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const supabase = await createClient();
-  const [settings, products] = await Promise.all([
-    getSettings(supabase),
-    getAllProducts(supabase),
-  ]);
+  const { settings, products } = await loadCatalog();
 
   const storeName = settings?.store_name?.trim() || "Mi tienda Yanbal";
   const year = new Date().getFullYear();
 
   return (
     <div className="min-h-screen flex flex-col bg-cream">
+      {!isSupabaseConfigured && (
+        <p className="bg-charcoal text-white text-center text-sm px-4 py-2">
+          Modo demostración: estos productos son de ejemplo. Conecta Supabase
+          para usar tus productos reales.
+        </p>
+      )}
       <StoreHeader settings={settings} />
 
       <main className="flex-1 max-w-lg mx-auto w-full px-4 py-6">
