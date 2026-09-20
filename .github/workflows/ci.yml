@@ -1,0 +1,24 @@
+name: Revisar código
+
+# Corre en cada subida y cada pull request. Vercel despliega aparte;
+# esto avisa si algo se rompió antes de que llegue a la tienda.
+on:
+  push:
+  pull_request:
+
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+        env:
+          # Valores falsos: el build no se conecta a Supabase
+          NEXT_PUBLIC_SUPABASE_URL: https://ejemplo.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: llave-de-ejemplo
