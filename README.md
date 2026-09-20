@@ -29,12 +29,17 @@ simplicidad.
    - Antes de correrlo, abre el archivo y reemplaza
      `'CAMBIA-ESTO@ejemplo.com'` dentro de la función `is_admin()` por el
      correo real que va a usar Amada para entrar al panel.
+   - El archivo se puede volver a correr completo cuando cambie (no borra
+     productos ni ajustes). Para no subir el correo a git, guarda tu copia
+     con el correo puesto como `supabase/schema.local.sql`: git la ignora.
 3. Ve a **Authentication → Users → Add user** y crea la cuenta de Amada:
    - Correo: el mismo que pusiste en `is_admin()`.
    - Contraseña: la que ella va a usar para entrar a "Mi tienda".
    - Marca la casilla de **Auto Confirm User** para que no necesite
      confirmar por correo.
-4. Ve a **Project Settings → API** y copia:
+4. Ve a **Authentication → Sign In / Providers** y **desactiva**
+   "Allow new users to sign up", para que nadie más pueda crear cuentas.
+5. Ve a **Project Settings → API** y copia:
    - **Project URL** → será `NEXT_PUBLIC_SUPABASE_URL`
    - **anon public key** → será `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
@@ -53,9 +58,10 @@ ADMIN_EMAIL=correo-de-amada@ejemplo.com
 NEXT_PUBLIC_SITE_URL=https://mitienda.vercel.app
 ```
 
-`ADMIN_EMAIL` es informativo para quien mantiene el proyecto: el control de
-acceso real ocurre en `supabase/schema.sql` (RLS), así que asegúrate de que
-ambos correos coincidan.
+`ADMIN_EMAIL` también se usa en el servidor: si está puesta, el panel solo
+se muestra a esa cuenta (segunda barrera además de las reglas RLS de
+`supabase/schema.sql`). Asegúrate de que ambos correos coincidan, y de
+ponerla también en Vercel.
 
 ## 3. Correr en local
 
@@ -100,10 +106,16 @@ Fragancias, Maquillaje, Cuidado facial, Cuidado corporal, Joyería, Otros.
 
 - Lectura pública de `products` y `settings` (cualquiera puede ver el
   catálogo sin iniciar sesión).
-- Solo la cuenta autenticada de Amada puede insertar, editar o borrar
+- Solo la cuenta de Amada (`is_admin()`) puede insertar, editar o borrar
   productos y ajustes.
-- El bucket `product-images` es de lectura pública y escritura solo para la
-  cuenta autenticada.
+- El bucket `product-images` es de lectura pública y escritura solo para
+  `is_admin()`; acepta solo JPG, PNG y WebP de hasta 3 MB.
+- La base valida largos de texto y precios (restricciones `*_data_check`),
+  además de la validación de la app.
+- Encabezados de seguridad en `next.config.ts`; el panel se sirve con
+  `Cache-Control: private, no-store`.
+- El service worker solo guarda en caché las visitas al catálogo público;
+  nunca `/mi-tienda` ni las llamadas a Supabase.
 
 ## Decisiones de diseño
 
@@ -133,8 +145,11 @@ Fragancias, Maquillaje, Cuidado facial, Cuidado corporal, Joyería, Otros.
   esta primera versión (quedó marcado como fase 2 en el brief); cada
   producto pide por WhatsApp de forma individual.
 - El service worker (`public/sw.js`) da caché básica "red primero, si falla
-  usa lo último guardado"; no es una app 100% offline, solo ayuda a que la
-  página instalada abra algo si el internet falla un momento.
+  usa lo último guardado" solo para el catálogo público. El panel necesita
+  internet: no es una app 100% offline.
+- Número de WhatsApp: se guarda como lo escribe Amada (`0991234567`) y la
+  app lo convierte a formato internacional (`593991234567`) al armar los
+  links. Los números de otros países se aceptan con código de país.
 - Las categorías son fijas en el código (`src/lib/types.ts`) para que Amada
   no tenga que administrar una lista adicional; cambiarlas requiere editar
   el código y el `check` de `supabase/schema.sql`.

@@ -83,7 +83,7 @@ export function buildProductWhatsAppLink(
   productName: string,
   price: number
 ): string {
-  const message = `Hola ${storeName}, me interesa: ${productName} (${formatPrice(
+  const message = `Hola, vi tu tienda «${storeName}» y me interesa: ${productName} (${formatPrice(
     price
   )}). ¿Está disponible?`;
   return `https://wa.me/${whatsappDigits(whatsappNumber)}?text=${encodeURIComponent(

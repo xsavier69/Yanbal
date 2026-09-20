@@ -8,22 +8,20 @@ producto. Puedes imprimirla y tenerla cerca mientras aprendes.
 ## Parte 1: Poner "Mi tienda" en tu pantalla
 
 1. Abre **Chrome** en tu celular (el ícono de la bolita de colores).
-2. Escribe esta dirección donde dice buscar:
+2. Escribe esta dirección donde dice buscar. Es la dirección de **tu
+   panel** (termina en `/mi-tienda`):
 
    ```
-   [PONER AQUÍ EL LINK QUE TE DIO TU NIETO]
+   [PONER AQUÍ EL LINK QUE TE DIO TU NIETO]/mi-tienda
    ```
 
-3. Toca la palabra **"Sobre mí"** o mira que se vea tu tienda. Eso confirma
-   que abrió bien.
-4. Ahora ve al final de la dirección: toca la palabra **"Mi tienda"**
-   (arriba, si ves un mensaje que dice "Entrar"). Si te pide correo y
-   contraseña, escribe los que te dio tu nieto.
-5. Arriba a la derecha de Chrome hay **tres puntitos** ( ⋮ ). Tócalos.
-6. Busca la opción que dice **"Instalar app"** o **"Añadir a pantalla de
+3. Te va a pedir tu correo y tu contraseña. Escríbelos y toca **"Entrar"**
+   (los que te dio tu nieto). Si ves "Tus productos", abrió bien.
+4. Arriba a la derecha de Chrome hay **tres puntitos** ( ⋮ ). Tócalos.
+5. Busca la opción que dice **"Instalar app"** o **"Añadir a pantalla de
    inicio"** y tócala.
-7. Toca **"Instalar"** o **"Agregar"**.
-8. Listo. Ahora en tu pantalla principal (donde tienes WhatsApp) vas a ver
+6. Toca **"Instalar"** o **"Agregar"**.
+7. Listo. Ahora en tu pantalla principal (donde tienes WhatsApp) vas a ver
    un botón nuevo que dice **"Mi tienda"**. Ese es el que vas a usar
    siempre.
 
@@ -43,7 +41,24 @@ celular los va a recordar.
 
 ---
 
-## Parte 3: Subir tu primer producto
+## Parte 3: Poner tu número de WhatsApp (hazlo primero)
+
+Sin tu número, tus clientas **no van a poder escribirte** desde la tienda.
+
+1. Adentro de "Mi tienda", toca **"Ajustes"** arriba.
+2. En **"Tu número de WhatsApp"** escribe tu celular, como lo marcas
+   siempre. Ejemplo: `0991234567`.
+3. En **"Nombre de tu tienda"** escribe el nombre que quieres que vean tus
+   clientas.
+4. Baja y toca **"Guardar cambios"**. Vas a ver: **"Cambios guardados ✓"**.
+
+Después de esto, en tu tienda aparece un botón verde de WhatsApp y cada
+producto tiene su botón **"Pedir"**. Cuando una clienta lo toca, se abre tu
+WhatsApp con el mensaje ya escrito.
+
+---
+
+## Parte 4: Subir tu primer producto
 
 1. Adentro de "Mi tienda", toca el botón grande de arriba que dice:
 
@@ -101,8 +116,12 @@ celular los va a recordar.
 ## Si algo no funciona
 
 - Si ves el mensaje **"No hay conexión..."**, significa que se cortó el
-  internet un momento. Lo que escribiste no se pierde: espera a tener
-  internet de nuevo y toca el botón de guardar otra vez.
+  internet un momento. Lo que escribiste sigue en la pantalla: espera a
+  tener internet de nuevo y toca el botón de guardar otra vez.
+- Si ves **"Tu sesión venció"**, toca **"Salir"** (arriba), entra otra vez
+  con tu correo y contraseña, y vuelve a guardar.
+- Si te sale un mensaje en rojo debajo de un campo (por ejemplo "Falta el
+  precio"), corrige ese campo y vuelve a tocar guardar.
 - Si algo no se ve bien o tienes dudas, llama o escribe a tu nieto.
 
 ¡Éxitos con tu tienda! 💛
