@@ -1,0 +1,254 @@
+@import "tailwindcss";
+
+:root {
+  /* Paleta - catálogo de belleza cálido, identidad propia de Amada */
+  --color-cream: #fff8f3;
+  --color-white: #ffffff;
+  --color-rose: #b5485d;
+  --color-rose-dark: #8f3549;
+  --color-peach: #e8a87c;
+  --color-peach-light: #f6ddc4;
+  --color-charcoal: #3a2e2e;
+  --color-charcoal-soft: #6b5c5c;
+  --color-success: #2e7d4f;
+  --color-success-bg: #e6f4ea;
+  --color-danger: #c0392b;
+  --color-danger-bg: #fdecea;
+  --color-border: #ecdfd6;
+}
+
+@theme inline {
+  --color-cream: var(--color-cream);
+  --color-white: var(--color-white);
+  --color-rose: var(--color-rose);
+  --color-rose-dark: var(--color-rose-dark);
+  --color-peach: var(--color-peach);
+  --color-peach-light: var(--color-peach-light);
+  --color-charcoal: var(--color-charcoal);
+  --color-charcoal-soft: var(--color-charcoal-soft);
+  --color-success: var(--color-success);
+  --color-success-bg: var(--color-success-bg);
+  --color-danger: var(--color-danger);
+  --color-danger-bg: var(--color-danger-bg);
+  --color-border: var(--color-border);
+  --font-heading: var(--font-poppins);
+  --font-body: var(--font-inter);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-charcoal);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+.font-heading {
+  font-family: var(--font-heading), system-ui, sans-serif;
+}
+
+/* Botones y campos táctiles grandes, pensados para una persona mayor */
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 56px;
+  width: 100%;
+  border-radius: 14px;
+  background: var(--color-rose);
+  color: var(--color-white);
+  font-size: 18px;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  transition: background-color 0.15s ease;
+}
+.btn-primary:hover {
+  background: var(--color-rose-dark);
+}
+.btn-primary:disabled {
+  opacity: 0.6;
+}
+
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 56px;
+  width: 100%;
+  border-radius: 14px;
+  background: var(--color-white);
+  color: var(--color-charcoal);
+  border: 2px solid var(--color-border);
+  font-size: 18px;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+}
+
+.btn-whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 56px;
+  width: 100%;
+  border-radius: 14px;
+  background: #25d366;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+}
+
+.btn-danger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 56px;
+  width: 100%;
+  border-radius: 14px;
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+  border: 2px solid var(--color-danger);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.field-input {
+  width: 100%;
+  min-height: 56px;
+  border-radius: 12px;
+  border: 2px solid var(--color-border);
+  background: var(--color-white);
+  padding: 0.75rem 1rem;
+  font-size: 18px;
+  color: var(--color-charcoal);
+}
+.field-input:focus {
+  outline: 3px solid var(--color-peach);
+  outline-offset: 1px;
+  border-color: var(--color-rose);
+}
+
+.field-label {
+  display: block;
+  font-weight: 600;
+  font-size: 17px;
+  margin-bottom: 0.4rem;
+  color: var(--color-charcoal);
+}
+
+.field-error {
+  color: var(--color-danger);
+  font-size: 15px;
+  margin-top: 0.35rem;
+  font-weight: 600;
+}
+
+.category-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 64px;
+  border-radius: 14px;
+  border: 2px solid var(--color-border);
+  background: var(--color-white);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+}
+.category-card[aria-pressed="true"] {
+  border-color: var(--color-rose);
+  background: var(--color-peach-light);
+  color: var(--color-rose-dark);
+}
+
+.chip {
+  white-space: nowrap;
+  border-radius: 999px;
+  border: 2px solid var(--color-border);
+  background: var(--color-white);
+  padding: 0.55rem 1.1rem;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-charcoal);
+}
+.chip[aria-pressed="true"] {
+  background: var(--color-rose);
+  border-color: var(--color-rose);
+  color: var(--color-white);
+}
+
+.badge-consultora {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-rose-dark);
+  background: var(--color-peach-light);
+  border: 1px solid var(--color-peach);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+}
+
+.badge-agotado {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--color-charcoal-soft);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+}
+
+.badge-oferta {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--color-rose);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+}
+
+.toast-success {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border: 2px solid var(--color-success);
+  border-radius: 12px;
+  padding: 0.9rem 1.1rem;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.toast-error {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+  border: 2px solid var(--color-danger);
+  border-radius: 12px;
+  padding: 0.9rem 1.1rem;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+a {
+  color: var(--color-rose-dark);
+}
+
+/* Respeta preferencia de reducir movimiento; esta app no usa animaciones decorativas */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
