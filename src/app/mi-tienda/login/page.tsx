@@ -10,6 +10,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -87,13 +88,24 @@ export default function LoginPage() {
             </label>
             <input
               id="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
               autoComplete="current-password"
               className="field-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
             />
+            <button
+              type="button"
+              className="mt-2 min-h-[48px] px-1 text-base font-semibold text-rose-dark"
+              aria-pressed={showPassword}
+              onClick={() => setShowPassword((v) => !v)}
+            >
+              {showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+            </button>
           </div>
 
           {error && (
