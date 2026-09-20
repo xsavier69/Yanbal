@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# SQL listo para pegar en Supabase (lleva el correo de Amada)
+*.local.sql

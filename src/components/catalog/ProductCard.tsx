@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { formatPrice, buildProductWhatsAppLink } from "@/lib/utils";
+import WhatsAppIcon from "@/components/catalog/WhatsAppIcon";
 import type { Product } from "@/lib/types";
 
 export default function ProductCard({
@@ -13,9 +14,16 @@ export default function ProductCard({
 }) {
   const hasOffer =
     product.offer_price !== null && product.offer_price < product.price;
+  const discount = hasOffer
+    ? Math.round((1 - product.offer_price! / product.price) * 100)
+    : 0;
+  const initial = product.name.trim().charAt(0).toUpperCase();
 
   return (
-    <div className="bg-white rounded-2xl border border-border overflow-hidden flex flex-col">
+    <article
+      className="product-card"
+      data-soldout={!product.available || undefined}
+    >
       <div className="relative w-full aspect-square bg-cream">
         {product.image_url ? (
           <Image
@@ -26,35 +34,37 @@ export default function ProductCard({
             className="object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-4xl">
-            🎁
+          <div className="photo-placeholder" aria-hidden="true">
+            {initial}
           </div>
         )}
         {!product.available && (
           <span className="badge-agotado absolute top-2 left-2">Agotado</span>
         )}
         {product.available && hasOffer && (
-          <span className="badge-oferta absolute top-2 left-2">Oferta</span>
+          <span className="badge-oferta absolute top-2 left-2">
+            {discount >= 5 ? `-${discount}%` : "Oferta"}
+          </span>
         )}
       </div>
 
       <div className="p-3 flex flex-col gap-2 flex-1">
-        <p className="font-semibold text-charcoal leading-snug">
+        <h3 className="font-heading font-semibold text-charcoal leading-snug text-[17px] line-clamp-2">
           {product.name}
-        </p>
+        </h3>
 
-        <div className="flex items-baseline gap-2">
+        <div className="flex items-baseline flex-wrap gap-x-2">
           {hasOffer ? (
             <>
+              <span className="font-heading font-bold text-xl text-rose-dark">
+                {formatPrice(product.offer_price!)}
+              </span>
               <span className="text-charcoal-soft line-through text-sm">
                 {formatPrice(product.price)}
               </span>
-              <span className="font-bold text-rose-dark">
-                {formatPrice(product.offer_price!)}
-              </span>
             </>
           ) : (
-            <span className="font-bold text-charcoal">
+            <span className="font-heading font-bold text-xl text-charcoal">
               {formatPrice(product.price)}
             </span>
           )}
@@ -72,10 +82,11 @@ export default function ProductCard({
             rel="noopener noreferrer"
             className="btn-whatsapp mt-auto"
           >
-            Pedir por WhatsApp
+            <WhatsAppIcon size={20} />
+            Pedir
           </a>
         )}
       </div>
-    </div>
+    </article>
   );
 }

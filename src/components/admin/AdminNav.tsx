@@ -26,7 +26,7 @@ export default function AdminNav() {
         <nav className="flex items-center gap-2">
           <Link
             href="/mi-tienda/ajustes"
-            className="text-base font-semibold px-3 py-2 rounded-lg"
+            className="flex items-center min-h-[48px] text-base font-semibold px-3 rounded-lg"
             style={{
               color: isAjustes ? "var(--color-rose-dark)" : "var(--color-charcoal)",
               background: isAjustes ? "var(--color-peach-light)" : "transparent",
@@ -37,7 +37,7 @@ export default function AdminNav() {
           <button
             type="button"
             onClick={handleLogout}
-            className="text-base font-semibold px-3 py-2 rounded-lg text-charcoal-soft"
+            className="min-h-[48px] text-base font-semibold px-3 rounded-lg text-charcoal-soft"
           >
             Salir
           </button>

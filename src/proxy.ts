@@ -5,8 +5,8 @@ export async function proxy(request: NextRequest) {
   return await updateSession(request);
 }
 
+// Solo el panel necesita refrescar la sesión. El catálogo público no llama
+// a Supabase Auth, así que carga más rápido.
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|icons|manifest.json|sw.js|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+  matcher: ["/mi-tienda/:path*"],
 };

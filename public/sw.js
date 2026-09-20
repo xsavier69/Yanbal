@@ -1,4 +1,5 @@
-const CACHE_NAME = "mi-tienda-v1";
+// v2: al subir de versión se borra la caché vieja (que podía tener páginas del panel).
+const CACHE_NAME = "mi-tienda-v2";
 
 self.addEventListener("install", () => {
   self.skipWaiting();
@@ -17,18 +18,27 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Red primero, y si falla usa lo que haya en caché (para que abra algo
-// aunque se corte el internet un momento).
+// Solo guarda la página pública del catálogo (red primero; si falla, usa lo
+// último guardado). Nunca toca el panel /mi-tienda, ni Supabase, ni nada que
+// no sea una visita normal a una página: así no queda información privada en
+// el celular.
 self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") return;
+  const request = event.request;
+  if (request.method !== "GET" || request.mode !== "navigate") return;
+
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+  if (url.pathname.startsWith("/mi-tienda")) return;
 
   event.respondWith(
-    fetch(event.request)
+    fetch(request)
       .then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        if (response.ok && response.type === "basic") {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        }
         return response;
       })
-      .catch(() => caches.match(event.request))
+      .catch(() => caches.match(request))
   );
 });

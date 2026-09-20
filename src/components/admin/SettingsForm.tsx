@@ -4,9 +4,12 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { compressPhoto } from "@/lib/compressImage";
+import { friendlyError } from "@/lib/friendlyError";
+import { checkPhotoFile, removeStoredImage } from "@/lib/storage";
+import { LIMITS, normalizeWhatsappNumber } from "@/lib/utils";
 import type { Settings } from "@/lib/types";
 
-const ABOUT_MAX = 300;
+const ABOUT_MAX = LIMITS.aboutText;
 
 export default function SettingsForm({
   initialSettings,
@@ -41,15 +44,26 @@ export default function SettingsForm({
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [whatsappError, setWhatsappError] = useState<string | null>(null);
 
   async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
+    e.target.value = "";
     if (!file) return;
+    const photoProblem = checkPhotoFile(file);
+    if (photoProblem) {
+      setError(photoProblem);
+      return;
+    }
+    setError(null);
     setCompressing(true);
     try {
       const compressed = await compressPhoto(file);
       setAboutPhotoFile(compressed);
-      setAboutPhotoPreview(URL.createObjectURL(compressed));
+      setAboutPhotoPreview((previous) => {
+        if (previous?.startsWith("blob:")) URL.revokeObjectURL(previous);
+        return URL.createObjectURL(compressed);
+      });
     } catch {
       setError("No se pudo procesar la foto. Intenta con otra.");
     } finally {
@@ -61,9 +75,25 @@ export default function SettingsForm({
     e.preventDefault();
     setError(null);
     setSaved(false);
+    setWhatsappError(null);
+
+    if (
+      whatsappNumber.trim() &&
+      normalizeWhatsappNumber(whatsappNumber) === null
+    ) {
+      setWhatsappError(
+        "Ese número no parece correcto. Escríbelo así: 0991234567"
+      );
+      requestAnimationFrame(() => {
+        const el = document.getElementById("whatsapp");
+        el?.scrollIntoView({ behavior: "smooth", block: "center" });
+        el?.focus({ preventScroll: true });
+      });
+      return;
+    }
 
     if (typeof navigator !== "undefined" && !navigator.onLine) {
-      setError("No hay conexión. Tus cambios no se guardaron; intenta de nuevo.");
+      setError(friendlyError(null, "guardar los cambios"));
       return;
     }
 
@@ -100,9 +130,14 @@ export default function SettingsForm({
       });
       if (upsertError) throw upsertError;
 
+      const previousPhoto = initialSettings?.about_photo_url ?? null;
+      if (aboutPhotoFile && previousPhoto && previousPhoto !== aboutPhotoUrl) {
+        await removeStoredImage(supabase, previousPhoto);
+      }
+
       setSaved(true);
-    } catch {
-      setError("No hay conexión. Tus cambios no se guardaron; intenta de nuevo.");
+    } catch (err) {
+      setError(friendlyError(err, "guardar los cambios"));
     } finally {
       setSaving(false);
     }
@@ -121,6 +156,7 @@ export default function SettingsForm({
         <input
           id="nombre-tienda"
           type="text"
+          maxLength={LIMITS.storeName}
           className="field-input"
           value={storeName}
           onChange={(e) => setStoreName(e.target.value)}
@@ -139,8 +175,19 @@ export default function SettingsForm({
           className="field-input"
           value={whatsappNumber ?? ""}
           onChange={(e) => setWhatsappNumber(e.target.value)}
+          maxLength={LIMITS.whatsapp}
+          aria-invalid={Boolean(whatsappError)}
           placeholder="Ejemplo: 0991234567"
         />
+        {whatsappError ? (
+          <p role="alert" className="field-error">
+            {whatsappError}
+          </p>
+        ) : (
+          <p className="text-charcoal-soft text-sm mt-1">
+            Sin número, tus clientas no podrán escribirte desde la tienda.
+          </p>
+        )}
       </div>
 
       <div>
@@ -149,6 +196,7 @@ export default function SettingsForm({
         </label>
         <textarea
           id="bienvenida"
+          maxLength={LIMITS.welcomeMessage}
           className="field-input"
           style={{ minHeight: 90 }}
           value={welcomeMessage ?? ""}
@@ -222,6 +270,7 @@ export default function SettingsForm({
           <input
             id="entrega"
             type="text"
+            maxLength={LIMITS.deliveryArea}
             className="field-input"
             value={deliveryArea ?? ""}
             onChange={(e) => setDeliveryArea(e.target.value)}
@@ -236,6 +285,7 @@ export default function SettingsForm({
           <input
             id="horario"
             type="text"
+            maxLength={LIMITS.businessHours}
             className="field-input"
             value={businessHours ?? ""}
             onChange={(e) => setBusinessHours(e.target.value)}

@@ -148,7 +148,7 @@ export default function AdminHomePage() {
               <div className="flex flex-col items-stretch gap-2 shrink-0">
                 <Link
                   href={`/mi-tienda/producto/${product.id}`}
-                  className="text-center text-base font-semibold px-3 py-2 rounded-lg border-2"
+                  className="flex items-center justify-center min-h-[48px] min-w-[104px] text-center text-base font-semibold px-3 rounded-xl border-2"
                   style={{
                     borderColor: "var(--color-border)",
                     color: "var(--color-charcoal)",
@@ -161,7 +161,7 @@ export default function AdminHomePage() {
                   onClick={() => toggleAvailable(product)}
                   disabled={pendingId === product.id}
                   aria-pressed={product.available}
-                  className="text-base font-semibold px-3 py-2 rounded-lg"
+                  className="min-h-[48px] min-w-[104px] text-base font-semibold px-3 rounded-xl"
                   style={{
                     background: product.available
                       ? "var(--color-success-bg)"
@@ -171,7 +171,7 @@ export default function AdminHomePage() {
                       : "var(--color-danger)",
                   }}
                 >
-                  {product.available ? "Disponible" : "Agotado"}
+                  {product.available ? "✓ Disponible" : "Agotado"}
                 </button>
               </div>
             </li>

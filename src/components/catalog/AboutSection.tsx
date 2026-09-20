@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { buildGeneralWhatsAppLink } from "@/lib/utils";
+import WhatsAppIcon from "@/components/catalog/WhatsAppIcon";
 import type { Settings } from "@/lib/types";
 
 export default function AboutSection({ settings }: { settings: Settings | null }) {
@@ -58,6 +59,7 @@ export default function AboutSection({ settings }: { settings: Settings | null }
             rel="noopener noreferrer"
             className="btn-whatsapp max-w-xs"
           >
+            <WhatsAppIcon size={22} />
             Escríbeme por WhatsApp
           </a>
         )}

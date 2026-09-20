@@ -46,6 +46,7 @@ export default function CatalogClient({
 
   return (
     <div className="flex flex-col gap-5">
+      <div className="catalog-toolbar">
       <div>
         <label htmlFor="buscar-producto" className="sr-only">
           Buscar producto por nombre
@@ -62,7 +63,7 @@ export default function CatalogClient({
 
       {usedCategories.length > 1 && (
         <div
-          className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4"
+          className="chip-row"
           role="group"
           aria-label="Filtrar por categoría"
         >
@@ -87,13 +88,14 @@ export default function CatalogClient({
           ))}
         </div>
       )}
+      </div>
 
       {filtered.length === 0 ? (
         <p className="text-charcoal-soft text-lg text-center py-8">
           No encontramos productos con esa búsqueda.
         </p>
       ) : (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3.5">
           {available.map((product) => (
             <ProductCard
               key={product.id}

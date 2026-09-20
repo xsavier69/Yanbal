@@ -42,6 +42,19 @@ alter table public.products
     'Otros'
   ));
 
+-- Validación de datos también en la base (por si algo se salta la app).
+-- "not valid" = solo revisa filas nuevas o editadas; no falla por datos viejos.
+alter table public.products
+  drop constraint if exists products_data_check;
+alter table public.products
+  add constraint products_data_check
+  check (
+    char_length(btrim(name)) between 1 and 80
+    and price > 0 and price <= 9999.99
+    and (offer_price is null or (offer_price > 0 and offer_price < price))
+    and (description is null or char_length(description) <= 500)
+  ) not valid;
+
 create index if not exists products_available_idx on public.products (available);
 create index if not exists products_category_idx on public.products (category);
 create index if not exists products_created_at_idx on public.products (created_at desc);
@@ -60,6 +73,19 @@ create table if not exists public.settings (
   business_hours text,
   constraint settings_singleton check (id = 1)
 );
+
+alter table public.settings
+  drop constraint if exists settings_data_check;
+alter table public.settings
+  add constraint settings_data_check
+  check (
+    (store_name is null or char_length(store_name) <= 60)
+    and (welcome_message is null or char_length(welcome_message) <= 200)
+    and (about_text is null or char_length(about_text) <= 300)
+    and (delivery_area is null or char_length(delivery_area) <= 80)
+    and (business_hours is null or char_length(business_hours) <= 80)
+    and (whatsapp_number is null or char_length(whatsapp_number) <= 20)
+  ) not valid;
 
 -- Crea la única fila de configuración si no existe todavía
 insert into public.settings (id)
@@ -96,7 +122,7 @@ security definer
 set search_path = public
 as $$
   select coalesce(
-    (auth.jwt() ->> 'email') = 'CAMBIA-ESTO@ejemplo.com',
+    lower(auth.jwt() ->> 'email') = lower('CAMBIA-ESTO@ejemplo.com'),
     false
   );
 $$;
@@ -122,6 +148,12 @@ insert into storage.buckets (id, name, public)
 values ('product-images', 'product-images', true)
 on conflict (id) do nothing;
 
+-- Solo fotos, y de tamaño razonable (la app ya las comprime a ~300 KB)
+update storage.buckets
+set file_size_limit = 3145728,
+    allowed_mime_types = array['image/jpeg', 'image/png', 'image/webp']
+where id = 'product-images';
+
 -- Lectura pública de las fotos
 drop policy if exists "product_images_read_public" on storage.objects;
 create policy "product_images_read_public"
@@ -129,25 +161,25 @@ create policy "product_images_read_public"
   to anon, authenticated
   using (bucket_id = 'product-images');
 
--- Solo la usuaria autenticada (Amada) puede subir, reemplazar o borrar fotos
+-- Solo Amada (is_admin) puede subir, reemplazar o borrar fotos
 drop policy if exists "product_images_write_admin" on storage.objects;
 create policy "product_images_write_admin"
   on storage.objects for insert
   to authenticated
-  with check (bucket_id = 'product-images');
+  with check (bucket_id = 'product-images' and public.is_admin());
 
 drop policy if exists "product_images_update_admin" on storage.objects;
 create policy "product_images_update_admin"
   on storage.objects for update
   to authenticated
-  using (bucket_id = 'product-images')
-  with check (bucket_id = 'product-images');
+  using (bucket_id = 'product-images' and public.is_admin())
+  with check (bucket_id = 'product-images' and public.is_admin());
 
 drop policy if exists "product_images_delete_admin" on storage.objects;
 create policy "product_images_delete_admin"
   on storage.objects for delete
   to authenticated
-  using (bucket_id = 'product-images');
+  using (bucket_id = 'product-images' and public.is_admin());
 
 -- ============================================================================
 -- Fin del esquema.

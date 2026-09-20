@@ -54,7 +54,7 @@ export default async function HomePage() {
       )}
       <StoreHeader settings={settings} />
 
-      <main className="flex-1 max-w-lg mx-auto w-full px-4 py-6">
+      <main className="flex-1 max-w-lg mx-auto w-full px-4 pt-6 pb-28">
         <CatalogClient
           products={products}
           whatsappNumber={settings?.whatsapp_number ?? null}

@@ -5,7 +5,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { compressPhoto } from "@/lib/compressImage";
-import { parsePriceInput } from "@/lib/utils";
+import { LIMITS, formatPrice, parsePriceInput } from "@/lib/utils";
+import { friendlyError } from "@/lib/friendlyError";
+import { checkPhotoFile, removeStoredImage } from "@/lib/storage";
 import { CATEGORIES, type Category, type Product } from "@/lib/types";
 
 type Props = {
@@ -16,8 +18,26 @@ type Props = {
 type FieldErrors = {
   name?: string;
   price?: string;
+  offer?: string;
   category?: string;
 };
+
+/** Valida un precio escrito por la usuaria. Devuelve el número o el mensaje de error. */
+function checkPrice(
+  text: string,
+  emptyMessage: string
+): { value: number } | { error: string } {
+  if (!text.trim()) return { error: emptyMessage };
+  const value = parsePriceInput(text);
+  if (value === null) {
+    return { error: "Escribe el precio solo con números. Ejemplo: 12,50" };
+  }
+  if (value <= 0) return { error: "El precio debe ser mayor que cero." };
+  if (value > LIMITS.maxPrice) {
+    return { error: "Revisa el precio: parece demasiado alto." };
+  }
+  return { value };
+}
 
 export default function ProductForm({ mode, product }: Props) {
   const router = useRouter();
@@ -55,12 +75,22 @@ export default function ProductForm({ mode, product }: Props) {
 
   async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
+    e.target.value = "";
     if (!file) return;
+    const photoProblem = checkPhotoFile(file);
+    if (photoProblem) {
+      setSaveError(photoProblem);
+      return;
+    }
+    setSaveError(null);
     setCompressing(true);
     try {
       const compressed = await compressPhoto(file);
       setPhotoFile(compressed);
-      setPhotoPreview(URL.createObjectURL(compressed));
+      setPhotoPreview((previous) => {
+        if (previous?.startsWith("blob:")) URL.revokeObjectURL(previous);
+        return URL.createObjectURL(compressed);
+      });
     } catch {
       setSaveError("No se pudo procesar la foto. Intenta con otra.");
     } finally {
@@ -72,15 +102,46 @@ export default function ProductForm({ mode, product }: Props) {
     const nextErrors: FieldErrors = {};
     if (!name.trim()) {
       nextErrors.name = "Falta el nombre del producto.";
+    } else if (name.trim().length > LIMITS.productName) {
+      nextErrors.name = `El nombre es muy largo (máximo ${LIMITS.productName} letras).`;
     }
-    const price = parsePriceInput(priceText);
-    if (price === null) {
-      nextErrors.price = "Falta el precio del producto.";
+
+    const price = checkPrice(priceText, "Falta el precio del producto.");
+    if ("error" in price) nextErrors.price = price.error;
+
+    if (offerPriceText.trim()) {
+      const offer = checkPrice(offerPriceText, "");
+      if ("error" in offer) {
+        nextErrors.offer = offer.error;
+      } else if (!("error" in price) && offer.value >= price.value) {
+        nextErrors.offer = `El precio de oferta debe ser menor que el precio normal (${formatPrice(
+          price.value
+        )}).`;
+      }
     }
+
     if (!category) {
       nextErrors.category = "Elige una categoría para el producto.";
     }
     setErrors(nextErrors);
+    if (nextErrors.offer) setMoreOpen(true);
+
+    // Lleva la vista al primer error para que no lo pase por alto
+    const firstField = (
+      [
+        ["name", "nombre"],
+        ["price", "precio"],
+        ["category", "categoria"],
+        ["offer", "precio-oferta"],
+      ] as const
+    ).find(([key]) => nextErrors[key]);
+    if (firstField) {
+      requestAnimationFrame(() => {
+        const el = document.getElementById(firstField[1]);
+        el?.scrollIntoView({ behavior: "smooth", block: "center" });
+        if (el instanceof HTMLInputElement) el.focus({ preventScroll: true });
+      });
+    }
     return Object.keys(nextErrors).length === 0;
   }
 
@@ -92,9 +153,7 @@ export default function ProductForm({ mode, product }: Props) {
     if (!validate()) return;
 
     if (typeof navigator !== "undefined" && !navigator.onLine) {
-      setSaveError(
-        "No hay conexión. Tu producto no se guardó; intenta de nuevo."
-      );
+      setSaveError(friendlyError(null, "guardar el producto"));
       return;
     }
 
@@ -123,6 +182,7 @@ export default function ProductForm({ mode, product }: Props) {
       const offerPrice = offerPriceText.trim()
         ? parsePriceInput(offerPriceText)
         : null;
+      const previousImageUrl = product?.image_url ?? null;
 
       const payload = {
         name: name.trim(),
@@ -144,6 +204,10 @@ export default function ProductForm({ mode, product }: Props) {
           .update(payload)
           .eq("id", product!.id);
         if (error) throw error;
+        // Si cambió la foto, borra la anterior para no acumular archivos
+        if (photoFile && previousImageUrl && previousImageUrl !== imageUrl) {
+          await removeStoredImage(supabase, previousImageUrl);
+        }
       }
 
       setSaved(true);
@@ -151,10 +215,8 @@ export default function ProductForm({ mode, product }: Props) {
         router.push("/mi-tienda");
         router.refresh();
       }, 900);
-    } catch {
-      setSaveError(
-        "No hay conexión. Tu producto no se guardó; intenta de nuevo."
-      );
+    } catch (err) {
+      setSaveError(friendlyError(err, "guardar el producto"));
     } finally {
       setSaving(false);
     }
@@ -171,10 +233,11 @@ export default function ProductForm({ mode, product }: Props) {
     setDeleting(false);
 
     if (error) {
-      setDeleteError("No hay conexión. No se pudo borrar, intenta de nuevo.");
+      setDeleteError(friendlyError(error, "borrar el producto"));
       return;
     }
 
+    await removeStoredImage(supabase, product!.image_url);
     router.push("/mi-tienda");
     router.refresh();
   }
@@ -229,6 +292,9 @@ export default function ProductForm({ mode, product }: Props) {
         <input
           id="nombre"
           type="text"
+          maxLength={LIMITS.productName}
+          autoComplete="off"
+          aria-invalid={Boolean(errors.name)}
           className="field-input"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -250,6 +316,7 @@ export default function ProductForm({ mode, product }: Props) {
           id="precio"
           type="text"
           inputMode="decimal"
+          aria-invalid={Boolean(errors.price)}
           className="field-input"
           value={priceText}
           onChange={(e) => setPriceText(e.target.value)}
@@ -265,7 +332,7 @@ export default function ProductForm({ mode, product }: Props) {
       {/* Categoría */}
       <div>
         <span className="field-label">Categoría</span>
-        <div className="grid grid-cols-2 gap-3">
+        <div id="categoria" className="grid grid-cols-2 gap-3">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
@@ -309,8 +376,14 @@ export default function ProductForm({ mode, product }: Props) {
                 className="field-input"
                 value={offerPriceText}
                 onChange={(e) => setOfferPriceText(e.target.value)}
+                aria-invalid={Boolean(errors.offer)}
                 placeholder="Ejemplo: 9,99"
               />
+              {errors.offer && (
+                <p role="alert" className="field-error">
+                  {errors.offer}
+                </p>
+              )}
             </div>
             <div>
               <label htmlFor="descripcion" className="field-label">
@@ -318,6 +391,7 @@ export default function ProductForm({ mode, product }: Props) {
               </label>
               <textarea
                 id="descripcion"
+                maxLength={LIMITS.description}
                 className="field-input"
                 style={{ minHeight: 100 }}
                 value={description}
@@ -336,7 +410,7 @@ export default function ProductForm({ mode, product }: Props) {
       )}
       {saved && <p className="toast-success">Producto guardado ✓</p>}
 
-      <button type="submit" className="btn-primary" disabled={saving}>
+      <button type="submit" className="btn-primary" disabled={saving || saved}>
         {saving ? "Guardando..." : mode === "nuevo" ? "Guardar producto" : "Guardar cambios"}
       </button>
 

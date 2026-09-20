@@ -31,7 +31,13 @@ export default function LoginPage() {
     setLoading(false);
 
     if (signInError) {
-      setError("La contraseña no es correcta. Inténtalo otra vez.");
+      if (signInError.status === 429) {
+        setError("Hiciste muchos intentos. Espera unos minutos y vuelve a probar.");
+      } else if (signInError.status === 400) {
+        setError("El correo o la contraseña no son correctos. Revísalos e inténtalo otra vez.");
+      } else {
+        setError("No se pudo entrar. Revisa tu internet e inténtalo otra vez.");
+      }
       return;
     }
 
@@ -65,6 +71,9 @@ export default function LoginPage() {
               id="email"
               type="email"
               autoComplete="username"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
               className="field-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
