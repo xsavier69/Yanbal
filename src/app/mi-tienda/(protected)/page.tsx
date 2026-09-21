@@ -124,6 +124,12 @@ export default function AdminHomePage() {
           ))}
         </ul>
       </div>
+
+      <div className="border-t border-border pt-6">
+        <Link href="/mi-tienda/ajustes" className="btn-secondary">
+          Ajustes de mi página
+        </Link>
+      </div>
     </div>
   );
 }

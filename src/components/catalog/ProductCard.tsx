@@ -1,5 +1,9 @@
 import Image from "next/image";
-import { formatPrice, buildProductWhatsAppLink } from "@/lib/utils";
+import {
+  formatPrice,
+  buildProductWhatsAppLink,
+  hasValidOffer,
+} from "@/lib/utils";
 import WhatsAppIcon from "@/components/catalog/WhatsAppIcon";
 import type { Product } from "@/lib/types";
 
@@ -7,13 +11,14 @@ export default function ProductCard({
   product,
   whatsappNumber,
   storeName,
+  isNew = false,
 }: {
   product: Product;
   whatsappNumber: string | null;
   storeName: string;
+  isNew?: boolean;
 }) {
-  const hasOffer =
-    product.offer_price !== null && product.offer_price < product.price;
+  const hasOffer = hasValidOffer(product);
   const discount = hasOffer
     ? Math.round((1 - product.offer_price! / product.price) * 100)
     : 0;
@@ -38,14 +43,17 @@ export default function ProductCard({
             {initial}
           </div>
         )}
-        {!product.available && (
-          <span className="badge-agotado absolute top-2 left-2">Agotado</span>
-        )}
-        {product.available && hasOffer && (
-          <span className="badge-oferta absolute top-2 left-2">
-            {discount >= 5 ? `-${discount}%` : "Oferta"}
-          </span>
-        )}
+        <div className="absolute top-2 left-2 flex flex-col items-start gap-1">
+          {!product.available && <span className="badge-agotado">Agotado</span>}
+          {product.available && hasOffer && (
+            <span className="badge-oferta">
+              {discount >= 5 ? `-${discount}%` : "Oferta"}
+            </span>
+          )}
+          {product.available && isNew && (
+            <span className="badge-nuevo">Nuevo</span>
+          )}
+        </div>
       </div>
 
       <div className="p-3 flex flex-col gap-2 flex-1">

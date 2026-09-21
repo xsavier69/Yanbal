@@ -3,16 +3,19 @@
 import { useMemo, useState } from "react";
 import ProductCard from "@/components/catalog/ProductCard";
 import { CATEGORIES } from "@/lib/types";
+import { isNewProduct } from "@/lib/utils";
 import type { Product } from "@/lib/types";
 
 export default function CatalogClient({
   products,
   whatsappNumber,
   storeName,
+  nowMs,
 }: {
   products: Product[];
   whatsappNumber: string | null;
   storeName: string;
+  nowMs: number;
 }) {
   const [category, setCategory] = useState<string | null>(null);
   const [search, setSearch] = useState("");
@@ -46,6 +49,7 @@ export default function CatalogClient({
 
   return (
     <div className="flex flex-col gap-5">
+      <h2 className="sr-only">Todos los productos</h2>
       <div className="catalog-toolbar">
       <div>
         <label htmlFor="buscar-producto" className="sr-only">
@@ -102,6 +106,7 @@ export default function CatalogClient({
               product={product}
               whatsappNumber={whatsappNumber}
               storeName={storeName}
+              isNew={isNewProduct(product.created_at, nowMs)}
             />
           ))}
           {soldOut.map((product) => (
@@ -110,6 +115,7 @@ export default function CatalogClient({
               product={product}
               whatsappNumber={whatsappNumber}
               storeName={storeName}
+              isNew={isNewProduct(product.created_at, nowMs)}
             />
           ))}
         </div>

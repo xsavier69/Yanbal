@@ -1,6 +1,12 @@
 import type { Settings } from "@/lib/types";
 
-export default function StoreHeader({ settings }: { settings: Settings | null }) {
+export default function StoreHeader({
+  settings,
+  catalogUrl = null,
+}: {
+  settings: Settings | null;
+  catalogUrl?: string | null;
+}) {
   const storeName = settings?.store_name?.trim() || "Mi tienda Yanbal";
 
   return (
@@ -15,10 +21,24 @@ export default function StoreHeader({ settings }: { settings: Settings | null })
         <p className="text-charcoal-soft text-lg max-w-xs text-balance">
           Elige lo que te guste y pídelo por WhatsApp.
         </p>
-        {settings?.about_text && (
-          <a href="#sobre-mi" className="pill-link mt-1">
-            Sobre mí
-          </a>
+        {(catalogUrl || settings?.about_text) && (
+          <div className="flex flex-wrap justify-center gap-2 mt-1">
+            {catalogUrl && (
+              <a
+                href={catalogUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pill-link"
+              >
+                Ver catálogo completo
+              </a>
+            )}
+            {settings?.about_text && (
+              <a href="#sobre-mi" className="pill-link">
+                Sobre mí
+              </a>
+            )}
+          </div>
         )}
       </div>
     </header>

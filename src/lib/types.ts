@@ -31,6 +31,17 @@ export type ProductInput = {
   available: boolean;
 };
 
+/** Secciones de la página que Amada puede mostrar u ocultar */
+export type SectionKey =
+  | "campaign"
+  | "howto"
+  | "news"
+  | "offers"
+  | "testimonials"
+  | "faq"
+  | "social"
+  | "featured";
+
 export type Settings = {
   id: number;
   whatsapp_number: string | null;
@@ -40,4 +51,10 @@ export type Settings = {
   about_photo_url: string | null;
   delivery_area: string | null;
   business_hours: string | null;
+  campaign_number: number | null;
+  campaign_end_date: string | null; // "YYYY-MM-DD"
+  official_catalog_url: string | null;
+  payment_methods: string | null;
+  delivery_info: string | null;
+  sections_visible: Partial<Record<SectionKey, boolean>> | null;
 };

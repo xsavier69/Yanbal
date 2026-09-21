@@ -1,10 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { getSettings } from "@/lib/queries";
-import SettingsForm from "@/components/admin/SettingsForm";
+import SettingsPanel from "@/components/admin/settings/SettingsPanel";
 
 export default async function AjustesPage() {
   const supabase = await createClient();
   const settings = await getSettings(supabase);
 
-  return <SettingsForm initialSettings={settings} />;
+  return <SettingsPanel initialSettings={settings} />;
 }

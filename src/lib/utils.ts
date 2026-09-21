@@ -9,8 +9,28 @@ export const LIMITS = {
   deliveryArea: 80,
   businessHours: 80,
   whatsapp: 20,
+  paymentMethods: 120,
+  deliveryInfo: 160,
+  url: 300,
   photoMaxMB: 25,
 } as const;
+
+/** Un producto está "nuevo" durante sus primeros 30 días */
+export const NEW_PRODUCT_DAYS = 30;
+
+export function isNewProduct(createdAt: string, nowMs: number): boolean {
+  const created = new Date(createdAt).getTime();
+  if (Number.isNaN(created)) return false;
+  return nowMs - created < NEW_PRODUCT_DAYS * 24 * 60 * 60 * 1000;
+}
+
+/** Tiene un precio de oferta real (menor que el normal) */
+export function hasValidOffer(product: {
+  price: number;
+  offer_price: number | null;
+}): boolean {
+  return product.offer_price !== null && product.offer_price < product.price;
+}
 
 /** Formatea un precio en dólares con estilo ecuatoriano: $12,50 */
 export function formatPrice(value: number): string {

@@ -2,6 +2,11 @@ import type { Product, Settings } from "@/lib/types";
 
 // Datos de ejemplo que solo se usan cuando Supabase no está configurado.
 
+const DAY_MS = 24 * 60 * 60 * 1000;
+const daysAgo = (n: number) => new Date(Date.now() - n * DAY_MS).toISOString();
+const inDays = (n: number) =>
+  new Date(Date.now() + n * DAY_MS).toISOString().slice(0, 10);
+
 export const DEMO_SETTINGS: Settings = {
   id: 1,
   whatsapp_number: "593999999999",
@@ -12,6 +17,12 @@ export const DEMO_SETTINGS: Settings = {
   about_photo_url: null,
   delivery_area: "Ocaña y alrededores",
   business_hours: "Lunes a sábado, 9:00 a 18:00",
+  campaign_number: 10,
+  campaign_end_date: inDays(9),
+  official_catalog_url: "https://www.yanbal.com",
+  payment_methods: "Efectivo, transferencia, Deuna",
+  delivery_info: "Entrega en Cuenca; envío a todo el Ecuador",
+  sections_visible: {},
 };
 
 const base = {
@@ -21,10 +32,13 @@ const base = {
   created_at: "2026-01-01T00:00:00Z",
 };
 
+// Fechas relativas a hoy, para que Novedades se vea en la demostración
+
 export const DEMO_PRODUCTS: Product[] = [
   {
     ...base,
     id: "demo-1",
+    created_at: daysAgo(3),
     name: "Perfume floral para dama",
     price: 32.5,
     offer_price: 27.9,
@@ -34,6 +48,7 @@ export const DEMO_PRODUCTS: Product[] = [
   {
     ...base,
     id: "demo-2",
+    created_at: daysAgo(8),
     name: "Colonia para caballero",
     price: 28,
     offer_price: null,
@@ -42,6 +57,7 @@ export const DEMO_PRODUCTS: Product[] = [
   {
     ...base,
     id: "demo-3",
+    created_at: daysAgo(15),
     name: "Labial de larga duración",
     price: 9.9,
     offer_price: null,

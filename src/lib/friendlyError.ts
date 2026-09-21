@@ -21,6 +21,10 @@ export function friendlyError(err: unknown, action: string): string {
     return `No hay conexión. No se pudo ${action}; revisa tu internet e intenta de nuevo.`;
   }
 
+  if (e.code === "PGRST204" || message.includes("schema cache")) {
+    return "Falta actualizar la base de datos. Avísale a quien te ayuda con la tienda.";
+  }
+
   const sessionProblem =
     status === 401 ||
     status === 403 ||
