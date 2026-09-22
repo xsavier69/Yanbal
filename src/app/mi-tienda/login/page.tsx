@@ -49,20 +49,20 @@ export default function LoginPage() {
   if (!isSupabaseConfigured) return <SetupNotice />;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-cream px-5 py-10">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-sky px-5 py-10">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="font-heading text-3xl font-bold text-charcoal mb-2">
+          <h1 className="font-heading text-3xl font-bold text-ink mb-2">
             Mi tienda
           </h1>
-          <p className="text-charcoal-soft text-lg">
+          <p className="text-ink-soft text-lg">
             Entra para administrar tus productos
           </p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-2xl p-6 shadow-sm border border-border flex flex-col gap-5"
+          className="bg-white rounded-2xl p-6 shadow-sm border border-line flex flex-col gap-5"
         >
           <div>
             <label htmlFor="email" className="field-label">
@@ -100,7 +100,7 @@ export default function LoginPage() {
             />
             <button
               type="button"
-              className="mt-2 min-h-[48px] px-1 text-base font-semibold text-rose-dark"
+              className="mt-2 min-h-[48px] px-1 text-base font-semibold text-blue"
               aria-pressed={showPassword}
               onClick={() => setShowPassword((v) => !v)}
             >

@@ -1,148 +1,104 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
-import { getSettings, getAllProducts } from "@/lib/queries";
-import StoreHeader from "@/components/catalog/StoreHeader";
-import CampaignBanner from "@/components/catalog/CampaignBanner";
-import ProductCarousel from "@/components/catalog/ProductCarousel";
-import CatalogClient from "@/components/catalog/CatalogClient";
-import HowToBuy from "@/components/catalog/HowToBuy";
-import AboutSection from "@/components/catalog/AboutSection";
-import WhatsAppFloatingButton from "@/components/catalog/WhatsAppFloatingButton";
+import { getSettings, getTeamTestimonials } from "@/lib/queries";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
-import { DEMO_SETTINGS, DEMO_PRODUCTS } from "@/lib/demoData";
+import { DEMO_SETTINGS, DEMO_TEAM } from "@/lib/demoData";
 import { isSectionVisible } from "@/lib/sections";
-import { safeHttpUrl, todayInEcuador } from "@/lib/campaign";
-import { hasValidOffer, isNewProduct } from "@/lib/utils";
+import { readSource } from "@/lib/join";
+import { ph } from "@/lib/placeholder";
+import JoinHero from "@/components/join/JoinHero";
+import JoinStory from "@/components/join/JoinStory";
+import JoinRequirements from "@/components/join/JoinRequirements";
+import TeamStories from "@/components/join/TeamStories";
+import JoinFaqList from "@/components/join/JoinFaqList";
+import LeadForm from "@/components/join/LeadForm";
+import JoinClosing from "@/components/join/JoinClosing";
+import JoinFooter from "@/components/join/JoinFooter";
 
-async function loadCatalog() {
-  const nowMs = Date.now();
-  const today = todayInEcuador(new Date(nowMs));
-
+async function loadJoin() {
   if (!isSupabaseConfigured) {
-    return { settings: DEMO_SETTINGS, products: DEMO_PRODUCTS, nowMs, today };
+    return { settings: DEMO_SETTINGS, team: DEMO_TEAM };
   }
   const supabase = await createClient();
-  const [settings, products] = await Promise.all([
+  const [settings, team] = await Promise.all([
     getSettings(supabase),
-    getAllProducts(supabase),
+    getTeamTestimonials(supabase),
   ]);
-  return { settings, products, nowMs, today };
+  return { settings, team };
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { settings } = await loadCatalog();
-  const storeName = settings?.store_name?.trim() || "Mi tienda Yanbal";
-  const description =
-    "Catálogo de productos Yanbal. Pide tus productos favoritos por WhatsApp.";
+  const { settings } = await loadJoin();
+  const name = ph(settings?.consultant_name, "[TU NOMBRE]").text;
+  const city = ph(settings?.city, "[CIUDAD]").text;
+  const title = `Sé consultora Yanbal en ${city} con ${name}`;
+  const description = `Te acompaño a empezar tu propio negocio con Yanbal en ${city}. Te explico todo por WhatsApp, sin compromiso.`;
 
   return {
-    title: storeName,
+    title,
     description,
-    openGraph: {
-      title: storeName,
-      description,
-      type: "website",
-      locale: "es_EC",
-    },
+    openGraph: { title, description, type: "website", locale: "es_EC" },
   };
 }
 
-// Una sección con carrusel solo se muestra si tiene al menos 2 productos
-const MIN_CAROUSEL_ITEMS = 2;
+export default async function InvitacionPage({
+  searchParams,
+}: PageProps<"/">) {
+  const { settings, team } = await loadJoin();
+  const params = await searchParams;
+  const source = readSource(params.origen);
 
-export default async function HomePage() {
-  const { settings, products, nowMs, today } = await loadCatalog();
-
-  const storeName = settings?.store_name?.trim() || "Mi tienda Yanbal";
-  const year = new Date(nowMs).getFullYear();
-  const whatsappNumber = settings?.whatsapp_number ?? null;
-
-  const showCampaign = isSectionVisible(settings, "campaign");
-  const catalogUrl = showCampaign
-    ? safeHttpUrl(settings?.official_catalog_url)
-    : null;
-
-  const inStock = products.filter((p) => p.available);
-  const newProducts = isSectionVisible(settings, "news")
-    ? inStock.filter((p) => isNewProduct(p.created_at, nowMs))
-    : [];
-  const offerProducts = isSectionVisible(settings, "offers")
-    ? inStock.filter(hasValidOffer)
-    : [];
+  const consultantName = ph(settings?.consultant_name, "[TU NOMBRE]").text;
+  const year = new Date().getFullYear();
 
   return (
-    <div className="min-h-screen flex flex-col bg-cream">
+    <div className="min-h-screen flex flex-col">
       {!isSupabaseConfigured && (
-        <p className="bg-charcoal text-white text-center text-sm px-4 py-2">
-          Modo demostración: estos productos son de ejemplo. Conecta Supabase
-          para usar tus productos reales.
+        <p className="bg-ink text-white text-center text-sm px-4 py-2">
+          Modo demostración: esta página usa datos de ejemplo.
         </p>
       )}
 
-      {showCampaign && (
-        <CampaignBanner
-          number={settings?.campaign_number ?? null}
-          endDate={settings?.campaign_end_date ?? null}
-          todayFromServer={today}
-        />
-      )}
+      <JoinHero settings={settings} consultantName={consultantName} />
 
-      <StoreHeader settings={settings} catalogUrl={catalogUrl} />
+      <main id="contenido">
 
-      <main className="flex-1 max-w-lg mx-auto w-full px-4 pt-6 pb-10 flex flex-col gap-8">
-        {newProducts.length >= MIN_CAROUSEL_ITEMS && (
-          <ProductCarousel
-            id="novedades"
-            title="Novedades"
-            products={newProducts}
-            whatsappNumber={whatsappNumber}
-            storeName={storeName}
-            nowMs={nowMs}
-          />
+      <JoinStory settings={settings} consultantName={consultantName} />
+
+      <JoinRequirements settings={settings} />
+
+      <div className="band-sky border-y border-line">
+        {isSectionVisible(settings, "team") && (
+          <TeamStories testimonials={team} />
         )}
-        {offerProducts.length >= MIN_CAROUSEL_ITEMS && (
-          <ProductCarousel
-            id="ofertas"
-            title="En oferta"
-            products={offerProducts}
-            whatsappNumber={whatsappNumber}
-            storeName={storeName}
-            nowMs={nowMs}
-          />
+        {isSectionVisible(settings, "joinFaq") && (
+          <JoinFaqList settings={settings} consultantName={consultantName} />
         )}
+      </div>
 
-        <CatalogClient
-          products={products}
-          whatsappNumber={whatsappNumber}
-          storeName={storeName}
-          nowMs={nowMs}
+      <section
+        id="quiero-saber-mas"
+        aria-labelledby="quiero-saber-mas-titulo"
+        className="page-section"
+      >
+        <h2 id="quiero-saber-mas-titulo" className="section-title">
+          Quiero saber más
+        </h2>
+        <p className="prose-measure text-ink-soft mb-6">
+          Déjame tus datos y te escribo. No necesitas cédula ni correo para
+          esto: eso va después, en el registro oficial de Yanbal.
+        </p>
+        <LeadForm
+          consultantName={consultantName}
+          whatsappNumber={settings?.whatsapp_number ?? null}
+          source={source}
         />
+      </section>
+
+        <JoinClosing settings={settings} consultantName={consultantName} />
       </main>
 
-      {isSectionVisible(settings, "howto") && (
-        <HowToBuy
-          paymentMethods={settings?.payment_methods ?? null}
-          deliveryInfo={settings?.delivery_info ?? null}
-        />
-      )}
-
-      <AboutSection settings={settings} />
-
-      <footer className="border-t border-border py-6 pb-24 text-center text-charcoal-soft">
-        <p className="badge-consultora mb-2">
-          Página de consultora independiente Yanbal
-        </p>
-        <p className="text-sm">
-          © {year} {storeName}
-        </p>
-      </footer>
-
-      {settings?.whatsapp_number && (
-        <WhatsAppFloatingButton
-          whatsappNumber={settings.whatsapp_number}
-          welcomeMessage={settings.welcome_message}
-        />
-      )}
+      <JoinFooter consultantName={consultantName} year={year} />
     </div>
   );
 }

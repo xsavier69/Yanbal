@@ -50,15 +50,15 @@ export default function AutoSection({
       dirty={dirty}
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        <p className="text-charcoal-soft">
+        <p className="text-ink-soft">
           Estas dos franjas se llenan solas con tus productos. Solo se ven si
           hay al menos 2 productos para mostrar. Aquí puedes apagarlas.
         </p>
 
         <div className="flex flex-col gap-3">
-          <p className="font-semibold text-charcoal">
+          <p className="font-semibold text-ink">
             Novedades{" "}
-            <span className="font-normal text-charcoal-soft">
+            <span className="font-normal text-ink-soft">
               (productos que subiste en los últimos 30 días)
             </span>
           </p>
@@ -66,9 +66,9 @@ export default function AutoSection({
         </div>
 
         <div className="flex flex-col gap-3">
-          <p className="font-semibold text-charcoal">
+          <p className="font-semibold text-ink">
             En oferta{" "}
-            <span className="font-normal text-charcoal-soft">
+            <span className="font-normal text-ink-soft">
               (productos con precio de oferta)
             </span>
           </p>

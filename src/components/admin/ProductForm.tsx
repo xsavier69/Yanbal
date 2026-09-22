@@ -244,7 +244,7 @@ export default function ProductForm({ mode, product }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      <h1 className="font-heading text-2xl font-bold text-charcoal">
+      <h1 className="font-heading text-2xl font-bold text-ink">
         {mode === "nuevo" ? "Agregar producto" : "Editar producto"}
       </h1>
 
@@ -260,7 +260,7 @@ export default function ProductForm({ mode, product }: Props) {
           id="foto-producto"
         />
         {photoPreview && (
-          <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-border mb-3 bg-white">
+          <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-line mb-3 bg-white">
             <Image
               src={photoPreview}
               alt="Foto del producto"
@@ -353,10 +353,10 @@ export default function ProductForm({ mode, product }: Props) {
       </div>
 
       {/* Más opciones */}
-      <div className="border border-border rounded-2xl bg-white">
+      <div className="border border-line rounded-2xl bg-white">
         <button
           type="button"
-          className="w-full flex items-center justify-between px-4 py-4 text-lg font-semibold text-charcoal"
+          className="w-full flex items-center justify-between px-4 py-4 text-lg font-semibold text-ink"
           aria-expanded={moreOpen}
           onClick={() => setMoreOpen((v) => !v)}
         >
@@ -415,7 +415,7 @@ export default function ProductForm({ mode, product }: Props) {
       </button>
 
       {mode === "editar" && product && (
-        <div className="flex flex-col gap-3 pt-4 border-t border-border">
+        <div className="flex flex-col gap-3 pt-4 border-t border-line">
           {!confirmingDelete ? (
             <button
               type="button"
@@ -425,8 +425,8 @@ export default function ProductForm({ mode, product }: Props) {
               Borrar producto
             </button>
           ) : (
-            <div className="bg-white border-2 rounded-2xl p-4 flex flex-col gap-3" style={{ borderColor: "var(--color-danger)" }}>
-              <p className="text-lg font-semibold text-charcoal">
+            <div className="bg-white border-2 rounded-2xl p-4 flex flex-col gap-3" style={{ borderColor: "var(--color-bad)" }}>
+              <p className="text-lg font-semibold text-ink">
                 ¿Seguro que quieres borrar {product.name}? No se puede
                 deshacer.
               </p>

@@ -25,7 +25,7 @@ export default function VisibilitySwitch({
         <span className="switch-thumb" />
       </span>
       <span className="flex flex-col text-left">
-        <span id={`${id}-titulo`} className="font-semibold text-charcoal">
+        <span id={`${id}-titulo`} className="font-semibold text-ink">
           {label}
         </span>
         <span id={`${id}-estado`} className="switch-state">

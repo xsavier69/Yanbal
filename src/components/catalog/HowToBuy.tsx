@@ -36,16 +36,16 @@ export default function HowToBuy({
       </ol>
 
       {(payment || delivery) && (
-        <div className="flex flex-col gap-1 mt-5 text-charcoal-soft">
+        <div className="flex flex-col gap-1 mt-5 text-ink-soft">
           {payment && (
             <p>
-              <strong className="text-charcoal">Formas de pago:</strong>{" "}
+              <strong className="text-ink">Formas de pago:</strong>{" "}
               {payment}
             </p>
           )}
           {delivery && (
             <p>
-              <strong className="text-charcoal">Entregas:</strong> {delivery}
+              <strong className="text-ink">Entregas:</strong> {delivery}
             </p>
           )}
         </div>

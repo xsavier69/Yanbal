@@ -10,15 +10,15 @@ export default function StoreHeader({
   const storeName = settings?.store_name?.trim() || "Mi tienda Yanbal";
 
   return (
-    <header className="hero-bg border-b border-border">
+    <header className="hero-bg border-b border-line">
       <div className="max-w-lg mx-auto px-5 pt-10 pb-8 flex flex-col items-center text-center gap-3">
         <span className="badge-consultora">
           Página de consultora independiente Yanbal
         </span>
-        <h1 className="font-heading text-4xl font-bold leading-tight text-charcoal text-balance">
+        <h1 className="font-heading text-4xl font-bold leading-tight text-ink text-balance">
           {storeName}
         </h1>
-        <p className="text-charcoal-soft text-lg max-w-xs text-balance">
+        <p className="text-ink-soft text-lg max-w-xs text-balance">
           Elige lo que te guste y pídelo por WhatsApp.
         </p>
         {(catalogUrl || settings?.about_text) && (

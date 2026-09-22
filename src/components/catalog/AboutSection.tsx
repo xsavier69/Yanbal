@@ -9,11 +9,11 @@ export default function AboutSection({ settings }: { settings: Settings | null }
   return (
     <section
       id="sobre-mi"
-      className="max-w-lg mx-auto px-4 py-10 border-t border-border"
+      className="max-w-lg mx-auto px-4 py-10 border-t border-line"
     >
-      <div className="bg-white rounded-2xl border border-border p-6 flex flex-col items-center text-center gap-4">
+      <div className="bg-white rounded-2xl border border-line p-6 flex flex-col items-center text-center gap-4">
         {settings.about_photo_url && (
-          <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-peach">
+          <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-gold">
             <Image
               src={settings.about_photo_url}
               alt="Foto de la consultora"
@@ -24,25 +24,25 @@ export default function AboutSection({ settings }: { settings: Settings | null }
           </div>
         )}
 
-        <h2 className="font-heading text-2xl font-bold text-charcoal">
+        <h2 className="font-heading text-2xl font-bold text-ink">
           Sobre mí
         </h2>
 
-        <p className="text-charcoal text-lg leading-relaxed">
+        <p className="text-ink text-lg leading-relaxed">
           {settings.about_text}
         </p>
 
         {(settings.delivery_area || settings.business_hours) && (
-          <div className="flex flex-col gap-1 text-charcoal-soft">
+          <div className="flex flex-col gap-1 text-ink-soft">
             {settings.delivery_area && (
               <p>
-                <strong className="text-charcoal">Entrego en:</strong>{" "}
+                <strong className="text-ink">Entrego en:</strong>{" "}
                 {settings.delivery_area}
               </p>
             )}
             {settings.business_hours && (
               <p>
-                <strong className="text-charcoal">Horario:</strong>{" "}
+                <strong className="text-ink">Horario:</strong>{" "}
                 {settings.business_hours}
               </p>
             )}

@@ -1,4 +1,4 @@
-import type { Product, Settings } from "@/lib/types";
+import type { Product, Settings, Testimonial } from "@/lib/types";
 
 // Datos de ejemplo que solo se usan cuando Supabase no está configurado.
 
@@ -23,6 +23,20 @@ export const DEMO_SETTINGS: Settings = {
   payment_methods: "Efectivo, transferencia, Deuna",
   delivery_info: "Entrega en Cuenca; envío a todo el Ecuador",
   sections_visible: {},
+  // A propósito casi todo vacío: así se ve en la demostración qué falta llenar
+  consultant_name: null,
+  city: null,
+  years_selling: null,
+  hero_photo_url: null,
+  signature_url: null,
+  why_me_custom: null,
+  kit_info: null,
+  credit_available: false,
+  benefits: null,
+  benefits_source: null,
+  official_join_url: null,
+  closing_text: null,
+  join_faq: {},
 };
 
 const base = {
@@ -87,5 +101,26 @@ export const DEMO_PRODUCTS: Product[] = [
     offer_price: null,
     category: "Joyería",
     available: false,
+  },
+];
+
+export const DEMO_TEAM: Testimonial[] = [
+  {
+    id: "equipo-1",
+    name: "[NOMBRE]",
+    text: "[FRASE REAL DE ELLA, CON SU PERMISO]",
+    type: "equipo",
+    time_selling: "[TIEMPO]",
+    visible: true,
+    created_at: "2026-01-01T00:00:00Z",
+  },
+  {
+    id: "equipo-2",
+    name: "[NOMBRE]",
+    text: "[FRASE REAL DE ELLA, CON SU PERMISO]",
+    type: "equipo",
+    time_selling: "[TIEMPO]",
+    visible: true,
+    created_at: "2026-01-02T00:00:00Z",
   },
 ];

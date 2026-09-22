@@ -39,8 +39,8 @@ export default function CatalogClient({
 
   if (products.length === 0) {
     return (
-      <div className="bg-white rounded-2xl border border-border p-8 text-center">
-        <p className="text-lg text-charcoal-soft">
+      <div className="bg-white rounded-2xl border border-line p-8 text-center">
+        <p className="text-lg text-ink-soft">
           Todavía no hay productos en el catálogo. ¡Vuelve pronto!
         </p>
       </div>
@@ -95,7 +95,7 @@ export default function CatalogClient({
       </div>
 
       {filtered.length === 0 ? (
-        <p className="text-charcoal-soft text-lg text-center py-8">
+        <p className="text-ink-soft text-lg text-center py-8">
           No encontramos productos con esa búsqueda.
         </p>
       ) : (

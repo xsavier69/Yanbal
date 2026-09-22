@@ -10,6 +10,7 @@ export default function AdminHomePage() {
   const [products, setProducts] = useState<Product[] | null>(null);
   const [search, setSearch] = useState("");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [newLeads, setNewLeads] = useState(0);
   const [pendingId, setPendingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,6 +28,16 @@ export default function AdminHomePage() {
         }
         setProducts((data ?? []) as Product[]);
       });
+    // Cuántas personas nuevas esperan respuesta
+    supabase
+      .from("leads")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "nueva")
+      .then(({ count, error }) => {
+        if (!active || error) return;
+        setNewLeads(count ?? 0);
+      });
+
     return () => {
       active = false;
     };
@@ -63,6 +74,17 @@ export default function AdminHomePage() {
 
   return (
     <div className="flex flex-col gap-6">
+      {newLeads > 0 && (
+        <Link href="/mi-tienda/interesadas" className="lead-alert">
+          <span className="block font-heading text-[22px] text-ink">
+            {newLeads === 1
+              ? "Tienes 1 persona nueva interesada"
+              : `Tienes ${newLeads} personas nuevas interesadas`}
+          </span>
+          <span className="block mt-1 font-semibold text-blue">Verlas →</span>
+        </Link>
+      )}
+
       <Link href="/mi-tienda/producto/nuevo" className="btn-primary">
         <span aria-hidden="true">＋</span> Agregar producto
       </Link>
@@ -90,17 +112,17 @@ export default function AdminHomePage() {
       )}
 
       <div>
-        <h2 className="font-heading text-xl font-bold text-charcoal mb-3">
+        <h2 className="font-heading text-xl font-bold text-ink mb-3">
           Tus productos
         </h2>
 
         {products === null && (
-          <p className="text-charcoal-soft text-lg">Cargando tus productos...</p>
+          <p className="text-ink-soft text-lg">Cargando tus productos...</p>
         )}
 
         {products !== null && products.length === 0 && (
-          <div className="bg-white rounded-2xl p-6 border border-border text-center">
-            <p className="text-lg text-charcoal-soft">
+          <div className="bg-white rounded-2xl p-6 border border-line text-center">
+            <p className="text-lg text-ink-soft">
               Todavía no tienes productos. Toca &quot;Agregar producto&quot; para
               subir el primero.
             </p>
@@ -108,7 +130,7 @@ export default function AdminHomePage() {
         )}
 
         {products !== null && products.length > 0 && filtered.length === 0 && (
-          <p className="text-charcoal-soft text-lg">
+          <p className="text-ink-soft text-lg">
             No encontramos productos con ese nombre.
           </p>
         )}
@@ -125,7 +147,12 @@ export default function AdminHomePage() {
         </ul>
       </div>
 
-      <div className="border-t border-border pt-6">
+      <div className="border-t border-line pt-6 flex flex-col gap-3">
+        {newLeads === 0 && (
+          <Link href="/mi-tienda/interesadas" className="btn-secondary">
+            Personas interesadas
+          </Link>
+        )}
         <Link href="/mi-tienda/ajustes" className="btn-secondary">
           Ajustes de mi página
         </Link>

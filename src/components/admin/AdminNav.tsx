@@ -18,9 +18,9 @@ export default function AdminNav() {
   const isAjustes = pathname?.startsWith("/mi-tienda/ajustes");
 
   return (
-    <header className="bg-white border-b border-border">
+    <header className="bg-white border-b border-line">
       <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between gap-3">
-        <Link href="/mi-tienda" className="flex items-center min-h-[48px] font-heading text-xl font-bold text-charcoal">
+        <Link href="/mi-tienda" className="flex items-center min-h-[48px] font-heading text-xl font-bold text-ink">
           Mi tienda
         </Link>
         <nav className="flex items-center gap-2">
@@ -28,8 +28,8 @@ export default function AdminNav() {
             href="/mi-tienda/ajustes"
             className="flex items-center min-h-[48px] text-base font-semibold px-3 rounded-lg"
             style={{
-              color: isAjustes ? "var(--color-rose-dark)" : "var(--color-charcoal)",
-              background: isAjustes ? "var(--color-peach-light)" : "transparent",
+              color: isAjustes ? "var(--color-blue)" : "var(--color-ink)",
+              background: isAjustes ? "var(--color-sky)" : "transparent",
             }}
           >
             Ajustes
@@ -37,7 +37,7 @@ export default function AdminNav() {
           <button
             type="button"
             onClick={handleLogout}
-            className="min-h-[48px] text-base font-semibold px-3 rounded-lg text-charcoal-soft"
+            className="min-h-[48px] text-base font-semibold px-3 rounded-lg text-ink-soft"
           >
             Salir
           </button>

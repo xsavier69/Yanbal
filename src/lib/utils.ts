@@ -9,6 +9,8 @@ export const LIMITS = {
   deliveryArea: 80,
   businessHours: 80,
   whatsapp: 20,
+  leadName: 60,
+  leadCity: 60,
   paymentMethods: 120,
   deliveryInfo: 160,
   url: 300,
@@ -107,6 +109,38 @@ export function buildProductWhatsAppLink(
     price
   )}). ¿Está disponible?`;
   return `https://wa.me/${whatsappDigits(whatsappNumber)}?text=${encodeURIComponent(
+    message
+  )}`;
+}
+
+/**
+ * Link de WhatsApp para quien quiere ser consultora.
+ * Si ya llenó el formulario, el mensaje lleva su nombre y su ciudad.
+ */
+export function buildJoinWhatsAppLink(
+  whatsappNumber: string,
+  consultantName: string,
+  from?: { name?: string; city?: string } | null
+): string {
+  let message = `Hola ${consultantName}, vi tu página y quiero saber cómo ser consultora Yanbal.`;
+  const who = from?.name?.trim();
+  const where = from?.city?.trim();
+  if (who) {
+    message += ` Soy ${who}${where ? `, de ${where}` : ""}.`;
+  }
+  return `https://wa.me/${whatsappDigits(whatsappNumber)}?text=${encodeURIComponent(
+    message
+  )}`;
+}
+
+/** Link para que ella le escriba a una persona interesada */
+export function buildLeadWhatsAppLink(
+  leadPhone: string,
+  leadName: string,
+  consultantName: string
+): string {
+  const message = `Hola ${leadName}, soy ${consultantName}, vi que te interesa Yanbal. ¿Tienes unos minutos para conversar?`;
+  return `https://wa.me/${leadPhone.replace(/\D/g, "")}?text=${encodeURIComponent(
     message
   )}`;
 }

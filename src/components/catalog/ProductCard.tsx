@@ -29,7 +29,7 @@ export default function ProductCard({
       className="product-card"
       data-soldout={!product.available || undefined}
     >
-      <div className="relative w-full aspect-square bg-cream">
+      <div className="relative w-full aspect-square bg-sky">
         {product.image_url ? (
           <Image
             src={product.image_url}
@@ -57,22 +57,22 @@ export default function ProductCard({
       </div>
 
       <div className="p-3 flex flex-col gap-2 flex-1">
-        <h3 className="font-heading font-semibold text-charcoal leading-snug text-[17px] line-clamp-2">
+        <h3 className="font-heading font-semibold text-ink leading-snug text-[17px] line-clamp-2">
           {product.name}
         </h3>
 
         <div className="flex items-baseline flex-wrap gap-x-2">
           {hasOffer ? (
             <>
-              <span className="font-heading font-bold text-xl text-rose-dark">
+              <span className="font-heading font-bold text-xl text-blue">
                 {formatPrice(product.offer_price!)}
               </span>
-              <span className="text-charcoal-soft line-through text-sm">
+              <span className="text-ink-soft line-through text-sm">
                 {formatPrice(product.price)}
               </span>
             </>
           ) : (
-            <span className="font-heading font-bold text-xl text-charcoal">
+            <span className="font-heading font-bold text-xl text-ink">
               {formatPrice(product.price)}
             </span>
           )}

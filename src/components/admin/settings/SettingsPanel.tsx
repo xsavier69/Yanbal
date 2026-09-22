@@ -7,6 +7,10 @@ import InfoSection from "@/components/admin/settings/InfoSection";
 import CampaignSection from "@/components/admin/settings/CampaignSection";
 import HowToSection from "@/components/admin/settings/HowToSection";
 import AutoSection from "@/components/admin/settings/AutoSection";
+import InvitationSection from "@/components/admin/settings/InvitationSection";
+import StartSection from "@/components/admin/settings/StartSection";
+import JoinFaqSection from "@/components/admin/settings/JoinFaqSection";
+import TeamSection from "@/components/admin/settings/TeamSection";
 import type { SaveSettings } from "@/components/admin/settings/types";
 import type { Settings } from "@/lib/types";
 
@@ -25,6 +29,19 @@ const EMPTY_SETTINGS: Settings = {
   payment_methods: null,
   delivery_info: null,
   sections_visible: {},
+  consultant_name: null,
+  city: null,
+  years_selling: null,
+  hero_photo_url: null,
+  signature_url: null,
+  why_me_custom: null,
+  kit_info: null,
+  credit_available: false,
+  benefits: null,
+  benefits_source: null,
+  official_join_url: null,
+  closing_text: null,
+  join_faq: {},
 };
 
 export default function SettingsPanel({
@@ -80,15 +97,22 @@ export default function SettingsPanel({
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h1 className="font-heading text-2xl font-bold text-charcoal">
+        <h1 className="font-heading text-2xl font-bold text-ink">
           Ajustes de mi página
         </h1>
-        <p className="text-charcoal-soft mt-1">
+        <p className="text-ink-soft mt-1">
           Toca una sección para abrirla. Cada una tiene su propio botón para
           guardar.
         </p>
       </div>
 
+      {/* Primero lo de la invitación, que es la portada */}
+      <InvitationSection {...common("invitacion")} />
+      <StartSection {...common("empezar")} />
+      <JoinFaqSection {...common("preguntas")} />
+      <TeamSection {...common("equipo")} />
+
+      <p className="font-heading text-xl text-ink mt-4">Tu tienda</p>
       <InfoSection {...common("info")} />
       <CampaignSection {...common("campana")} />
       <HowToSection {...common("como-comprar")} />

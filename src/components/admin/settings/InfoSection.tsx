@@ -176,7 +176,7 @@ export default function InfoSection({
               {whatsappError}
             </p>
           ) : (
-            <p id="whatsapp-ayuda" className="text-charcoal-soft text-sm mt-1">
+            <p id="whatsapp-ayuda" className="text-ink-soft text-sm mt-1">
               Sin número, tus clientas no podrán escribirte desde la tienda.
             </p>
           )}
@@ -197,8 +197,8 @@ export default function InfoSection({
           />
         </div>
 
-        <div className="border-t border-border pt-6 flex flex-col gap-6">
-          <h3 className="font-heading text-xl font-bold text-charcoal">
+        <div className="border-t border-line pt-6 flex flex-col gap-6">
+          <h3 className="font-heading text-xl font-bold text-ink">
             Sobre mí
           </h3>
 
@@ -214,7 +214,7 @@ export default function InfoSection({
               tabIndex={-1}
             />
             {photoPreview && (
-              <div className="relative w-28 h-28 rounded-full overflow-hidden border border-border mb-3 bg-white mx-auto">
+              <div className="relative w-28 h-28 rounded-full overflow-hidden border border-line mb-3 bg-white mx-auto">
                 <Image
                   src={photoPreview}
                   alt="Tu foto"
@@ -251,7 +251,7 @@ export default function InfoSection({
               onChange={(e) => setAboutText(e.target.value)}
               placeholder="Hola, soy... Soy consultora Yanbal en... Escríbeme y con gusto te atiendo."
             />
-            <p className="text-charcoal-soft text-sm mt-1">
+            <p className="text-ink-soft text-sm mt-1">
               {aboutText.length} / {LIMITS.aboutText} letras
             </p>
           </div>

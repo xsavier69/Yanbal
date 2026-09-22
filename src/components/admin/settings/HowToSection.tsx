@@ -60,7 +60,7 @@ export default function HowToSection({
           onChange={setVisible}
         />
 
-        <p className="text-charcoal-soft">
+        <p className="text-ink-soft">
           Tu página muestra 3 pasos ya escritos: elegir los productos,
           escribirte por WhatsApp y recibirlos. Aquí solo completas dos
           líneas.

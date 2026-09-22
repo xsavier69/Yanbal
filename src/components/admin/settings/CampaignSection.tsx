@@ -112,7 +112,7 @@ export default function CampaignSection({
           onChange={setVisible}
         />
 
-        <p className="text-charcoal-soft">
+        <p className="text-ink-soft">
           Aparece una franja arriba de tu página con el número de campaña y
           hasta cuándo vale.
         </p>
@@ -156,7 +156,7 @@ export default function CampaignSection({
               {errors.date}
             </p>
           )}
-          <p className="text-charcoal-soft text-sm mt-1">
+          <p className="text-ink-soft text-sm mt-1">
             Cuando pase esa fecha, tu página deja de mostrarla y pone un
             aviso suave. No tienes que hacer nada.
           </p>
@@ -186,15 +186,15 @@ export default function CampaignSection({
               {errors.url}
             </p>
           ) : (
-            <p id="campana-enlace-ayuda" className="text-charcoal-soft text-sm mt-1">
+            <p id="campana-enlace-ayuda" className="text-ink-soft text-sm mt-1">
               Sale un botón &quot;Ver catálogo completo&quot; en tu página.
             </p>
           )}
         </div>
 
-        <div className="rounded-xl border border-border bg-cream p-4">
-          <p className="text-charcoal-soft text-sm mb-1">Así se verá arriba:</p>
-          <p className="font-semibold text-charcoal">
+        <div className="rounded-xl border border-line bg-sky p-4">
+          <p className="text-ink-soft text-sm mb-1">Así se verá arriba:</p>
+          <p className="font-semibold text-ink">
             {!visible
               ? "Nada: la sección está oculta."
               : preview.kind === "hidden"

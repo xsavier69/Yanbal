@@ -13,8 +13,8 @@ export default function ProductRow({
   onToggle: (product: Product) => void;
 }) {
   return (
-    <li className="bg-white rounded-2xl border border-border p-3 flex items-center gap-3">
-      <div className="relative w-16 h-16 shrink-0 rounded-xl overflow-hidden bg-cream border border-border">
+    <li className="bg-white rounded-2xl border border-line p-3 flex items-center gap-3">
+      <div className="relative w-16 h-16 shrink-0 rounded-xl overflow-hidden bg-sky border border-line">
         {product.image_url ? (
           <Image
             src={product.image_url}
@@ -31,10 +31,10 @@ export default function ProductRow({
       </div>
 
       <div className="flex-1 min-w-0">
-        <p className="font-semibold text-charcoal text-lg leading-snug line-clamp-2">
+        <p className="font-semibold text-ink text-lg leading-snug line-clamp-2">
           {product.name}
         </p>
-        <p className="text-charcoal-soft">
+        <p className="text-ink-soft">
           {formatPrice(product.offer_price ?? product.price)}
         </p>
       </div>
@@ -44,8 +44,8 @@ export default function ProductRow({
           href={`/mi-tienda/producto/${product.id}`}
           className="flex items-center justify-center min-h-[48px] w-[128px] text-center text-base font-semibold px-3 rounded-xl border-2"
           style={{
-            borderColor: "var(--color-border)",
-            color: "var(--color-charcoal)",
+            borderColor: "var(--color-line)",
+            color: "var(--color-ink)",
           }}
         >
           Editar
@@ -58,11 +58,11 @@ export default function ProductRow({
           className="min-h-[48px] w-[128px] text-base font-semibold px-3 rounded-xl"
           style={{
             background: product.available
-              ? "var(--color-success-bg)"
-              : "var(--color-danger-bg)",
+              ? "var(--color-ok-bg)"
+              : "var(--color-bad-bg)",
             color: product.available
-              ? "var(--color-success)"
-              : "var(--color-danger)",
+              ? "var(--color-ok)"
+              : "var(--color-bad)",
           }}
         >
           {product.available ? "✓ Disponible" : "Agotado"}
