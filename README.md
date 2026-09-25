@@ -426,14 +426,17 @@ Están metidas en el código, no solo en esta documentación:
   por línea central. Con una foto o un PNG se ve bien igual, pero como
   revelación, no como trazo.
 - **Lighthouse sí corrió en este entorno**, contra una compilación de
-  producción real (`next start`), en modo móvil: Accesibilidad 96,
-  Buenas prácticas 100, SEO 100. El de Rendimiento salió en 57 solo por un
-  efecto de arranque en frío ajeno al sitio: la primera visita tardó 14s en
-  responder (confirmado con `curl`: 2,4s la primera vez, 0,2s la segunda),
-  probablemente la base de datos de Supabase "despertando". Ese número no
-  es representativo; hay que repetirlo una vez desplegado en Vercel (que no
-  tiene ese problema de arranque en frío) desde el propio Chrome
-  (F12 → Lighthouse) o desde PageSpeed Insights.
+  producción real (`next start`), en modo móvil, dos veces (servidor en
+  frío y ya caliente): Accesibilidad 96, Buenas prácticas 100, SEO 100 en
+  ambas corridas. `CLS: 0`, exactamente lo que buscaba el `aspect-ratio`
+  fijo de cada foto. El de Rendimiento salió 57 las dos veces, con un
+  tiempo de bloqueo alto (0,9–1,1s): no es la base de datos despertando
+  (eso solo afectó la primera respuesta del servidor, no el resultado
+  general), sino que Lighthouse simula un celular con el CPU 4 veces más
+  lento sobre una máquina de este entorno que ya tiene poco CPU disponible.
+  No es representativo de un teléfono real contra el CDN de Vercel; hay que
+  repetirlo una vez desplegado, desde el propio Chrome (F12 → Lighthouse) o
+  desde PageSpeed Insights.
 
 ---
 
