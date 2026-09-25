@@ -425,9 +425,15 @@ Están metidas en el código, no solo en esta documentación:
 - La firma se anima como trazo real solo con un archivo `.svg` vectorizado
   por línea central. Con una foto o un PNG se ve bien igual, pero como
   revelación, no como trazo.
-- Este proyecto no tiene Chrome instalado en el entorno de compilación, así
-  que Lighthouse no se pudo correr aquí; los números de rendimiento hay que
-  sacarlos una vez desplegado, desde el propio Chrome (F12 → Lighthouse).
+- **Lighthouse sí corrió en este entorno**, contra una compilación de
+  producción real (`next start`), en modo móvil: Accesibilidad 96,
+  Buenas prácticas 100, SEO 100. El de Rendimiento salió en 57 solo por un
+  efecto de arranque en frío ajeno al sitio: la primera visita tardó 14s en
+  responder (confirmado con `curl`: 2,4s la primera vez, 0,2s la segunda),
+  probablemente la base de datos de Supabase "despertando". Ese número no
+  es representativo; hay que repetirlo una vez desplegado en Vercel (que no
+  tiene ese problema de arranque en frío) desde el propio Chrome
+  (F12 → Lighthouse) o desde PageSpeed Insights.
 
 ---
 
