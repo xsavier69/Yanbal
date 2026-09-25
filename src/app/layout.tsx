@@ -1,20 +1,32 @@
 import type { Metadata, Viewport } from "next";
-import { Young_Serif, Atkinson_Hyperlegible_Next } from "next/font/google";
+import { Newsreader, Instrument_Sans, Atkinson_Hyperlegible_Next } from "next/font/google";
 import "./globals.css";
 import RegisterServiceWorker from "@/components/RegisterServiceWorker";
 
-// Young Serif tiene un solo peso: la jerarquía sale del tamaño, no de la negrita.
-const youngSerif = Young_Serif({
-  variable: "--font-young-serif",
-  subsets: ["latin"],
-  weight: "400",
+// Titulares: eje óptico variable, para que el propio tamaño del texto
+// decida cuánto "display" se ve la letra (grande y editorial vs. pequeña
+// y legible), en vez de una sola talla para todo.
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
+  subsets: ["latin", "latin-ext"],
+  weight: "variable",
+  axes: ["opsz"],
   display: "swap",
 });
 
-// Atkinson Hyperlegible Next está diseñada para máxima legibilidad.
+// Texto e interfaz de la invitación y el catálogo.
+const instrumentSans = Instrument_Sans({
+  variable: "--font-instrument",
+  subsets: ["latin", "latin-ext"],
+  weight: "variable",
+  display: "swap",
+});
+
+// Panel /mi-tienda: se mantiene, es la que mejor se lee para ella.
 const atkinson = Atkinson_Hyperlegible_Next({
   variable: "--font-atkinson",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
+  weight: "variable",
   display: "swap",
 });
 
@@ -36,14 +48,14 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#1F4E8C",
+  themeColor: "#14213D",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es"
-      className={`${youngSerif.variable} ${atkinson.variable} h-full antialiased`}
+      className={`${newsreader.variable} ${instrumentSans.variable} ${atkinson.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {children}

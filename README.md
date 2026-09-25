@@ -37,6 +37,8 @@ Todo se llena desde **Mi tienda → Ajustes de mi página**, sin tocar código.
 - Next.js (App Router) + TypeScript + Tailwind CSS v4
 - Supabase (Postgres + Storage + Auth)
 - Vercel (deploy, plan gratuito)
+- Tipografías: Newsreader e Instrument Sans (invitación y catálogo),
+  Atkinson Hyperlegible Next (panel), cargadas con `next/font/google`
 - `browser-image-compression` para comprimir fotos en el celular
 - `qrcode-generator` para el código QR del volante
 - PWA instalable (manifest + íconos + service worker mínimo)
@@ -171,66 +173,157 @@ Protección de Datos Personales del Ecuador**:
 
 ## Decisiones de diseño
 
-### Sistema visual
+Ver también [`.claude/impeccable/PRODUCT.md`](.claude/impeccable/PRODUCT.md)
+y [`.claude/impeccable/DESIGN.md`](.claude/impeccable/DESIGN.md): el plan de
+diseño completo, con los wireframes y las decisiones que se pidió revisar
+antes de construir.
 
-Concepto: **"la invitación de [NOMBRE]"**. La página debe sentirse como una
-invitación personal, no como una landing de multinivel.
+### Sistema visual — "Estuche de joyería"
+
+La página se siente como abrir un estuche: fondo sereno, una pieza
+protagonista bien iluminada (ella, o el producto) y detalles finos en
+dorado champán. El dorado marca exactamente dos cosas en toda la página: su
+firma y el marco de su retrato. Nada más lo usa.
 
 | Token | Hex | Uso | Contraste verificado |
 | --- | --- | --- | --- |
-| Tinta | `#1B2433` | Texto principal | 15,6:1 blanco |
-| Azul cúpula | `#1F4E8C` | Titulares, botones, enlaces | 8,3:1 blanco · 7,0:1 celeste |
-| Celeste mayólica | `#E3ECF7` | Fondo de secciones alternas | — |
-| Oro joya | `#9A6F1E` | **Solo decorativo** | 4,50:1 blanco · **3,77:1 celeste** |
-| Oro texto | `#7A5716` | Cuando el oro debe llevar texto | 6,6:1 blanco · 5,5:1 celeste |
+| Tinta | `#1A1F2B` | Texto principal | 15,4:1 sobre porcelana (AAA) |
+| Porcelana | `#F6F7F9` | Fondo base | — |
+| Medianoche | `#14213D` | Portada, pie de página, bandas de énfasis | — |
+| Dome (azul) | `#1F4E8C` | Botones y enlaces | 7,8:1 sobre porcelana (AAA) |
+| Champán | `#B8955C` | **Solo decorativo, solo sobre medianoche** | 5,7:1 sobre medianoche |
+| Champán texto | `#86662F` | Texto dorado, solo sobre fondo claro | 5,0:1 sobre porcelana (AA) |
 
-Inspirada en las cúpulas azules de la Catedral de Cuenca y el dorado de la
-bisutería. Se evitó a propósito el crema con terracota, los degradados y el
-rosa genérico de "belleza".
+Inspirada en las cúpulas azules de la Catedral de Cuenca (el "dome") y en el
+dorado de la bisutería. Se evitó a propósito el crema con terracota, el
+fondo casi negro con un acento ácido y el estilo "periódico" de radio cero
+en todo: son los tres patrones que un generador de diseño produce por
+defecto, y ninguno encajaba con este encargo.
 
-- **El oro se usa solo donde está su mano**: la firma y la línea fina que va
-  debajo. En ningún otro sitio. Así el dorado significa algo.
-- **El oro joya no pasa el contraste AA sobre el celeste** (3,77:1), y el
-  celeste es fondo de sección. Por eso existe el token *oro texto*. El oro
-  decorativo nunca lleva texto encima.
-- La paleta original no cubría los estados del panel, así que se añadieron
-  `--color-ok` y `--color-bad`, ambos verificados.
+- **El champán se usa solo donde está su mano**: la firma y el filete que
+  enmarca su retrato. En ningún otro sitio. Así el dorado significa algo.
+- **El champán decorativo no pasa el contraste AA sobre fondo claro**
+  (2,6:1 sobre porcelana) — por eso existe el token *champán texto*, un
+  tono más oscuro, y por eso el decorativo nunca lleva texto encima ni
+  aparece fuera de una banda medianoche. Es el mismo error de la paleta
+  anterior (un dorado que fallaba sobre un fondo claro), corregido esta
+  vez separando los dos usos en dos tokens desde el principio.
+- **El azul "dome" casi desaparece sobre medianoche** (1,9:1). Dentro de
+  cualquier banda oscura (portada, pie, cierre), los enlaces y el foco del
+  teclado cambian a porcelana/dorado en vez de azul — si no, un enlace del
+  pie de página sería casi invisible. Es la regla `.on-midnight` del CSS.
+- **La línea decorativa (`--color-line`, heredada como "mist") no sirve de
+  borde de campo**: da 1,16:1, prácticamente invisible. El borde en reposo
+  de un campo usa un tono más oscuro (`--color-line-strong`, 3,23:1), que sí
+  llega al mínimo de 3:1 que pide WCAG para el borde de un componente.
+- Los nombres de variable heredados de la versión anterior (`--color-sky`,
+  `--color-line-strong`, `--color-gold`…) se mantuvieron a propósito aunque
+  su valor y su sentido cambiaron por completo: Tailwind v4 genera clases
+  (`bg-sky`, `border-line`, `text-gold`…) a partir de ese nombre, y ya
+  estaban en uso en varios componentes. Renombrar la variable sin tocar cada
+  componente haría que esas clases cayeran, en silencio, en el azul "sky"
+  que trae Tailwind por defecto.
 
 ### Tipografía
 
-- **Young Serif** para titulares. Tiene **un solo peso (400)**: la jerarquía
-  sale del tamaño y el espaciado, nunca de la negrita.
-- **Atkinson Hyperlegible Next** para texto e interfaz, diseñada para máxima
-  legibilidad.
-- Titular de portada con `clamp(32px, 9vw, 48px)`. A 48px fijos, en una
-  pantalla de 360px la frase ocupa más de 4 líneas y empuja el botón fuera de
-  la vista.
+- **Newsreader**, con eje óptico variable, para los titulares. Un titular
+  grande y uno pequeño usan la misma fuente, pero el navegador ajusta el
+  trazo automáticamente según el tamaño (`font-optical-sizing: auto`).
+- **Instrument Sans** para el texto de la invitación y el catálogo.
+- **Atkinson Hyperlegible Next** se mantiene en el panel: sigue siendo la
+  que mejor se lee para ella. El panel entero (incluido el login) vive
+  dentro de una zona `.panel-scope` que fuerza esta tipografía sin importar
+  dónde aparezca el componente en el árbol.
+- Escala 1.25: `16 / 18 / 22 / 28 / 35 / 44 / 56px`. El titular de portada
+  usa `clamp(44px, 8vw, 72px)`.
+- **Detalle real de CSS que costó encontrar:** una variable CSS solo cae
+  hacia los elementos de más abajo en el árbol, nunca hacia arriba. El
+  `<body>` fija su tipografía leyendo la variable en su propio nivel; un
+  `<div class="panel-scope">` más abajo que solo *redefine la variable* no
+  cambia lo que `<body>` ya decidió. Por eso `.panel-scope` no solo redefine
+  la variable, sino que declara su propia `font-family`: así el texto
+  corriente (el que no tiene su propia regla de fuente, como un párrafo o un
+  campo) la recibe por herencia normal.
 
-### El elemento memorable
+### El elemento memorable: la firma real
 
-La firma real de ella, revelándose al cargar. Es la única animación que
-arranca sola en toda la página, y respeta `prefers-reduced-motion`.
+Se dibuja con un SVG real, trazo por trazo (`stroke-dashoffset`, 1400ms,
+`cubic-bezier(0.77, 0, 0.175, 1)`, 300ms de espera). Es la única animación
+que arranca sola en toda la página, y respeta `prefers-reduced-motion` (con
+movimiento reducido, aparece completa, sin animar). Se repite, ya dibujada y
+más pequeña, en el cierre de la página.
 
-**Cómo está hecha, y por qué:** se revela de izquierda a derecha con una
-máscara CSS, **no** animando el trazo. Una firma fotografiada y vectorizada
-automáticamente produce *contornos rellenos*, no un trazo continuo, y
-`stroke-dashoffset` sobre un contorno se ve mal; sobre un PNG no funciona en
-absoluto. El barrido con máscara se ve casi igual y acepta cualquier archivo
-que ella entregue. Si algún día se consigue un SVG vectorizado *por línea
-central*, se puede cambiar a trazo real.
+- **Solo funciona como trazo real si el archivo es un `.svg` vectorizado
+  por línea central.** Si sube una foto o un PNG, se degrada sola a una
+  revelación por máscara (de izquierda a derecha), la misma técnica de la
+  versión anterior: una firma fotografiada no tiene un trazo continuo que
+  animar.
+- **El bucket de fotos ahora acepta SVG**, pero solo en el campo de la
+  firma (migración `003_firma_svg.sql`). Cualquier otro campo de foto
+  (retrato, productos) rechaza un SVG con un mensaje claro: un vector no
+  tiene sentido en una foto de producto, y complica el recorte y la
+  compresión.
+- **El SVG que sube se sanea antes de insertarse en la página**
+  (`src/lib/sanitizeSvg.ts`): solo se conservan etiquetas de dibujo (path,
+  line, polígonos…) y atributos de presentación, nunca `<script>` ni
+  manejadores `on*`. Solo la cuenta admin puede subir una firma, pero un
+  SVG puede llevar código, y esta página lo inserta directo en el DOM
+  (`dangerouslySetInnerHTML`) para poder animar cada trazo por separado.
+
+### Fotografía
+
+- **El "platillo":** toda foto de producto se muestra sobre el mismo fondo
+  (`--color-sky`, un tono apenas más oscuro que la porcelana), en la misma
+  proporción 4:5, sin recortar (`object-fit: contain`). Fotos de calidad
+  distinta se leen como una sola colección.
+- **El retrato de portada** va sin radio, con un filete de 1px en champán
+  desplazado 12px del borde (un marco de galería), verificado a 425×532px
+  en escritorio dentro de una caja de 449×556px. En el celular, en cambio,
+  sangra al borde de la pantalla: es la única ruptura deliberada del margen
+  de página en todo el sitio, y siempre es ella.
+- **"Quitar el fondo" (`@imgly/background-removal`) no se construyó en esta
+  entrega.** Ese paquete descarga un modelo de decenas de MB y corre
+  inferencia en el celular: choca de frente con el objetivo de LCP < 2s en
+  4G y con todo lo que el proyecto ya hace para ser liviano en un teléfono
+  viejo. Queda como mejora aparte, bien acotada (botón opcional, nada se
+  descarga hasta que ella lo toca), para cuando el resto esté validado.
+- **Sin LQIP (miniatura difuminada) real.** El `aspect-ratio` fijo de cada
+  foto ya garantiza cero salto de layout (CLS = 0), que es el objetivo de
+  rendimiento real. Un blur de verdad necesitaría generarse al subir la
+  foto (con una librería de servidor que Supabase no ofrece gratis) y
+  guardarse en la base; no compensaba bloquear el resto de la entrega por
+  eso.
 
 ### Estructura
 
-- Una columna en móvil, alineada a la izquierda, ancho de lectura de 65
-  caracteres. Solo la portada va a dos columnas en escritorio (`.is-hero`, que
-  se ensancha a 64rem mientras el resto se queda en 34rem).
+- Una columna en móvil, ancho de lectura de 62 caracteres. Solo la portada
+  usa una retícula propia de **12 columnas** en escritorio: el retrato en
+  las columnas 1 a 5, el texto en las columnas 7 a 12, y la columna 6 como
+  respiro — nunca 50/50. El resto de la página vuelve a una columna
+  centrada.
 - **Numeración solo en "Cómo empiezas"**, porque es la única secuencia real.
 - Sin tarjetas idénticas con sombra, sin etiquetas en mayúsculas sobre los
   títulos, sin una palabra en color dentro de un titular.
-- Las tarjetas de producto conservan su forma, porque ahí sí son objetos
-  separados, pero perdieron la sombra.
-- La foto de portada usa 4:3 en móvil y 4:5 en escritorio. Con 4:5 en el
-  celular, el botón principal quedaba muy por debajo del borde de la pantalla.
+- El precio de oferta va en tinta, no en azul ni en rojo; el precio anterior
+  se tacha en gris, a 70% del tamaño. La insignia "Nuevo" es texto con
+  filete, nunca una pastilla de color rellena (a diferencia de "Agotado" y
+  el porcentaje de descuento, que sí son señales de estado y se quedan como
+  pastillas).
+- Cada página termina en una banda de medianoche (`.site-footer`): es el
+  gesto de "cerrar el estuche" que se repite igual en la invitación y en el
+  catálogo.
+
+### Movimiento
+
+Las mismas curvas en todo el sitio: `--ease-out` para lo que aparece,
+`--ease-in-out` para la firma. Nunca `ease-in`, nunca `transition: all`.
+Los botones se hunden 3% al presionarlos (120ms). Los enlaces de texto
+revelan un subrayado que crece desde la izquierda, solo en dispositivos con
+puntero (`@media (hover: hover)`), para no dejar un rastro visual pegado en
+el dedo de quien usa el celular. Las confirmaciones del panel entran desde
+abajo. Nada se anima al hacer scroll, no hay carrusel automático. Cambiar
+"disponible/agotado" o el estado de una persona interesada — lo que ella
+toca muchas veces al día — sigue sin ninguna animación.
 
 ### Un detalle técnico que muerde
 
@@ -239,7 +332,11 @@ clases propias de `globals.css`. Por eso `pt-0` no le gana a `.page-section`, y
 los ajustes de espaciado de secciones se hacen con modificadores propios
 (`.is-tight`, `.is-flush`, `.is-hero`) y no con utilidades.
 
-### El panel
+### El panel (modo Operate)
+
+Misma paleta base, pero la claridad manda: sin firma animada, sin filete
+decorativo, sin retrato con marco, sin retícula asimétrica. El panel se ve
+de la misma familia, no de la misma audacia.
 
 - **La pantalla principal casi no cambia**: sigue siendo "＋ Agregar producto"
   y la lista de productos. Eso es el 95% de lo que ella hace.
@@ -318,6 +415,19 @@ Están metidas en el código, no solo en esta documentación:
 - El carrito de varios productos en un solo mensaje sigue sin construirse.
 - Las subcategorías, las variantes por tono y los destacados ("Mis
   recomendados") quedaron fuera de esta entrega.
+- **La calidad final del "estuche" depende de las fotos que ella suba.** El
+  platillo uniforme y el marco del retrato ayudan a que fotos de celular se
+  vean como una colección, pero no arreglan una foto oscura o movida. La
+  guía nueva ("Cómo tomar fotos bonitas de mis productos") existe por eso.
+- **"Quitar el fondo" no se construyó** (ver la sección de Fotografía en
+  Decisiones de diseño): el costo de rendimiento en un celular con internet
+  lenta no compensaba para esta entrega.
+- La firma se anima como trazo real solo con un archivo `.svg` vectorizado
+  por línea central. Con una foto o un PNG se ve bien igual, pero como
+  revelación, no como trazo.
+- Este proyecto no tiene Chrome instalado en el entorno de compilación, así
+  que Lighthouse no se pudo correr aquí; los números de rendimiento hay que
+  sacarlos una vez desplegado, desde el propio Chrome (F12 → Lighthouse).
 
 ---
 

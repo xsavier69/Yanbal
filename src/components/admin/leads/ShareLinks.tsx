@@ -39,7 +39,7 @@ function drawQr(canvas: HTMLCanvasElement, text: string, pixels: number) {
 
   ctx.fillStyle = "#FFFFFF";
   ctx.fillRect(0, 0, size, size);
-  ctx.fillStyle = "#1B2433";
+  ctx.fillStyle = "#1A1F2B";
   for (let row = 0; row < count; row++) {
     for (let col = 0; col < count; col++) {
       if (qr.isDark(row, col)) {

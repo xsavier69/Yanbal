@@ -146,7 +146,7 @@ export default function LeadForm({
           type="text"
           autoComplete="given-name"
           maxLength={LIMITS.leadName}
-          className="field-input"
+          className="field-line"
           aria-invalid={Boolean(errors.name)}
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -168,7 +168,7 @@ export default function LeadForm({
           inputMode="tel"
           autoComplete="tel"
           maxLength={LIMITS.whatsapp}
-          className="field-input"
+          className="field-line"
           aria-invalid={Boolean(errors.phone)}
           aria-describedby="lead-phone-ayuda"
           value={phone}
@@ -196,7 +196,7 @@ export default function LeadForm({
           type="text"
           autoComplete="address-level2"
           maxLength={LIMITS.leadCity}
-          className="field-input"
+          className="field-line"
           value={city}
           onChange={(e) => setCity(e.target.value)}
         />

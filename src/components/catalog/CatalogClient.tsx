@@ -58,7 +58,7 @@ export default function CatalogClient({
         <input
           id="buscar-producto"
           type="search"
-          className="field-input"
+          className="field-line"
           placeholder="Buscar producto..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}

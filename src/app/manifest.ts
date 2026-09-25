@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/mi-tienda",
     scope: "/",
     display: "standalone",
-    background_color: "#FFF8F3",
-    theme_color: "#B5485D",
+    background_color: "#F6F7F9",
+    theme_color: "#1F4E8C",
     lang: "es-EC",
     icons: [
       { src: "/icon-192.png", sizes: "192x192", type: "image/png" },

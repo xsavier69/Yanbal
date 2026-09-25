@@ -9,5 +9,8 @@ export default function MiTiendaLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  // Todo lo que vive bajo /mi-tienda usa Atkinson Hyperlegible Next, sin
+  // importar la ruta (incluye el login): es la única regla de tipografía
+  // que se sobrescribe por zona.
+  return <div className="panel-scope">{children}</div>;
 }

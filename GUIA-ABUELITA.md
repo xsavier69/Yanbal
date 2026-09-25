@@ -97,6 +97,31 @@ WhatsApp con el mensaje ya escrito.
 
 ---
 
+## Cómo tomar fotos bonitas de mis productos
+
+Ahora en tu página cada foto se ve dentro de un cuadro parejo, como en
+una vitrina. No hace falta que seas fotógrafa: con estos 4 pasos, con el
+celular de siempre, tus fotos van a verse bien:
+
+1. **Ponlas cerca de una ventana**, de día. La luz que entra por la
+   ventana es la mejor luz que existe para una foto: suave y pareja. Nunca
+   uses el flash del celular: deja las fotos con manchas feas de luz.
+2. **Pon el producto sobre una cartulina o una hoja blanca.** Cualquier
+   fondo blanco y liso sirve: una cartulina, una sábana blanca estirada,
+   hasta una pared blanca. Evita fondos con dibujos, manteles con flores o
+   la mesa de la cocina de fondo.
+3. **Pon el celular a la misma altura que el producto**, no desde arriba
+   mirando hacia abajo. Así el producto se ve derecho, como si estuviera
+   parado frente a ti.
+4. **Deja espacio alrededor del producto.** No lo acerques tanto que se
+   corte por los bordes: es mejor que sobre espacio y no que falte. Tu
+   página misma lo acomoda bien después.
+
+Con esos 4 pasos ya está: toca la foto, súbela como siempre, y tu página
+hace el resto.
+
+---
+
 ## Marcar un producto como agotado
 
 1. En la lista de tus productos, busca el producto.

@@ -7,16 +7,16 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "Sé consultora Yanbal con una guía que te acompaña";
 
-const INK = "#1B2433";
-const BLUE = "#1F4E8C";
-const SKY = "#E3ECF7";
-const GOLD = "#9A6F1E";
+const MIDNIGHT = "#14213D";
+const PORCELAIN = "#F6F7F9";
+const PLATTER = "#ECEFF3";
+const GOLD = "#B8955C";
 
-/** Young Serif para el titular; si no se puede bajar, se usa la de por defecto. */
+/** Newsreader para el titular; si no se puede bajar, se usa la de por defecto. */
 async function loadHeadingFont(): Promise<ArrayBuffer | null> {
   try {
     const css = await fetch(
-      "https://fonts.googleapis.com/css2?family=Young+Serif&display=swap",
+      "https://fonts.googleapis.com/css2?family=Newsreader:opsz@6..72&display=swap",
       { headers: { "User-Agent": "Mozilla/5.0" } }
     ).then((r) => r.text());
     const url = /src:\s*url\(([^)]+)\)/.exec(css)?.[1];
@@ -35,7 +35,11 @@ export default async function OpengraphImage() {
   const name = settings?.consultant_name?.trim() || "[TU NOMBRE]";
   const city = settings?.city?.trim() || "[CIUDAD]";
   const photo = settings?.hero_photo_url ?? null;
-  const signature = settings?.signature_url ?? null;
+  const signatureUrl = settings?.signature_url ?? null;
+  // Satori (el motor de next/og) no dibuja SVG de forma confiable como
+  // <img>; para esta imagen estática solo se usa si la firma es una foto.
+  const signaturePhoto =
+    signatureUrl && !/\.svg(\?|#|$)/i.test(signatureUrl) ? signatureUrl : null;
   const font = await loadHeadingFont();
 
   return new ImageResponse(
@@ -45,7 +49,7 @@ export default async function OpengraphImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          background: "#FFFFFF",
+          background: MIDNIGHT,
         }}
       >
         {/* Su foto ocupa el tercio izquierdo */}
@@ -56,7 +60,7 @@ export default async function OpengraphImage() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: SKY,
+            background: PLATTER,
           }}
         >
           {photo ? (
@@ -72,7 +76,7 @@ export default async function OpengraphImage() {
             <div
               style={{
                 display: "flex",
-                color: BLUE,
+                color: MIDNIGHT,
                 fontSize: 26,
                 textAlign: "center",
                 padding: 40,
@@ -96,7 +100,7 @@ export default async function OpengraphImage() {
             style={{
               display: "flex",
               fontSize: 26,
-              color: BLUE,
+              color: GOLD,
               marginBottom: 20,
             }}
           >
@@ -106,10 +110,10 @@ export default async function OpengraphImage() {
           <div
             style={{
               display: "flex",
-              fontFamily: font ? "Young Serif" : undefined,
+              fontFamily: font ? "Newsreader" : undefined,
               fontSize: 58,
               lineHeight: 1.15,
-              color: INK,
+              color: PORCELAIN,
             }}
           >
             Te acompaño a empezar tu propio negocio con Yanbal.
@@ -120,20 +124,27 @@ export default async function OpengraphImage() {
               display: "flex",
               alignItems: "flex-end",
               marginTop: 36,
-              borderTop: `2px solid ${GOLD}`,
+              borderTop: `1px solid ${GOLD}`,
               paddingTop: 20,
             }}
           >
-            {signature ? (
+            {signaturePhoto ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={signature}
+                src={signaturePhoto}
                 alt=""
                 height={72}
                 style={{ height: 72, objectFit: "contain" }}
               />
             ) : (
-              <div style={{ display: "flex", fontSize: 30, color: INK }}>
+              <div
+                style={{
+                  display: "flex",
+                  fontFamily: font ? "Newsreader" : undefined,
+                  fontSize: 30,
+                  color: PORCELAIN,
+                }}
+              >
                 {name}
               </div>
             )}
@@ -144,7 +155,7 @@ export default async function OpengraphImage() {
     {
       ...size,
       fonts: font
-        ? [{ name: "Young Serif", data: font, style: "normal", weight: 400 }]
+        ? [{ name: "Newsreader", data: font, style: "normal", weight: 500 }]
         : [],
     }
   );

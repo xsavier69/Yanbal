@@ -3,13 +3,28 @@ import { LIMITS } from "@/lib/utils";
 
 const BUCKET = "product-images";
 
-/** Revisa que el archivo sea una foto de tamaño razonable. Devuelve el mensaje de error o null. */
-export function checkPhotoFile(file: File): string | null {
-  if (!file.type.startsWith("image/")) {
+export function isSvgFile(file: File): boolean {
+  return file.type === "image/svg+xml" || file.name.toLowerCase().endsWith(".svg");
+}
+
+/**
+ * Revisa que el archivo sea una foto de tamaño razonable. Devuelve el
+ * mensaje de error o null. `acceptSvg` solo se activa para el campo de la
+ * firma: en cualquier otro campo, un SVG se rechaza con un mensaje claro.
+ */
+export function checkPhotoFile(
+  file: File,
+  { acceptSvg = false }: { acceptSvg?: boolean } = {}
+): string | null {
+  if (isSvgFile(file)) {
+    if (!acceptSvg) {
+      return "Sube una foto (JPG, PNG o WebP), no un archivo SVG.";
+    }
+  } else if (!file.type.startsWith("image/")) {
     return "Ese archivo no es una foto. Elige una foto de tu galería o toma una nueva.";
   }
   if (file.size > LIMITS.photoMaxMB * 1024 * 1024) {
-    return `La foto es demasiado pesada (máximo ${LIMITS.photoMaxMB} MB). Elige otra.`;
+    return `El archivo es demasiado pesado (máximo ${LIMITS.photoMaxMB} MB). Elige otro.`;
   }
   return null;
 }

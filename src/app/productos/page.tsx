@@ -132,11 +132,11 @@ export default async function ProductosPage() {
 
       <AboutSection settings={settings} />
 
-      <footer className="border-t border-line py-6 pb-24 text-center text-ink-soft">
+      <footer className="site-footer on-midnight">
         <p className="badge-consultora mb-2">
           Página de consultora independiente Yanbal
         </p>
-        <p className="text-sm">
+        <p className="text-sm text-ink-soft">
           © {year} {storeName}
         </p>
       </footer>

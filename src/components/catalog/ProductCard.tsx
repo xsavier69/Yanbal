@@ -29,14 +29,15 @@ export default function ProductCard({
       className="product-card"
       data-soldout={!product.available || undefined}
     >
-      <div className="relative w-full aspect-square bg-sky">
+      {/* El "platillo": mismo fondo, misma proporción y misma foto
+          contenida (no recortada) para toda foto de producto. */}
+      <div className="relative product-stage">
         {product.image_url ? (
           <Image
             src={product.image_url}
             alt={product.name}
             fill
             sizes="(max-width: 640px) 50vw, 240px"
-            className="object-cover"
           />
         ) : (
           <div className="photo-placeholder" aria-hidden="true">
@@ -50,10 +51,10 @@ export default function ProductCard({
               {discount >= 5 ? `-${discount}%` : "Oferta"}
             </span>
           )}
-          {product.available && isNew && (
-            <span className="badge-nuevo">Nuevo</span>
-          )}
         </div>
+        {product.available && isNew && (
+          <span className="badge-nuevo absolute top-2 right-2">Nuevo</span>
+        )}
       </div>
 
       <div className="p-3 flex flex-col gap-2 flex-1">
@@ -64,15 +65,13 @@ export default function ProductCard({
         <div className="flex items-baseline flex-wrap gap-x-2">
           {hasOffer ? (
             <>
-              <span className="font-heading font-bold text-xl text-blue">
+              <span className="price-current text-xl">
                 {formatPrice(product.offer_price!)}
               </span>
-              <span className="text-ink-soft line-through text-sm">
-                {formatPrice(product.price)}
-              </span>
+              <span className="price-was">{formatPrice(product.price)}</span>
             </>
           ) : (
-            <span className="font-heading font-bold text-xl text-ink">
+            <span className="price-current text-xl">
               {formatPrice(product.price)}
             </span>
           )}

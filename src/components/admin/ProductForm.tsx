@@ -260,13 +260,12 @@ export default function ProductForm({ mode, product }: Props) {
           id="foto-producto"
         />
         {photoPreview && (
-          <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-line mb-3 bg-white">
+          <div className="relative product-stage rounded-sm overflow-hidden mb-3">
             <Image
               src={photoPreview}
               alt="Foto del producto"
               fill
               sizes="400px"
-              className="object-cover"
             />
           </div>
         )}

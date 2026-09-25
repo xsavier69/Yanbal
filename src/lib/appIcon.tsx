@@ -10,7 +10,7 @@ export function renderAppIcon(size: number) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#B5485D",
+          background: "#14213D",
           borderRadius: size * 0.22,
         }}
       >
@@ -18,7 +18,7 @@ export function renderAppIcon(size: number) {
           style={{
             fontSize: size * 0.52,
             fontWeight: 700,
-            color: "#FFF8F3",
+            color: "#F6F7F9",
             fontFamily: "sans-serif",
           }}
         >

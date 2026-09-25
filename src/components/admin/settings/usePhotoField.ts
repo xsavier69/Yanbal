@@ -3,14 +3,22 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { compressPhoto } from "@/lib/compressImage";
-import { checkPhotoFile, removeStoredImage } from "@/lib/storage";
+import { checkPhotoFile, isSvgFile, removeStoredImage } from "@/lib/storage";
 
 /**
  * Lógica compartida para los campos de foto del panel: elegir, comprobar,
  * comprimir, ver antes de guardar y subir. La foto solo se sube cuando ella
  * toca Guardar, nunca sola.
+ *
+ * `acceptSvg`: solo el campo de la firma lo activa. Un SVG no se comprime
+ * (browser-image-compression trabaja con imágenes de trama, no con
+ * vectores) y se sube tal cual, con su propio tipo de archivo.
  */
-export function usePhotoField(initialUrl: string | null, prefix: string) {
+export function usePhotoField(
+  initialUrl: string | null,
+  prefix: string,
+  { acceptSvg = false }: { acceptSvg?: boolean } = {}
+) {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(initialUrl);
   const [busy, setBusy] = useState(false);
@@ -20,12 +28,22 @@ export function usePhotoField(initialUrl: string | null, prefix: string) {
     const chosen = e.target.files?.[0];
     e.target.value = "";
     if (!chosen) return;
-    const bad = checkPhotoFile(chosen);
+    const bad = checkPhotoFile(chosen, { acceptSvg });
     if (bad) {
       setProblem(bad);
       return;
     }
     setProblem(null);
+
+    if (acceptSvg && isSvgFile(chosen)) {
+      setFile(chosen);
+      setPreview((previous) => {
+        if (previous?.startsWith("blob:")) URL.revokeObjectURL(previous);
+        return URL.createObjectURL(chosen);
+      });
+      return;
+    }
+
     setBusy(true);
     try {
       const compressed = await compressPhoto(chosen);
@@ -41,20 +59,23 @@ export function usePhotoField(initialUrl: string | null, prefix: string) {
     }
   }
 
-  /** Sube la foto elegida (si hay) y devuelve la dirección que se guarda */
+  /** Sube el archivo elegido (si hay) y devuelve la dirección que se guarda */
   async function upload(): Promise<string | null> {
     if (!file) return initialUrl;
     const supabase = createClient();
-    const fileName = `${prefix}-${crypto.randomUUID()}.jpg`;
-    const { error } = await supabase.storage
-      .from("product-images")
-      .upload(fileName, file, { contentType: "image/jpeg", upsert: false });
+    const svg = acceptSvg && isSvgFile(file);
+    const fileName = `${prefix}-${crypto.randomUUID()}.${svg ? "svg" : "jpg"}`;
+    const { error } = await supabase.storage.from("product-images").upload(
+      fileName,
+      file,
+      { contentType: svg ? "image/svg+xml" : "image/jpeg", upsert: false }
+    );
     if (error) throw error;
     return supabase.storage.from("product-images").getPublicUrl(fileName).data
       .publicUrl;
   }
 
-  /** Borra la foto anterior cuando ya se guardó la nueva */
+  /** Borra el archivo anterior cuando ya se guardó el nuevo */
   async function cleanUp(savedUrl: string | null) {
     if (file && initialUrl && initialUrl !== savedUrl) {
       await removeStoredImage(createClient(), initialUrl);

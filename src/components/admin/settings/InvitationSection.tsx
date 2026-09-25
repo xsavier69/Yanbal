@@ -24,7 +24,9 @@ export default function InvitationSection({
   const [closing, setClosing] = useState(settings.closing_text ?? "");
 
   const photo = usePhotoField(settings.hero_photo_url, "portada");
-  const signature = usePhotoField(settings.signature_url, "firma");
+  const signature = usePhotoField(settings.signature_url, "firma", {
+    acceptSvg: true,
+  });
 
   const [yearsError, setYearsError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -163,9 +165,10 @@ export default function InvitationSection({
         <PhotoField
           id="inv-firma"
           label="Tu firma"
-          help="Firma en una hoja blanca con marcador grueso, tómale una foto de frente y súbela."
+          help="Lo mejor: un archivo .svg de tu firma vectorizada, para que se dibuje trazo por trazo. Si no tienes uno, sirve una foto de tu firma en hoja blanca con marcador grueso, tomada de frente."
           field={signature}
           shape="wide"
+          acceptSvg
         />
 
         <div>

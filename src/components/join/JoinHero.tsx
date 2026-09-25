@@ -20,35 +20,42 @@ export default function JoinHero({
   const whatsapp = settings?.whatsapp_number;
 
   return (
-    <header className="page-section is-tight is-hero">
-      <div className="mb-5">
-        <Link href="/productos" className="text-blue font-semibold">
+    <header className="page-section is-tight is-hero band-midnight on-midnight">
+      <div className="mb-6">
+        <Link href="/productos" className="font-semibold">
           ¿Solo quieres comprar? Ver mis productos →
         </Link>
       </div>
 
-      <div className="md:grid md:grid-cols-2 md:gap-10 md:items-center">
-        <div className="relative w-full aspect-[4/3] md:aspect-[4/5] max-h-[52vh] md:max-h-[68vh] rounded-xl overflow-hidden mb-6 md:mb-0">
-          {settings?.hero_photo_url ? (
-            <Image
-              src={settings.hero_photo_url}
-              alt={`${consultantName}, consultora Yanbal`}
-              fill
-              sizes="(max-width: 768px) 100vw, 440px"
-              className="object-cover"
-              priority
-            />
-          ) : (
-            <PhotoPlaceholder
-              label="[FOTO DE ELLA — vertical, de frente, luz natural]"
-              className="absolute inset-0"
-              rounded="rounded-xl"
-            />
-          )}
+      {/* Retícula de 12 columnas: el retrato ocupa 5, el texto 6, y la
+          columna 6 queda como respiro. En móvil se apila y el retrato
+          sangra al borde de la pantalla. */}
+      <div className="hero-grid">
+        <div className="hero-portrait-col">
+          <div className="hero-portrait">
+            {settings?.hero_photo_url ? (
+              <Image
+                src={settings.hero_photo_url}
+                alt={`${consultantName}, consultora Yanbal`}
+                width={720}
+                height={900}
+                sizes="(max-width: 768px) 100vw, 440px"
+                className="hero-portrait-photo"
+                priority
+              />
+            ) : (
+              <PhotoPlaceholder
+                label="[FOTO DE ELLA — vertical, de frente, luz natural]"
+                className="hero-portrait-photo"
+                rounded="rounded-none"
+              />
+            )}
+          </div>
+          <hr className="hero-portrait-rule" />
         </div>
 
-        <div className="flex flex-col gap-4">
-          <h1 className="hero-title text-balance">
+        <div className="hero-copy-col flex flex-col gap-5">
+          <h1 className="hero-title">
             Te acompaño a empezar tu propio negocio con Yanbal.
           </h1>
 

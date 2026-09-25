@@ -19,40 +19,41 @@ export default function JoinClosing({
   const whatsapp = settings?.whatsapp_number;
 
   return (
-    <>
-      <section
-        aria-labelledby="cierre"
-        className="band-sky border-t border-line"
-      >
-        <div className="page-section">
-          <h2 id="cierre" className="sr-only">
-            Un último mensaje
-          </h2>
-          <p className="prose-measure text-[22px] leading-relaxed">
-            <Filled value={closing} />
-          </p>
+    <section
+      aria-labelledby="cierre"
+      className="band-midnight on-midnight"
+    >
+      <div className="page-section">
+        <h2 id="cierre" className="sr-only">
+          Un último mensaje
+        </h2>
+        <p className="prose-measure text-[22px] leading-relaxed">
+          <Filled value={closing} />
+        </p>
 
-          <div className="mt-6">
-            <Signature
-              url={settings?.signature_url ?? null}
-              name={consultantName}
-            />
-          </div>
-
-          {whatsapp && (
-            <a
-              href={buildJoinWhatsAppLink(whatsapp, consultantName)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary max-w-sm mt-6"
-            >
-              <WhatsAppIcon size={20} />
-              Escribirme por WhatsApp
-            </a>
-          )}
+        <div className="mt-6">
+          {/* La firma se repite aquí ya dibujada y más pequeña: no vuelve
+              a llamar la atención, solo cierra el gesto de la portada. */}
+          <Signature
+            url={settings?.signature_url ?? null}
+            name={consultantName}
+            animated={false}
+            small
+          />
         </div>
-      </section>
 
-    </>
+        {whatsapp && (
+          <a
+            href={buildJoinWhatsAppLink(whatsapp, consultantName)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary max-w-sm mt-6"
+          >
+            <WhatsAppIcon size={20} />
+            Escribirme por WhatsApp
+          </a>
+        )}
+      </div>
+    </section>
   );
 }
