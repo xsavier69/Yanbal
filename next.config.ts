@@ -27,6 +27,19 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        // La tienda propia está en pausa: todo lo de "productos" es el
+        // catálogo oficial de Yanbal. Es temporal (307) para poder
+        // reactivar /productos más adelante sin que los navegadores
+        // se acuerden de la redirección.
+        source: "/productos",
+        destination: "/catalogo-yanbal.pdf",
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

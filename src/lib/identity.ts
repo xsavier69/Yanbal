@@ -1,4 +1,3 @@
-import { safeHttpUrl } from "@/lib/campaign";
 import type { Settings } from "@/lib/types";
 
 /**
@@ -30,9 +29,8 @@ export const whatsappOf = (settings: Settings | null | undefined) =>
   settings?.whatsapp_number?.trim() || DEFAULT_WHATSAPP;
 
 /**
- * A dónde lleva "Ver mis productos": el enlace que ella haya pegado en
- * Ajustes → Campaña ("catálogo digital de Yanbal"), o si no hay, el PDF
- * del catálogo que viaja con la página.
+ * A dónde lleva todo lo de "productos": únicamente al catálogo oficial de
+ * Yanbal (el PDF). La tienda propia (/productos) está en pausa y redirige
+ * aquí, ver next.config.ts.
  */
-export const catalogHref = (settings: Settings | null | undefined) =>
-  safeHttpUrl(settings?.official_catalog_url) ?? CATALOG_PDF_PATH;
+export const catalogHref = () => CATALOG_PDF_PATH;

@@ -39,18 +39,16 @@ Todo se llena desde **Mi tienda → Ajustes de mi página**, sin tocar código.
   +593 93 994 7562). Se usan mientras el panel no tenga esos datos llenos, y
   lo que se escriba en **Ajustes** siempre gana. Así el botón flotante de
   WhatsApp **siempre** está, aunque la base de datos esté vacía.
-- **"Ver mis productos" lleva al catálogo de Yanbal, no a `/productos`.**
-  Está en la parte de arriba de la portada y en el pie. Abre en una pestaña
-  nueva el PDF `public/catalogo-yanbal.pdf` (catálogo de la campaña 10), o,
-  si ella pegó un enlace en **Ajustes → Campaña → "catálogo digital de
-  Yanbal"**, ese enlace. La página `/productos` sigue existiendo, pero ya
-  nada apunta a ella.
-- **Cada campaña (~25 días) el catálogo cambia.** Para actualizarlo:
-  1. reemplaza `public/catalogo-yanbal.pdf` con el nuevo (mismo nombre) y
-     sube el cambio; o
-  2. mejor, pega el enlace del catálogo digital en Ajustes → Campaña y no
-     toques el código. Cada PDF que se sube a git pesa ~13 MB y se queda en
-     el historial para siempre.
+- **Todo lo de "productos" es únicamente el catálogo oficial de Yanbal.**
+  "Ver mis productos" (arriba de la portada y en el pie) abre en una pestaña
+  nueva el PDF `public/catalogo-yanbal.pdf` (campaña 10). **La tienda propia
+  está en pausa:** `/productos` redirige al mismo PDF (`next.config.ts`,
+  redirección temporal), y el código de la tienda y del panel de productos
+  sigue ahí, sin tocar, para reactivarlo cuando se quiera: basta quitar esa
+  redirección y volver a enlazar `/productos`.
+- **Cada campaña (~25 días) el catálogo cambia.** Reemplaza
+  `public/catalogo-yanbal.pdf` por el nuevo (mismo nombre) y sube el cambio.
+  Cada PDF pesa ~13 MB y se queda en el historial de git para siempre.
 - El service worker **no guarda el PDF** en el celular de las visitantes.
 
 ## Stack
@@ -475,8 +473,9 @@ con su directora**:
 3. **Qué datos de beneficios puede publicar** y con qué fuente.
 4. **Si Yanbal da crédito para el kit**, antes de marcar esa casilla.
 5. **Si puede ofrecer el catálogo oficial en PDF desde su propia página.**
-   Hoy el PDF viaja con el sitio (`public/catalogo-yanbal.pdf`). Enlazar el
-   catálogo digital oficial, en vez de alojar una copia, evita el problema.
+   Hoy el PDF viaja con el sitio (`public/catalogo-yanbal.pdf`). Si Yanbal
+   prefiere que no se aloje una copia, hay que cambiar el enlace por el del
+   catálogo digital oficial (`CATALOG_PDF_PATH` en `src/lib/identity.ts`).
 
 Además: la página no lleva logo ni tipografía oficial de Yanbal, no recoge
 cédula, correo ni datos de pago, y el sello de "consultora independiente"

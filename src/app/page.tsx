@@ -104,7 +104,7 @@ export default async function InvitacionPage({
       <JoinFooter
         consultantName={consultantName}
         year={year}
-        catalogUrl={catalogHref(settings)}
+        catalogUrl={catalogHref()}
       />
 
       {/* Siempre a la vista: la acción que más importa es escribirle */}

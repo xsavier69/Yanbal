@@ -25,7 +25,7 @@ export default function JoinHero({
       <div className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-2">
         <span className="text-ink-soft">¿Solo quieres comprar?</span>
         <a
-          href={catalogHref(settings)}
+          href={catalogHref()}
           target="_blank"
           rel="noopener noreferrer"
           className="pill-link"
