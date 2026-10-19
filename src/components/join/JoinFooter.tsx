@@ -3,20 +3,27 @@ import Link from "next/link";
 export default function JoinFooter({
   consultantName,
   year,
+  catalogUrl,
 }: {
   consultantName: string;
   year: number;
+  catalogUrl: string;
 }) {
   return (
-    <footer className="site-footer on-midnight">
+    <footer className="site-footer has-fab on-midnight">
       <div className="flex flex-col items-center gap-3">
         <p className="badge-consultora">
           Página de consultora independiente Yanbal
         </p>
         <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1">
-          <Link href="/productos" className="footer-link">
+          <a
+            href={catalogUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-link"
+          >
             Ver mis productos
-          </Link>
+          </a>
           <Link href="/privacidad" className="footer-link">
             Cómo trato tus datos
           </Link>

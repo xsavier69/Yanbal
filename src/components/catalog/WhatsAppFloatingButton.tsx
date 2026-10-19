@@ -1,19 +1,22 @@
-import { buildGeneralWhatsAppLink } from "@/lib/utils";
 import WhatsAppIcon from "@/components/catalog/WhatsAppIcon";
 
+/**
+ * Botón verde de WhatsApp fijo en una esquina. `aboveStrip` lo sube para
+ * no tapar la franja fija del catálogo (/productos).
+ */
 export default function WhatsAppFloatingButton({
-  whatsappNumber,
-  welcomeMessage,
+  href,
+  aboveStrip = false,
 }: {
-  whatsappNumber: string;
-  welcomeMessage?: string | null;
+  href: string;
+  aboveStrip?: boolean;
 }) {
   return (
     <a
-      href={buildGeneralWhatsAppLink(whatsappNumber, welcomeMessage)}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="fab-whatsapp"
+      className={`fab-whatsapp${aboveStrip ? " above-strip" : ""}`}
       aria-label="Escribir por WhatsApp"
     >
       <WhatsAppIcon size={30} />

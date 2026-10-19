@@ -1,10 +1,10 @@
 import Image from "next/image";
-import Link from "next/link";
 import Signature from "@/components/join/Signature";
 import WhatsAppIcon from "@/components/catalog/WhatsAppIcon";
 import { Filled, PhotoPlaceholder } from "@/components/Pending";
 import { buildJoinWhatsAppLink } from "@/lib/utils";
-import { ph, phNumber } from "@/lib/placeholder";
+import { phNumber } from "@/lib/placeholder";
+import { catalogHref, cityOf, nameOf, whatsappOf } from "@/lib/identity";
 import type { Settings } from "@/lib/types";
 
 export default function JoinHero({
@@ -14,17 +14,27 @@ export default function JoinHero({
   settings: Settings | null;
   consultantName: string;
 }) {
-  const city = ph(settings?.city, "[CIUDAD]");
+  const city = cityOf(settings);
   const years = phNumber(settings?.years_selling, "[X]");
-  const name = ph(settings?.consultant_name, "[TU NOMBRE]");
-  const whatsapp = settings?.whatsapp_number;
+  const name = nameOf(settings);
+  const whatsapp = whatsappOf(settings);
 
   return (
     <header className="page-section is-tight is-hero band-midnight on-midnight">
-      <div className="mb-6">
-        <Link href="/productos" className="font-semibold">
-          ¿Solo quieres comprar? Ver mis productos →
-        </Link>
+      {/* Quien solo viene a comprar va directo al catálogo de Yanbal */}
+      <div className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-2">
+        <span className="text-ink-soft">¿Solo quieres comprar?</span>
+        <a
+          href={catalogHref(settings)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pill-link"
+        >
+          Ver mis productos <span aria-hidden="true">→</span>
+          <span className="sr-only">
+            , se abre el catálogo de Yanbal en una pestaña nueva
+          </span>
+        </a>
       </div>
 
       {/* Retícula de 12 columnas: el retrato ocupa 5, el texto 6, y la
@@ -45,7 +55,7 @@ export default function JoinHero({
               />
             ) : (
               <PhotoPlaceholder
-                label="[FOTO DE ELLA — vertical, de frente, luz natural]"
+                label="[FOTO]"
                 className="hero-portrait-photo"
                 rounded="rounded-none"
               />
@@ -75,17 +85,15 @@ export default function JoinHero({
             <a href="#quiero-saber-mas" className="btn-primary">
               Quiero saber cómo empezar
             </a>
-            {whatsapp && (
-              <a
-                href={buildJoinWhatsAppLink(whatsapp, consultantName)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-secondary"
-              >
-                <WhatsAppIcon size={20} />
-                Escribirme por WhatsApp
-              </a>
-            )}
+            <a
+              href={buildJoinWhatsAppLink(whatsapp, consultantName)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
+            >
+              <WhatsAppIcon size={20} />
+              Escribirme por WhatsApp
+            </a>
           </div>
         </div>
       </div>

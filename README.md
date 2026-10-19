@@ -32,6 +32,27 @@ Todo se llena desde **Mi tienda → Ajustes de mi página**, sin tocar código.
 
 ---
 
+## Datos de Amada y catálogo de Yanbal
+
+- **Nombre, ciudad y WhatsApp por defecto** viven en
+  [`src/lib/identity.ts`](./src/lib/identity.ts) (Amada Ocaña, Cuenca,
+  +593 93 994 7562). Se usan mientras el panel no tenga esos datos llenos, y
+  lo que se escriba en **Ajustes** siempre gana. Así el botón flotante de
+  WhatsApp **siempre** está, aunque la base de datos esté vacía.
+- **"Ver mis productos" lleva al catálogo de Yanbal, no a `/productos`.**
+  Está en la parte de arriba de la portada y en el pie. Abre en una pestaña
+  nueva el PDF `public/catalogo-yanbal.pdf` (catálogo de la campaña 10), o,
+  si ella pegó un enlace en **Ajustes → Campaña → "catálogo digital de
+  Yanbal"**, ese enlace. La página `/productos` sigue existiendo, pero ya
+  nada apunta a ella.
+- **Cada campaña (~25 días) el catálogo cambia.** Para actualizarlo:
+  1. reemplaza `public/catalogo-yanbal.pdf` con el nuevo (mismo nombre) y
+     sube el cambio; o
+  2. mejor, pega el enlace del catálogo digital en Ajustes → Campaña y no
+     toques el código. Cada PDF que se sube a git pesa ~13 MB y se queda en
+     el historial para siempre.
+- El service worker **no guarda el PDF** en el celular de las visitantes.
+
 ## Stack
 
 - Next.js (App Router) + TypeScript + Tailwind CSS v4
@@ -453,6 +474,9 @@ con su directora**:
    trabajo.
 3. **Qué datos de beneficios puede publicar** y con qué fuente.
 4. **Si Yanbal da crédito para el kit**, antes de marcar esa casilla.
+5. **Si puede ofrecer el catálogo oficial en PDF desde su propia página.**
+   Hoy el PDF viaja con el sitio (`public/catalogo-yanbal.pdf`). Enlazar el
+   catálogo digital oficial, en vez de alojar una copia, evita el problema.
 
 Además: la página no lleva logo ni tipografía oficial de Yanbal, no recoge
 cédula, correo ni datos de pago, y el sello de "consultora independiente"

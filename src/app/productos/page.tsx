@@ -9,10 +9,15 @@ import HowToBuy from "@/components/catalog/HowToBuy";
 import AboutSection from "@/components/catalog/AboutSection";
 import WhatsAppFloatingButton from "@/components/catalog/WhatsAppFloatingButton";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { whatsappOf } from "@/lib/identity";
 import { DEMO_SETTINGS, DEMO_PRODUCTS } from "@/lib/demoData";
 import { isSectionVisible } from "@/lib/sections";
 import { safeHttpUrl, todayInEcuador } from "@/lib/campaign";
-import { hasValidOffer, isNewProduct } from "@/lib/utils";
+import {
+  buildGeneralWhatsAppLink,
+  hasValidOffer,
+  isNewProduct,
+} from "@/lib/utils";
 import Link from "next/link";
 
 async function loadCatalog() {
@@ -56,7 +61,7 @@ export default async function ProductosPage() {
 
   const storeName = settings?.store_name?.trim() || "Mi tienda Yanbal";
   const year = new Date(nowMs).getFullYear();
-  const whatsappNumber = settings?.whatsapp_number ?? null;
+  const whatsappNumber = whatsappOf(settings);
 
   const showCampaign = isSectionVisible(settings, "campaign");
   const catalogUrl = showCampaign
@@ -146,12 +151,10 @@ export default async function ProductosPage() {
         <Link href="/">¿Te gustaría vender Yanbal? Te cuento cómo empezar</Link>
       </div>
 
-      {settings?.whatsapp_number && (
-        <WhatsAppFloatingButton
-          whatsappNumber={settings.whatsapp_number}
-          welcomeMessage={settings.welcome_message}
-        />
-      )}
+      <WhatsAppFloatingButton
+        aboveStrip
+        href={buildGeneralWhatsAppLink(whatsappNumber, settings?.welcome_message)}
+      />
     </div>
   );
 }

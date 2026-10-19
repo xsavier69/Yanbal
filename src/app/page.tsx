@@ -5,7 +5,9 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { DEMO_SETTINGS, DEMO_TEAM } from "@/lib/demoData";
 import { isSectionVisible } from "@/lib/sections";
 import { readSource } from "@/lib/join";
-import { ph } from "@/lib/placeholder";
+import { buildJoinWhatsAppLink } from "@/lib/utils";
+import { catalogHref, cityOf, nameOf, whatsappOf } from "@/lib/identity";
+import WhatsAppFloatingButton from "@/components/catalog/WhatsAppFloatingButton";
 import JoinHero from "@/components/join/JoinHero";
 import JoinStory from "@/components/join/JoinStory";
 import JoinRequirements from "@/components/join/JoinRequirements";
@@ -29,8 +31,8 @@ async function loadJoin() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const { settings } = await loadJoin();
-  const name = ph(settings?.consultant_name, "[TU NOMBRE]").text;
-  const city = ph(settings?.city, "[CIUDAD]").text;
+  const name = nameOf(settings).text;
+  const city = cityOf(settings).text;
   const title = `Sé consultora Yanbal en ${city} con ${name}`;
   const description = `Te acompaño a empezar tu propio negocio con Yanbal en ${city}. Te explico todo por WhatsApp, sin compromiso.`;
 
@@ -48,7 +50,8 @@ export default async function InvitacionPage({
   const params = await searchParams;
   const source = readSource(params.origen);
 
-  const consultantName = ph(settings?.consultant_name, "[TU NOMBRE]").text;
+  const consultantName = nameOf(settings).text;
+  const whatsapp = whatsappOf(settings);
   const year = new Date().getFullYear();
 
   return (
@@ -90,7 +93,7 @@ export default async function InvitacionPage({
         </p>
         <LeadForm
           consultantName={consultantName}
-          whatsappNumber={settings?.whatsapp_number ?? null}
+          whatsappNumber={whatsapp}
           source={source}
         />
       </section>
@@ -98,7 +101,16 @@ export default async function InvitacionPage({
         <JoinClosing settings={settings} consultantName={consultantName} />
       </main>
 
-      <JoinFooter consultantName={consultantName} year={year} />
+      <JoinFooter
+        consultantName={consultantName}
+        year={year}
+        catalogUrl={catalogHref(settings)}
+      />
+
+      {/* Siempre a la vista: la acción que más importa es escribirle */}
+      <WhatsAppFloatingButton
+        href={buildJoinWhatsAppLink(whatsapp, consultantName)}
+      />
     </div>
   );
 }

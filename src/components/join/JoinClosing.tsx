@@ -3,6 +3,7 @@ import WhatsAppIcon from "@/components/catalog/WhatsAppIcon";
 import { Filled } from "@/components/Pending";
 import { buildJoinWhatsAppLink } from "@/lib/utils";
 import { ph } from "@/lib/placeholder";
+import { whatsappOf } from "@/lib/identity";
 import type { Settings } from "@/lib/types";
 
 export default function JoinClosing({
@@ -14,9 +15,9 @@ export default function JoinClosing({
 }) {
   const closing = ph(
     settings?.closing_text,
-    "[UNAS LÍNEAS DE DESPEDIDA, CON SUS PALABRAS]"
+    "[LÍNEAS DE DESPEDIDA]"
   );
-  const whatsapp = settings?.whatsapp_number;
+  const whatsapp = whatsappOf(settings);
 
   return (
     <section
@@ -42,17 +43,15 @@ export default function JoinClosing({
           />
         </div>
 
-        {whatsapp && (
-          <a
-            href={buildJoinWhatsAppLink(whatsapp, consultantName)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary max-w-sm mt-6"
-          >
-            <WhatsAppIcon size={20} />
-            Escribirme por WhatsApp
-          </a>
-        )}
+        <a
+          href={buildJoinWhatsAppLink(whatsapp, consultantName)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-primary max-w-sm mt-6"
+        >
+          <WhatsAppIcon size={20} />
+          Escribirme por WhatsApp
+        </a>
       </div>
     </section>
   );

@@ -12,7 +12,7 @@ export default function JoinStory({
 }) {
   const custom = ph(
     settings?.why_me_custom,
-    "[ALGO PROPIO DE ELLA: escríbelo con sus palabras]"
+    "[ALGO QUE TE IDENTIFIQUE]"
   );
 
   return (

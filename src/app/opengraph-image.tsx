@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { createClient } from "@/lib/supabase/server";
 import { getSettings } from "@/lib/queries";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { cityOf, nameOf } from "@/lib/identity";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -32,8 +33,8 @@ export default async function OpengraphImage() {
     ? await getSettings(await createClient())
     : null;
 
-  const name = settings?.consultant_name?.trim() || "[TU NOMBRE]";
-  const city = settings?.city?.trim() || "[CIUDAD]";
+  const name = nameOf(settings).text;
+  const city = cityOf(settings).text;
   const photo = settings?.hero_photo_url ?? null;
   const signatureUrl = settings?.signature_url ?? null;
   // Satori (el motor de next/og) no dibuja SVG de forma confiable como
@@ -82,7 +83,7 @@ export default async function OpengraphImage() {
                 padding: 40,
               }}
             >
-              [FOTO DE ELLA]
+              [FOTO]
             </div>
           )}
         </div>

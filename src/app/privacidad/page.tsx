@@ -5,7 +5,7 @@ import { getSettings } from "@/lib/queries";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { DEMO_SETTINGS } from "@/lib/demoData";
 import { Filled } from "@/components/Pending";
-import { ph } from "@/lib/placeholder";
+import { nameOf, whatsappOf } from "@/lib/identity";
 import { buildGeneralWhatsAppLink } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -23,8 +23,8 @@ async function loadSettings() {
 
 export default async function PrivacidadPage() {
   const settings = await loadSettings();
-  const name = ph(settings?.consultant_name, "[TU NOMBRE]");
-  const whatsapp = settings?.whatsapp_number;
+  const name = nameOf(settings);
+  const whatsapp = whatsappOf(settings);
 
   return (
     <div className="min-h-screen flex flex-col">

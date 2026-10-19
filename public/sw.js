@@ -1,5 +1,5 @@
-// v2: al subir de versión se borra la caché vieja (que podía tener páginas del panel).
-const CACHE_NAME = "mi-tienda-v2";
+// v3: al subir de versión se borra la caché vieja (que podía tener páginas del panel).
+const CACHE_NAME = "mi-tienda-v3";
 
 self.addEventListener("install", () => {
   self.skipWaiting();
@@ -29,6 +29,8 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
   if (url.pathname.startsWith("/mi-tienda")) return;
+  // El catálogo en PDF pesa varios MB: no se guarda en el celular de nadie
+  if (url.pathname.endsWith(".pdf")) return;
 
   event.respondWith(
     fetch(request)
