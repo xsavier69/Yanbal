@@ -24,9 +24,6 @@ export default function InvitationSection({
   const [closing, setClosing] = useState(settings.closing_text ?? "");
 
   const photo = usePhotoField(settings.hero_photo_url, "portada");
-  const signature = usePhotoField(settings.signature_url, "firma", {
-    acceptSvg: true,
-  });
 
   const [yearsError, setYearsError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -35,7 +32,6 @@ export default function InvitationSection({
 
   const dirty =
     photo.dirty ||
-    signature.dirty ||
     name !== (settings.consultant_name ?? "") ||
     city !== (settings.city ?? "") ||
     years !== (settings.years_selling != null ? String(settings.years_selling) : "") ||
@@ -61,17 +57,13 @@ export default function InvitationSection({
 
     setSaving(true);
     try {
-      const [photoUrl, signatureUrl] = await Promise.all([
-        photo.upload(),
-        signature.upload(),
-      ]);
+      const photoUrl = await photo.upload();
 
       const failure = await onSave({
         consultant_name: name.trim() || null,
         city: city.trim() || null,
         years_selling: parsedYears,
         hero_photo_url: photoUrl,
-        signature_url: signatureUrl,
         why_me_custom: whyMe.trim() || null,
         closing_text: closing.trim() || null,
       });
@@ -80,7 +72,6 @@ export default function InvitationSection({
         return;
       }
       await photo.cleanUp(photoUrl);
-      await signature.cleanUp(signatureUrl);
       setSaved(true);
     } catch (err) {
       setError(friendlyError(err, "guardar los cambios"));
@@ -160,15 +151,6 @@ export default function InvitationSection({
           label="Tu foto grande"
           help="De pie o de medio cuerpo, mirando a la cámara, con luz de día. Es lo primero que se ve."
           field={photo}
-        />
-
-        <PhotoField
-          id="inv-firma"
-          label="Tu firma"
-          help="Lo mejor: un archivo .svg de tu firma vectorizada, para que se dibuje trazo por trazo. Si no tienes uno, sirve una foto de tu firma en hoja blanca con marcador grueso, tomada de frente."
-          field={signature}
-          shape="wide"
-          acceptSvg
         />
 
         <div>

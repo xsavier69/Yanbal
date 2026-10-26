@@ -33,7 +33,6 @@ const EMPTY_SETTINGS: Settings = {
   city: null,
   years_selling: null,
   hero_photo_url: null,
-  signature_url: null,
   why_me_custom: null,
   kit_info: null,
   credit_available: false,

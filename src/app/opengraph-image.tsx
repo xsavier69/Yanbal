@@ -3,21 +3,22 @@ import { createClient } from "@/lib/supabase/server";
 import { getSettings } from "@/lib/queries";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { cityOf, nameOf } from "@/lib/identity";
+import { YANBAL_LOGO_PATH, YANBAL_LOGO_VIEWBOX } from "@/lib/yanbalLogo";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "Sé consultora Yanbal con una guía que te acompaña";
 
-const MIDNIGHT = "#14213D";
-const PORCELAIN = "#F6F7F9";
-const PLATTER = "#ECEFF3";
-const GOLD = "#B8955C";
+const INK = "#231F20";
+const SOFT = "#625A58";
+const CORAL = "#F2683B";
+const PEACH = "#FABEAC";
 
-/** Newsreader para el titular; si no se puede bajar, se usa la de por defecto. */
+/** Instrument Serif para el titular; si no se puede bajar, se usa la de por defecto. */
 async function loadHeadingFont(): Promise<ArrayBuffer | null> {
   try {
     const css = await fetch(
-      "https://fonts.googleapis.com/css2?family=Newsreader:opsz@6..72&display=swap",
+      "https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap",
       { headers: { "User-Agent": "Mozilla/5.0" } }
     ).then((r) => r.text());
     const url = /src:\s*url\(([^)]+)\)/.exec(css)?.[1];
@@ -36,12 +37,9 @@ export default async function OpengraphImage() {
   const name = nameOf(settings).text;
   const city = cityOf(settings).text;
   const photo = settings?.hero_photo_url ?? null;
-  const signatureUrl = settings?.signature_url ?? null;
-  // Satori (el motor de next/og) no dibuja SVG de forma confiable como
-  // <img>; para esta imagen estática solo se usa si la firma es una foto.
-  const signaturePhoto =
-    signatureUrl && !/\.svg(\?|#|$)/i.test(signatureUrl) ? signatureUrl : null;
   const font = await loadHeadingFont();
+  const [, , vw, vh] = YANBAL_LOGO_VIEWBOX.split(" ").map(Number);
+  const logoH = 24;
 
   return new ImageResponse(
     (
@@ -50,42 +48,45 @@ export default async function OpengraphImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          background: MIDNIGHT,
+          background: "#FFFFFF",
         }}
       >
-        {/* Su foto ocupa el tercio izquierdo */}
+        {/* Foto sobre un bloque coral desplazado, como en el catálogo */}
         <div
           style={{
-            width: 420,
+            width: 470,
             height: "100%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: PLATTER,
+            background: CORAL,
           }}
         >
-          {photo ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={photo}
-              alt=""
-              width={420}
-              height={630}
-              style={{ width: 420, height: 630, objectFit: "cover" }}
-            />
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                color: MIDNIGHT,
-                fontSize: 26,
-                textAlign: "center",
-                padding: 40,
-              }}
-            >
-              [FOTO]
-            </div>
-          )}
+          <div
+            style={{
+              width: 330,
+              height: 412,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: PEACH,
+              color: INK,
+              fontSize: 30,
+            }}
+          >
+            {photo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={photo}
+                alt=""
+                width={330}
+                height={412}
+                style={{ width: 330, height: 412, objectFit: "cover" }}
+              />
+            ) : (
+              "[FOTO]"
+            )}
+          </div>
         </div>
 
         <div
@@ -93,62 +94,44 @@ export default async function OpengraphImage() {
             flex: 1,
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
-            padding: "60px 60px 60px 56px",
+            justifyContent: "space-between",
+            padding: "56px 64px 56px 60px",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              fontSize: 26,
-              color: GOLD,
-              marginBottom: 20,
-            }}
+          <svg
+            width={(logoH * vw) / vh}
+            height={logoH}
+            viewBox={YANBAL_LOGO_VIEWBOX}
           >
-            Consultora independiente Yanbal · {city}
-          </div>
+            <path d={YANBAL_LOGO_PATH} fill={INK} fillRule="evenodd" />
+          </svg>
 
           <div
             style={{
               display: "flex",
-              fontFamily: font ? "Newsreader" : undefined,
-              fontSize: 58,
-              lineHeight: 1.15,
-              color: PORCELAIN,
+              fontFamily: font ? "Instrument Serif" : undefined,
+              fontSize: 70,
+              lineHeight: 1.04,
+              color: INK,
             }}
           >
             Te acompaño a empezar tu propio negocio con Yanbal.
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-end",
-              marginTop: 36,
-              borderTop: `1px solid ${GOLD}`,
-              paddingTop: 20,
-            }}
-          >
-            {signaturePhoto ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={signaturePhoto}
-                alt=""
-                height={72}
-                style={{ height: 72, objectFit: "contain" }}
-              />
-            ) : (
-              <div
-                style={{
-                  display: "flex",
-                  fontFamily: font ? "Newsreader" : undefined,
-                  fontSize: 30,
-                  color: PORCELAIN,
-                }}
-              >
-                {name}
-              </div>
-            )}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                fontFamily: font ? "Instrument Serif" : undefined,
+                fontSize: 38,
+                color: INK,
+              }}
+            >
+              {name}
+            </div>
+            <div style={{ display: "flex", fontSize: 24, color: SOFT, marginTop: 6 }}>
+              Consultora independiente Yanbal · {city}
+            </div>
           </div>
         </div>
       </div>
@@ -156,7 +139,7 @@ export default async function OpengraphImage() {
     {
       ...size,
       fonts: font
-        ? [{ name: "Newsreader", data: font, style: "normal", weight: 500 }]
+        ? [{ name: "Instrument Serif", data: font, style: "normal", weight: 400 }]
         : [],
     }
   );

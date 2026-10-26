@@ -1,22 +1,24 @@
 import type { Metadata, Viewport } from "next";
-import { Newsreader, Instrument_Sans, Atkinson_Hyperlegible_Next } from "next/font/google";
+import {
+  Instrument_Serif,
+  Albert_Sans,
+  Atkinson_Hyperlegible_Next,
+} from "next/font/google";
 import "./globals.css";
 import RegisterServiceWorker from "@/components/RegisterServiceWorker";
 
-// Titulares: eje óptico variable, para que el propio tamaño del texto
-// decida cuánto "display" se ve la letra (grande y editorial vs. pequeña
-// y legible), en vez de una sola talla para todo.
-const newsreader = Newsreader({
-  variable: "--font-newsreader",
+// Titulares: serif elegante, de un solo peso, parecida a la que usa el
+// catálogo de Yanbal. La jerarquía sale del tamaño, no de la negrita.
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
   subsets: ["latin", "latin-ext"],
-  weight: "variable",
-  axes: ["opsz"],
+  weight: "400",
   display: "swap",
 });
 
-// Texto e interfaz de la invitación y el catálogo.
-const instrumentSans = Instrument_Sans({
-  variable: "--font-instrument",
+// Texto de la invitación: grotesca geométrica, hermana de la del catálogo.
+const albertSans = Albert_Sans({
+  variable: "--font-albert",
   subsets: ["latin", "latin-ext"],
   weight: "variable",
   display: "swap",
@@ -48,14 +50,14 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#14213D",
+  themeColor: "#F2683B",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es"
-      className={`${newsreader.variable} ${instrumentSans.variable} ${atkinson.variable} h-full antialiased`}
+      className={`${instrumentSerif.variable} ${albertSans.variable} ${atkinson.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {children}

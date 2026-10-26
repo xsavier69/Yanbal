@@ -1,67 +1,61 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Sistema visual — "Estuche de joyería"
-   Medianoche + porcelana + dorado champán, con el azul de las cúpulas
-   de Cuenca en los botones. El dorado marca solo dos cosas en toda la
-   página: su firma y el marco de su retrato.
+   Sistema visual — "Catálogo Yanbal"
+   Colores medidos del catálogo oficial de la campaña 10: naranja coral
+   (#F2683B, el 41% de su superficie), negro cálido (#231F20), durazno
+   (#FABEAC) y crema (#EDE9DD). Página blanca y limpia, bloques de color
+   rectos como las etiquetas del catálogo, titulares serif y texto en una
+   grotesca geométrica. Sin degradados, sin sombras, sin píldoras.
 
-   Nombres de variable: se conservan los nombres heredados del sistema
-   anterior (--color-sky, --color-line-strong, --color-gold…) aunque su
-   valor y su sentido cambiaron, porque Tailwind v4 genera utilidades
-   (bg-sky, border-line, text-gold…) a partir de ese nombre exacto, y ya
-   están en uso en varios componentes. Renombrar la variable sin tocar
-   cada componente haría que esas clases cayeran de vuelta en el azul
-   "sky" que trae Tailwind por defecto, en silencio y sin error.
+   Nombres de variable: se conservan los heredados (--color-blue,
+   --color-sky, --color-midnight, --color-gold…) aunque su valor y su
+   sentido cambiaron, porque Tailwind v4 genera utilidades (text-blue,
+   bg-sky…) a partir de ese nombre exacto y ya están en uso en varios
+   componentes. Renombrarlos sin tocar cada componente haría que esas
+   clases cayeran, en silencio, en los colores por defecto de Tailwind.
 
    Todos los pares de color están verificados contra WCAG.
    ============================================================ */
 
 :root {
-  --color-ink: #1a1f2b; /* 15.4:1 sobre porcelana (AAA) */
-  --color-ink-soft: #55617a; /* 5.8:1 sobre porcelana, 5.4:1 sobre platillo (AA) */
-  --color-porcelain: #f6f7f9; /* fondo base: blanco frío, no crema */
-  --color-porcelain-soft: #9aa4b8; /* texto secundario SOLO sobre medianoche (6.4:1) */
-  --color-midnight: #14213d; /* portada, pie de página, bandas de énfasis */
-  --color-blue: #1f4e8c; /* "dome": botones y enlaces. 7.8:1 sobre porcelana (AAA) */
-  --color-blue-deep: #173c6b; /* estado presionado */
-  /* --color-sky: nombre heredado; ahora es "--platter", el fondo un tono
-     más oscuro que la porcelana para las fotos de producto y las bandas
-     de respiro. Deliberadamente sin matiz beige (para no acercarse al
-     crema que se descartó) y deliberadamente sutil: el borde en --color-line
-     es lo que le da un canto legible, no el propio color de fondo. */
-  --color-sky: #eceff3;
-  --color-gold: #b8955c; /* champán — SOLO decorativo, y SOLO sobre --color-midnight (5.7:1) */
-  --color-gold-text: #86662f; /* dorado para texto pequeño, SOLO sobre fondo claro (5.0:1) */
+  --color-ink: #231f20; /* negro cálido del catálogo */
+  --color-ink-soft: #625a58; /* 6,7:1 blanco · 6,1:1 durazno suave */
+  --color-porcelain: #ffffff; /* fondo de página (y texto sobre fondos oscuros) */
+  --color-porcelain-soft: #b9b1ae; /* texto secundario SOLO sobre negro cálido (7,7:1) */
+  --color-midnight: #231f20; /* pie y bandas oscuras: el negro cálido */
+  --color-coral: #f2683b; /* naranja Yanbal. Relleno de botones y bloques; el texto encima va en tinta (5,3:1) */
+  --color-coral-hover: #ff7d55;
+  --color-peach: #fabeac;
+  /* "blue" (nombre heredado): el coral oscuro para TEXTO, enlaces y
+     rellenos con letra blanca. 5,2:1 sobre blanco · 4,7:1 sobre durazno suave */
+  --color-blue: #bf4318;
+  --color-blue-deep: #a8370f;
+  /* "sky" (nombre heredado): el durazno suave de las bandas y del fondo de fotos */
+  --color-sky: #fef1ec;
+  --color-gold: #f2683b; /* detalle decorativo: es el coral */
+  --color-gold-text: #bf4318;
   --color-white: #ffffff;
-  --color-line: #e3e7ee; /* separador puramente decorativo (no sirve de borde de campo) */
-  /* --color-line-strong: nombre heredado; ahora es el "mist-line" del
-     plan — el único tono de línea que sí llega al 3:1 que pide WCAG para
-     el borde de un campo en reposo. --color-line (arriba) se queda en
-     1,16:1: es decorativo, y donde antes marcaba un borde de verdad ahora
-     no le pedimos que haga ese trabajo. */
-  --color-line-strong: #7c8aa8;
+  --color-line: #ecdfd8; /* filetes finos, cálidos */
+  --color-line-strong: #8a807c; /* borde de campos (3,9:1) */
 
   --color-ok: #1b6b45;
   --color-ok-bg: #e6f2eb;
-  --color-bad: #9b2c2c;
-  --color-bad-bg: #fbeaea;
+  --color-bad: #ae294c; /* el carmesí del catálogo: 6,5:1 sobre blanco */
+  --color-bad-bg: #fdecef;
 
   /* Verde de WhatsApp oscurecido: el blanco sobre #25d366 no se lee */
   --color-whatsapp: #128c48;
   --color-whatsapp-dark: #0e7339;
 
   --measure: 62ch;
+  --radius: 4px;
 
   /* Curvas propias. Nunca ease-in, nunca "transition: all". */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 
-  /* Ritmo entre secciones: cada .page-section aporta la mitad del respiro
-     total (96px en móvil / 160px en escritorio se completan entre dos
-     secciones contiguas). */
-  --space-section-m: 48px;
-  --space-section-d: 80px;
+  --space-section-m: 52px;
+  --space-section-d: 88px;
 }
 
 @theme inline {
@@ -69,6 +63,8 @@
   --color-ink-soft: var(--color-ink-soft);
   --color-porcelain: var(--color-porcelain);
   --color-midnight: var(--color-midnight);
+  --color-coral: var(--color-coral);
+  --color-peach: var(--color-peach);
   --color-blue: var(--color-blue);
   --color-blue-deep: var(--color-blue-deep);
   --color-sky: var(--color-sky);
@@ -80,8 +76,8 @@
   --color-ok-bg: var(--color-ok-bg);
   --color-bad: var(--color-bad);
   --color-bad-bg: var(--color-bad-bg);
-  --font-heading: var(--font-newsreader);
-  --font-body: var(--font-instrument);
+  --font-heading: var(--font-instrument-serif);
+  --font-body: var(--font-albert);
 }
 
 html {
@@ -99,39 +95,28 @@ body {
   text-wrap: pretty;
 }
 
-/* Newsreader es variable: dejamos que el navegador mueva el eje óptico
-   según el tamaño real del texto, en vez de fijar un solo "display". */
+/* Instrument Serif tiene un solo peso (400): la jerarquía sale del
+   tamaño, nunca de la negrita. */
 h1,
 h2,
 h3,
 .font-heading {
   font-family: var(--font-heading), Georgia, serif;
-  font-optical-sizing: auto;
-  font-weight: 440;
-  line-height: 1.2;
+  font-weight: 400;
+  line-height: 1.1;
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
-/* El panel se lee con Atkinson Hyperlegible Next, sin importar dónde
-   viva dentro del árbol: es la única regla de tipografía que se
-   sobrescribe por zona (Operate gana sobre Persuade). */
+/* El panel se lee con Atkinson Hyperlegible Next. Una variable CSS solo
+   cae hacia los descendientes, nunca hacia arriba, así que el panel
+   declara su propia font-family (no solo la variable) para que el texto
+   corriente la reciba por herencia normal. */
 .panel-scope {
-  /* display:contents: no añade una caja propia, así el div de envoltura
-     no rompe los "min-h-screen flex flex-col" que ya usan las páginas
-     del panel. */
-  display: contents;
+  display: contents; /* sin caja propia: no rompe los min-h-screen flex del panel */
   --font-heading: var(--font-atkinson);
   --font-body: var(--font-atkinson);
 }
-/* body ya fijó su font-family leyendo --font-body en SU PROPIO ámbito
-   (el de :root), así que redefinir la variable en un div de más abajo no
-   le llega: una variable CSS solo cae hacia los descendientes, nunca hacia
-   arriba. Por eso el panel declara su propia font-family (no solo la
-   variable): así el texto normal —el que no tiene su propia regla de
-   fuente, como <p> o <input>— la recibe por herencia normal. Los títulos
-   (h1/h2/h3) sí tienen su propia regla que lee --font-heading, y esa
-   variable ya quedó apuntando a Atkinson arriba. */
 .panel-scope {
   font-family: var(--font-atkinson), system-ui, sans-serif;
   font-size: 18px;
@@ -153,30 +138,28 @@ a {
   color: var(--color-blue);
 }
 /* Un enlace dentro de un párrafo no puede distinguirse solo por el color
-   (WCAG 1.4.1): lleva un subrayado tenue siempre puesto. En dispositivos
-   con puntero, ese subrayado se refuerza al pasar el mouse; en el celular,
-   donde no existe el "hover", el enlace ya se distingue sin necesitar uno. */
-a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
+   (WCAG 1.4.1): lleva subrayado siempre, que se refuerza con el mouse. */
+a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .btn-danger, .pill-link, .footer-link, .plain-link) {
   text-decoration-line: underline;
-  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
   text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
+  text-underline-offset: 3px;
   transition: text-decoration-color 200ms var(--ease-out);
 }
 @media (hover: hover) {
-  a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link):hover {
+  a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .btn-danger, .pill-link, .footer-link, .plain-link):hover {
     text-decoration-color: currentColor;
   }
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-blue);
+  outline: 2px solid var(--color-ink);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
-/* --color-blue casi desaparece sobre --color-midnight (1.9:1): dentro de
-   una banda oscura, el foco y los enlaces usan dorado o porcelana. */
+/* Bandas oscuras y de color: texto, enlaces y foco cambian para seguir
+   viéndose (el coral oscuro casi desaparece sobre negro, y al revés). */
 .on-midnight {
   color: var(--color-porcelain);
 }
@@ -184,10 +167,16 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   color: var(--color-porcelain);
 }
 .on-midnight :focus-visible {
-  outline-color: var(--color-gold);
+  outline-color: var(--color-coral);
 }
 .on-midnight .text-ink-soft {
   color: var(--color-porcelain-soft) !important;
+}
+.on-coral {
+  color: var(--color-ink);
+}
+.on-coral a:not(.btn-primary, .btn-secondary, .btn-whatsapp) {
+  color: var(--color-ink);
 }
 
 /* ---------- Controles ---------- */
@@ -199,13 +188,14 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   min-height: 56px;
   width: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius);
   font-size: 18px;
   font-weight: 600;
-  padding: 0.75rem 2rem;
+  letter-spacing: 0.005em;
+  padding: 0.75rem 1.75rem;
   text-align: center;
   text-decoration: none;
   transition: background-color 160ms var(--ease-out), transform 120ms var(--ease-out),
@@ -217,26 +207,32 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
 .btn-danger:active,
 .chip:active,
 .category-card:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
+/* El botón de la marca: coral con letra negra (5,3:1) */
 .btn-primary {
-  background: var(--color-blue);
-  color: var(--color-white);
+  background: var(--color-coral);
+  color: var(--color-ink);
 }
 .btn-primary:hover {
-  background: var(--color-blue-deep);
+  background: var(--color-coral-hover);
 }
 .btn-primary:disabled {
   opacity: 0.55;
 }
+.btn-sm {
+  min-height: 44px;
+  width: auto;
+  font-size: 15px;
+  padding: 0.4rem 1.1rem;
+  white-space: nowrap;
+}
 
-/* Contorno de 1px en tinta, no en azul: es una acción secundaria, no una
-   segunda llamada a la acción. */
 .btn-secondary {
   background: transparent;
   color: var(--color-ink);
-  border: 1px solid var(--color-ink);
+  border: 1.5px solid var(--color-ink);
 }
 .btn-secondary:hover {
   background: var(--color-sky);
@@ -246,17 +242,25 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
 }
 .on-midnight .btn-secondary {
   color: var(--color-porcelain);
-  border-color: var(--color-porcelain-soft);
+  border-color: var(--color-porcelain);
 }
 .on-midnight .btn-secondary:hover {
-  background: rgba(246, 247, 249, 0.08);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Sobre un bloque coral el botón principal se invierte: negro con letra blanca */
+.band-coral .btn-primary {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+.band-coral .btn-primary:hover {
+  background: #000000;
 }
 
 .btn-whatsapp {
   background: var(--color-whatsapp);
   color: var(--color-white);
   font-size: 17px;
-  border-radius: 999px;
 }
 .btn-whatsapp:hover {
   background: var(--color-whatsapp-dark);
@@ -265,17 +269,14 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
 .btn-danger {
   background: var(--color-bad-bg);
   color: var(--color-bad);
-  border: 1px solid var(--color-bad);
+  border: 1.5px solid var(--color-bad);
 }
 
-/* Campo con caja completa: el que usa el panel (Operate) y, por defecto,
-   cualquier formulario nuevo. Aquí la claridad manda sobre la contención:
-   una persona mayor necesita ver dónde está el campo sin depender de una
-   sola línea fina. */
+/* Campo con caja completa: el del panel (la claridad manda) */
 .field-input {
   width: 100%;
   min-height: 56px;
-  border-radius: 2px;
+  border-radius: var(--radius);
   border: 1px solid var(--color-line-strong);
   background: var(--color-white);
   padding: 0.75rem 1rem;
@@ -285,34 +286,32 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   transition: border-color 160ms var(--ease-out);
 }
 .field-input:focus {
-  outline: 2px solid var(--color-blue);
+  outline: 2px solid var(--color-ink);
   outline-offset: 1px;
-  border-color: var(--color-blue);
+  border-color: var(--color-ink);
 }
 .field-input[aria-invalid="true"] {
   border-color: var(--color-bad);
 }
 
-/* Campo de línea inferior: solo para los formularios de la invitación y
-   el catálogo (Persuade). Etiqueta siempre visible arriba, línea de 1px
-   que pasa a --dome con el foco. No se usa en /mi-tienda. */
+/* Campo de línea inferior: formularios de la invitación */
 .field-line {
   width: 100%;
   min-height: 52px;
   border: 0;
-  border-bottom: 1px solid var(--color-line-strong);
+  border-bottom: 1.5px solid var(--color-line-strong);
   border-radius: 0;
   background: transparent;
   padding: 0.5rem 0.1rem;
   font-size: 18px;
   font-family: inherit;
   color: var(--color-ink);
-  transition: border-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+  transition: border-color 160ms var(--ease-out);
 }
 .field-line:focus {
   outline: none;
-  border-bottom: 2px solid var(--color-blue);
-  padding-bottom: calc(0.5rem - 1px);
+  border-bottom: 3px solid var(--color-coral);
+  padding-bottom: calc(0.5rem - 1.5px);
 }
 .field-line[aria-invalid="true"] {
   border-bottom-color: var(--color-bad);
@@ -328,14 +327,12 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   margin-bottom: 0.4rem;
   color: var(--color-ink);
 }
-
 .field-error {
   color: var(--color-bad);
   font-size: 16px;
   margin-top: 0.35rem;
   font-weight: 600;
 }
-
 .field-hint {
   color: var(--color-ink-soft);
   font-size: 16px;
@@ -348,7 +345,7 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   justify-content: center;
   text-align: center;
   min-height: 64px;
-  border-radius: 2px;
+  border-radius: var(--radius);
   border: 1px solid var(--color-line-strong);
   background: var(--color-white);
   font-size: 16px;
@@ -357,9 +354,8 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   transition: background-color 160ms var(--ease-out), border-color 160ms var(--ease-out);
 }
 .category-card[aria-pressed="true"] {
-  border-color: var(--color-blue);
+  border: 2px solid var(--color-ink);
   background: var(--color-sky);
-  color: var(--color-blue);
 }
 
 .chip {
@@ -367,7 +363,7 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
-  border-radius: 999px;
+  border-radius: var(--radius);
   border: 1px solid var(--color-line-strong);
   background: var(--color-white);
   padding: 0.4rem 1.1rem;
@@ -377,18 +373,14 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   transition: background-color 160ms var(--ease-out), border-color 160ms var(--ease-out);
 }
 .chip[aria-pressed="true"],
-.chip[aria-checked="true"] {
-  background: var(--color-blue);
-  border-color: var(--color-blue);
-  color: var(--color-white);
-}
+.chip[aria-checked="true"],
 .chip:has(input:checked) {
-  background: var(--color-blue);
-  border-color: var(--color-blue);
+  background: var(--color-ink);
+  border-color: var(--color-ink);
   color: var(--color-white);
 }
 .chip:has(input:focus-visible) {
-  outline: 2px solid var(--color-blue);
+  outline: 2px solid var(--color-ink);
   outline-offset: 2px;
 }
 
@@ -398,14 +390,14 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   gap: 0.85rem;
   padding: 1rem;
   border: 1px solid var(--color-line-strong);
-  border-radius: 2px;
+  border-radius: var(--radius);
   cursor: pointer;
   font-size: 17px;
   line-height: 1.5;
   transition: border-color 160ms var(--ease-out), background-color 160ms var(--ease-out);
 }
 .consent-row:has(input:checked) {
-  border-color: var(--color-blue);
+  border-color: var(--color-ink);
   background: var(--color-sky);
 }
 .consent-row input {
@@ -413,23 +405,26 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   width: 28px;
   height: 28px;
   margin-top: 0.15rem;
-  accent-color: var(--color-blue);
+  accent-color: var(--color-ink);
 }
 
-/* ---------- Insignias y avisos ---------- */
+/* ---------- Etiquetas y avisos ---------- */
 
-.badge-consultora {
+/* Etiqueta rectangular de color, como las del catálogo ("OFERTA TOP",
+   "DESTACADOS"). Es también el sello de "consultora independiente". */
+.badge-consultora,
+.tag-coral {
   display: inline-block;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--color-ink-soft);
-  border: 1px solid var(--color-line);
-  border-radius: 999px;
-  padding: 0.25rem 0.8rem;
-}
-.on-midnight .badge-consultora {
-  color: var(--color-porcelain-soft);
-  border-color: rgba(246, 247, 249, 0.25);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  background: var(--color-coral);
+  padding: 0.3rem 0.65rem;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .badge-agotado,
@@ -437,35 +432,32 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   display: inline-block;
   font-size: 13px;
   font-weight: 700;
-  border-radius: 999px;
-  padding: 0.2rem 0.65rem;
+  border-radius: 0;
+  padding: 0.2rem 0.6rem;
 }
 .badge-agotado {
   color: var(--color-white);
   background: var(--color-ink-soft);
 }
 .badge-oferta {
-  color: var(--color-white);
-  background: var(--color-blue);
+  color: var(--color-ink);
+  background: var(--color-coral);
 }
-/* "Nuevo" es una etiqueta de mercadeo, no un estado del inventario: se
-   queda en texto con filete, nunca en una pastilla de color rellena. */
 .badge-nuevo {
   display: inline-flex;
   align-items: center;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--color-gold-text);
-  border: 1px solid var(--color-gold-text);
-  border-radius: 999px;
-  padding: 0.15rem 0.6rem;
+  letter-spacing: 0.04em;
+  color: var(--color-blue);
+  border: 1px solid var(--color-blue);
+  padding: 0.15rem 0.55rem;
   background: var(--color-white);
 }
 
 .toast-success,
 .toast-error {
-  border-radius: 2px;
+  border-radius: var(--radius);
   padding: 0.9rem 1.1rem;
   font-weight: 600;
   font-size: 17px;
@@ -481,8 +473,6 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   color: var(--color-bad);
   border-color: var(--color-bad);
 }
-
-/* Confirmación del panel: entra y sale por abajo, 200ms. */
 .toast-success,
 .toast-danger-confirm {
   animation: confirmacion-entra 200ms var(--ease-out);
@@ -498,10 +488,18 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   }
 }
 
+/* Aviso importante dentro de una sección (p. ej. "no es un ingreso garantizado") */
+.notice {
+  background: var(--color-sky);
+  border-left: 4px solid var(--color-coral);
+  padding: 1rem 1.1rem;
+  font-weight: 600;
+}
+
 .pending {
   background: #fdf3d8;
   color: #6b4e08;
-  border-bottom: 2px dotted var(--color-gold-text);
+  border-bottom: 2px dotted var(--color-blue);
   padding: 0 0.15em;
   border-radius: 2px;
 }
@@ -538,13 +536,6 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
 .page-section.is-flush {
   padding-top: 0;
 }
-@media (min-width: 768px) {
-  .page-section.is-hero {
-    max-width: 72rem;
-    padding-top: 2rem;
-    padding-bottom: 3.5rem;
-  }
-}
 
 .band-sky {
   background: var(--color-sky);
@@ -553,148 +544,194 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .pill-link, .footer-link) {
   background: var(--color-midnight);
   color: var(--color-porcelain);
 }
+.band-coral {
+  background: var(--color-coral);
+  color: var(--color-ink);
+}
 
+/* Cada título lleva una barrita de color arriba, como las etiquetas del
+   catálogo: la marca aparece sin necesidad de un adorno más grande. */
 .section-title {
   font-family: var(--font-heading), Georgia, serif;
-  font-optical-sizing: auto;
-  font-weight: 440;
-  font-size: 28px;
-  line-height: 1.2;
+  font-weight: 400;
+  font-size: clamp(32px, 8vw, 40px);
+  line-height: 1.08;
   color: var(--color-ink);
-  margin-bottom: 0.9rem;
+  margin-bottom: 1.1rem;
   text-wrap: balance;
 }
-.on-midnight .section-title {
-  color: var(--color-porcelain);
+.section-title::before {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 4px;
+  background: var(--color-coral);
+  margin-bottom: 16px;
+}
+.sr-only.section-title::before {
+  display: none;
+}
+.band-coral .section-title::before {
+  background: var(--color-ink);
 }
 .prose-measure {
   max-width: var(--measure);
 }
 
-/* ---------- Portada de la invitación ---------- */
+/* ---------- Barra de arriba y portada ---------- */
 
-/* Retícula de 12 columnas, asimétrica: el retrato ocupa 5, el texto 6, y
-   la columna 6 queda como respiro. Es la única sección de toda la página
-   que rompe la columna centrada de lectura; el resto vuelve a 62ch. */
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px;
+.top-bar {
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-white);
+}
+.top-bar-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 @media (min-width: 768px) {
-  .hero-grid {
-    grid-template-columns: repeat(12, 1fr);
-    gap: 24px;
-  }
-  .hero-portrait-col {
-    grid-column: 1 / span 5;
-  }
-  .hero-copy-col {
-    grid-column: 7 / span 6;
+  .top-bar-inner {
+    padding-inline: 32px;
   }
 }
 
-/* En el celular el retrato sangra al borde de la pantalla: es la única
-   ruptura deliberada del margen de página, y siempre es ella. En
-   escritorio vive dentro de su propia columna, con el marco completo. */
-.hero-portrait {
-  position: relative;
-  margin-inline: -1.25rem;
+.hero-wrap {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 28px 20px 48px;
 }
-.hero-portrait-photo {
+
+/* En el celular la foto es pequeña y va junto a quién es ella, para que
+   el titular y lo que ofrece se vean sin bajar. En escritorio la foto
+   pasa a una columna propia, grande, a la derecha. */
+.hero-grid {
+  display: grid;
+  grid-template-columns: clamp(112px, 32vw, 144px) minmax(0, 1fr);
+  grid-template-areas:
+    "photo id"
+    "title title"
+    "intro intro"
+    "ctas ctas";
+  column-gap: 24px;
+  row-gap: 22px;
+}
+.hero-photo {
+  grid-area: photo;
+  position: relative;
+  margin-right: 10px;
+}
+/* El bloque coral desplazado detrás de la foto: el gesto del catálogo */
+.hero-photo::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: -10px;
+  bottom: -10px;
+  background: var(--color-coral);
+}
+.hero-photo-img {
+  position: relative;
   display: block;
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
   border-radius: 0;
+  background: var(--color-peach);
 }
-.hero-portrait-rule {
+.hero-photo .photo-pending {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: var(--color-peach);
   border: 0;
-  border-top: 1px solid var(--color-gold);
-  margin: 0;
+  color: var(--color-ink);
 }
-@media (min-width: 768px) {
-  .hero-portrait {
-    margin-inline: 0;
-    padding: 12px;
-  }
-  .hero-portrait::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border: 1px solid var(--color-gold);
-    pointer-events: none;
-  }
-  .hero-portrait-rule {
-    display: none;
-  }
+.hero-id {
+  grid-area: id;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
 }
-
-.hero-title {
+.hero-name {
   font-family: var(--font-heading), Georgia, serif;
-  font-optical-sizing: auto;
-  font-weight: 450;
-  font-size: clamp(44px, 8vw, 72px);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: var(--color-porcelain);
+  font-size: clamp(26px, 7.5vw, 32px);
+  line-height: 1.05;
+}
+.hero-city {
+  color: var(--color-ink-soft);
+  font-size: 16px;
+  margin-top: -6px;
+}
+.hero-title {
+  grid-area: title;
+  font-family: var(--font-heading), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(36px, 10vw, 46px);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
   text-wrap: balance;
 }
+.hero-intro {
+  grid-area: intro;
+  color: var(--color-ink-soft);
+  max-width: var(--measure);
+}
+.hero-ctas {
+  grid-area: ctas;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 24rem;
+}
 
-/* La firma: el único lugar donde se gasta la audacia. */
-.signature-svg svg {
-  display: block;
-  max-width: 230px;
-  height: auto;
-  overflow: visible;
-}
-/* Respaldo para firmas que llegan como foto (no SVG): se revela con una
-   máscara de izquierda a derecha en vez de animar un trazo, porque una
-   firma fotografiada no tiene un trazo continuo que animar. */
-.signature-raster {
-  display: block;
-  width: 100%;
-  max-width: 230px;
-  height: auto;
-  mask-image: linear-gradient(to right, #000 0 100%);
-  mask-repeat: no-repeat;
-  mask-size: 100% 100%;
-  -webkit-mask-image: linear-gradient(to right, #000 0 100%);
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  animation: firma-se-revela 1200ms var(--ease-in-out) 300ms both;
-}
-@keyframes firma-se-revela {
-  from {
-    mask-size: 0% 100%;
-    -webkit-mask-size: 0% 100%;
+@media (min-width: 768px) {
+  .hero-wrap {
+    padding: 72px 32px 104px;
   }
-  to {
-    mask-size: 100% 100%;
-    -webkit-mask-size: 100% 100%;
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 400px);
+    grid-template-areas:
+      "id photo"
+      "title photo"
+      "intro photo"
+      "ctas photo";
+    column-gap: 96px;
+    row-gap: 26px;
+    align-content: center;
   }
-}
-.signature-raster--static {
-  animation: none;
-  mask-size: 100% 100%;
-  -webkit-mask-size: 100% 100%;
-}
-
-.signature-rule {
-  border: 0;
-  border-top: 1px solid var(--color-gold);
-  max-width: 230px;
-  margin: 0.5rem 0 0;
-}
-
-/* Repetición pequeña y quieta de la firma, en el cierre de la página. */
-.signature-small.signature-svg svg,
-img.signature-raster.signature-small {
-  max-width: 160px;
-}
-hr.signature-rule.signature-small {
-  max-width: 160px;
+  .hero-photo {
+    margin-right: 16px;
+    align-self: center;
+  }
+  .hero-photo::before {
+    top: 16px;
+    left: 16px;
+    right: -16px;
+    bottom: -16px;
+  }
+  .hero-id {
+    align-self: start;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .hero-name {
+    font-size: 26px;
+  }
+  .hero-city {
+    margin-top: 0;
+  }
+  .hero-title {
+    font-size: clamp(52px, 5.4vw, 72px);
+  }
 }
 
 /* ---------- Pasos numerados (única secuencia real) ---------- */
@@ -724,8 +761,7 @@ hr.signature-rule.signature-small {
 }
 .step-number {
   font-family: var(--font-heading), Georgia, serif;
-  font-optical-sizing: auto;
-  font-size: 2rem;
+  font-size: 2.2rem;
   line-height: 1;
   color: var(--color-blue);
 }
@@ -739,33 +775,33 @@ hr.signature-rule.signature-small {
 .steps-stack li {
   position: relative;
   counter-increment: paso;
-  padding: 0 0 1.5rem 3.25rem;
+  padding: 0 0 1.6rem 3.4rem;
 }
 .steps-stack li::before {
   content: counter(paso);
   position: absolute;
   left: 0;
-  top: -0.15rem;
-  width: 2.25rem;
-  height: 2.25rem;
+  top: -0.2rem;
+  width: 2.3rem;
+  height: 2.3rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
-  background: var(--color-blue);
-  color: var(--color-white);
+  background: var(--color-coral);
+  color: var(--color-ink);
   font-family: var(--font-heading), Georgia, serif;
-  font-optical-sizing: auto;
-  font-size: 1.1rem;
+  font-size: 1.35rem;
+  line-height: 1;
 }
 .steps-stack li:not(:last-child)::after {
   content: "";
   position: absolute;
-  left: 1.125rem;
-  top: 2.35rem;
-  bottom: 0.35rem;
+  left: 1.15rem;
+  top: 2.3rem;
+  bottom: 0.3rem;
   width: 1px;
-  background: var(--color-line);
+  background: var(--color-line-strong);
+  opacity: 0.45;
 }
 .steps-stack li:last-child {
   padding-bottom: 0;
@@ -777,11 +813,14 @@ hr.signature-rule.signature-small {
   margin: 0;
 }
 .reason-list li {
-  padding: 0.9rem 0;
+  padding: 0.95rem 0;
   border-top: 1px solid var(--color-line);
 }
 .reason-list li:last-child {
   border-bottom: 1px solid var(--color-line);
+}
+.band-sky .reason-list li {
+  border-color: #f3d3c6;
 }
 
 /* ---------- Preguntas frecuentes ---------- */
@@ -795,10 +834,10 @@ hr.signature-rule.signature-small {
 }
 
 .faq-item {
-  border-bottom: 1px solid var(--color-line);
+  border-bottom: 1px solid #f3d3c6;
 }
 .faq-item:first-child {
-  border-top: 1px solid var(--color-line);
+  border-top: 1px solid #f3d3c6;
 }
 .faq-q {
   display: flex;
@@ -813,7 +852,12 @@ hr.signature-rule.signature-small {
   font-weight: 700;
   color: var(--color-ink);
 }
-/* El contenido del <details> abre con alto+opacidad, no de golpe */
+.faq-q span[aria-hidden="true"] {
+  color: var(--color-blue);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1;
+}
 .faq-a {
   padding: 0 0 1.1rem;
   color: var(--color-ink-soft);
@@ -829,7 +873,7 @@ hr.signature-rule.signature-small {
   }
 }
 
-/* ---------- Catálogo (/productos) ---------- */
+/* ---------- Catálogo propio (en pausa) y componentes comunes ---------- */
 
 .campaign-banner {
   position: sticky;
@@ -844,12 +888,11 @@ hr.signature-rule.signature-small {
   font-size: 15px;
   font-weight: 600;
   line-height: 1.3;
-  background: var(--color-midnight);
-  color: var(--color-porcelain);
+  background: var(--color-coral);
+  color: var(--color-ink);
 }
 .campaign-banner[data-state="expired"] {
   background: var(--color-sky);
-  color: var(--color-ink);
   border-bottom: 1px solid var(--color-line);
 }
 
@@ -862,30 +905,16 @@ hr.signature-rule.signature-small {
   align-items: center;
   min-height: 44px;
   padding: 0 1.25rem;
-  border-radius: 999px;
-  border: 1px solid var(--color-blue);
-  color: var(--color-blue);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--color-ink);
+  color: var(--color-ink);
   font-weight: 600;
   text-decoration: none;
-  background: var(--color-white);
+  background: transparent;
   transition: background-color 160ms var(--ease-out);
 }
 .pill-link:hover {
   background: var(--color-sky);
-}
-
-/* Sobre medianoche, el pill se ve más grande y claro: es la salida para
-   quien solo viene a comprar, y no debe perderse entre el titular y la foto. */
-.on-midnight .pill-link {
-  min-height: 52px;
-  padding: 0 1.5rem;
-  font-size: 18px;
-  color: var(--color-porcelain);
-  background: rgba(246, 247, 249, 0.1);
-  border-color: var(--color-porcelain);
-}
-.on-midnight .pill-link:hover {
-  background: rgba(246, 247, 249, 0.2);
 }
 
 .catalog-toolbar {
@@ -897,9 +926,7 @@ hr.signature-rule.signature-small {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  background: rgba(246, 247, 249, 0.97);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.97);
   border-bottom: 1px solid var(--color-line);
 }
 
@@ -933,12 +960,11 @@ hr.signature-rule.signature-small {
   width: 100%;
 }
 
-/* Sin sombra: un borde fino basta para separar el producto del fondo */
 .product-card {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: 0;
   border: 1px solid var(--color-line);
   background: var(--color-white);
 }
@@ -950,8 +976,6 @@ hr.signature-rule.signature-small {
   opacity: 0.6;
 }
 
-/* El "platillo": mismo fondo y la misma proporción para toda foto de
-   producto, para que fotos de calidad distinta se lean como colección. */
 .product-stage {
   position: relative;
   width: 100%;
@@ -972,20 +996,17 @@ hr.signature-rule.signature-small {
   align-items: center;
   justify-content: center;
   font-family: var(--font-heading), Georgia, serif;
-  font-optical-sizing: auto;
   font-size: 3.5rem;
   color: var(--color-blue);
   background: var(--color-sky);
 }
 
 .price-current {
-  font-family: var(--font-body), system-ui, sans-serif;
   font-variant-numeric: tabular-nums;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-ink);
 }
 .price-was {
-  font-family: var(--font-body), system-ui, sans-serif;
   font-variant-numeric: tabular-nums;
   color: var(--color-ink-soft);
   text-decoration: line-through;
@@ -1008,7 +1029,6 @@ hr.signature-rule.signature-small {
   box-shadow: 0 8px 22px -6px rgba(14, 115, 57, 0.5);
   transition: transform 120ms var(--ease-out), background-color 160ms var(--ease-out);
 }
-/* En el catálogo sube para no tapar la franja fija de abajo */
 .fab-whatsapp.above-strip {
   bottom: calc(76px + env(safe-area-inset-bottom));
 }
@@ -1018,13 +1038,17 @@ hr.signature-rule.signature-small {
 .fab-whatsapp:active {
   transform: scale(0.95);
 }
+.fab-whatsapp:focus-visible {
+  outline-color: var(--color-ink);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
 
 .invite-strip {
   position: sticky;
   bottom: 0;
   z-index: 35;
-  background: var(--color-midnight);
-  border-top: 1px solid var(--color-gold);
+  background: var(--color-coral);
 }
 .invite-strip a {
   display: flex;
@@ -1033,32 +1057,27 @@ hr.signature-rule.signature-small {
   gap: 0.5rem;
   min-height: 56px;
   padding: 0.5rem 4.75rem 0.5rem 1rem;
-  color: var(--color-porcelain);
+  color: var(--color-ink);
   font-weight: 600;
-  text-decoration: none;
   text-align: center;
 }
 
+/* Pie: negro cálido con el logo en blanco */
 .site-footer {
   background: var(--color-midnight);
   color: var(--color-porcelain);
   text-align: center;
   padding-block: 3rem;
 }
-/* Deja espacio al final para que el botón flotante no tape el pie */
 .site-footer.has-fab {
   padding-bottom: calc(3rem + 72px);
-}
-.site-footer .badge-consultora {
-  color: var(--color-porcelain-soft);
-  border-color: rgba(246, 247, 249, 0.25);
 }
 
 /* ---------- Panel: ajustes (Operate) ---------- */
 
 .settings-section {
   border: 1px solid var(--color-line-strong);
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: var(--color-white);
   overflow: hidden;
 }
@@ -1078,7 +1097,7 @@ hr.signature-rule.signature-small {
 }
 .settings-section-btn[aria-expanded="true"] {
   background: var(--color-sky);
-  color: var(--color-blue);
+  box-shadow: inset 4px 0 0 var(--color-coral);
 }
 .settings-dirty {
   font-family: var(--font-body), system-ui, sans-serif;
@@ -1100,7 +1119,7 @@ hr.signature-rule.signature-small {
   width: 100%;
   min-height: 64px;
   padding: 0.75rem 1rem;
-  border-radius: 2px;
+  border-radius: var(--radius);
   border: 1px solid var(--color-line-strong);
   background: var(--color-white);
   text-align: left;
@@ -1146,8 +1165,8 @@ hr.signature-rule.signature-small {
 
 .lead-alert {
   display: block;
-  border-radius: 2px;
-  border: 1px solid var(--color-blue);
+  border-radius: var(--radius);
+  border-left: 6px solid var(--color-coral);
   background: var(--color-sky);
   padding: 1.1rem 1.25rem;
   text-decoration: none;
@@ -1155,15 +1174,15 @@ hr.signature-rule.signature-small {
 
 .lead-card {
   border: 1px solid var(--color-line-strong);
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: var(--color-white);
   padding: 1rem;
 }
 .lead-card[data-status="nueva"] {
-  border-left: 4px solid var(--color-blue);
+  border-left: 5px solid var(--color-coral);
 }
 .lead-card[data-status="unida"] {
-  border-left: 4px solid var(--color-ok);
+  border-left: 5px solid var(--color-ok);
 }
 .lead-card[data-status="no_interesa"] {
   opacity: 0.75;
@@ -1171,7 +1190,7 @@ hr.signature-rule.signature-small {
 
 .status-btn {
   min-height: 52px;
-  border-radius: 2px;
+  border-radius: var(--radius);
   border: 1px solid var(--color-line-strong);
   background: var(--color-white);
   font-size: 16px;
@@ -1180,8 +1199,8 @@ hr.signature-rule.signature-small {
   color: var(--color-ink);
 }
 .status-btn[aria-pressed="true"] {
-  border-color: var(--color-blue);
-  background: var(--color-blue);
+  border-color: var(--color-ink);
+  background: var(--color-ink);
   color: var(--color-white);
 }
 

@@ -64,7 +64,6 @@ export type Settings = {
   city: string | null;
   years_selling: number | null;
   hero_photo_url: string | null;
-  signature_url: string | null;
   why_me_custom: string | null;
   kit_info: string | null;
   credit_available: boolean | null;

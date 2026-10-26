@@ -57,7 +57,7 @@ export default function JoinRequirements({
       )}
 
       {/* Obligatorio y siempre visible: nunca dentro de un desplegable */}
-      <p className="mt-6 p-4 rounded-lg border-2 border-line bg-sky prose-measure font-semibold">
+      <p className="notice mt-6 prose-measure">
         Lo que ganes depende de tus ventas y del tiempo que le dediques. No es
         un ingreso fijo ni garantizado.
       </p>
