@@ -9,8 +9,7 @@ export const LIMITS = {
   deliveryArea: 80,
   businessHours: 80,
   whatsapp: 20,
-  leadName: 60,
-  leadCity: 60,
+  city: 60,
   paymentMethods: 120,
   deliveryInfo: 160,
   url: 300,
@@ -129,18 +128,6 @@ export function buildJoinWhatsAppLink(
     message += ` Soy ${who}${where ? `, de ${where}` : ""}.`;
   }
   return `https://wa.me/${whatsappDigits(whatsappNumber)}?text=${encodeURIComponent(
-    message
-  )}`;
-}
-
-/** Link para que ella le escriba a una persona interesada */
-export function buildLeadWhatsAppLink(
-  leadPhone: string,
-  leadName: string,
-  consultantName: string
-): string {
-  const message = `Hola ${leadName}, soy ${consultantName}, vi que te interesa Yanbal. ¿Tienes unos minutos para conversar?`;
-  return `https://wa.me/${leadPhone.replace(/\D/g, "")}?text=${encodeURIComponent(
     message
   )}`;
 }

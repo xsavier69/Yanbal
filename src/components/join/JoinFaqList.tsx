@@ -1,4 +1,4 @@
-import { JOIN_FAQ } from "@/lib/joinFaq";
+import { DEFAULT_FAQ_ANSWERS, JOIN_FAQ } from "@/lib/joinFaq";
 import { safeHttpUrl } from "@/lib/campaign";
 import type { Settings } from "@/lib/types";
 
@@ -21,7 +21,7 @@ export default function JoinFaqList({
 
   const items = JOIN_FAQ.map((item) => ({
     ...item,
-    answer: (answers[item.key] ?? "").trim(),
+    answer: (answers[item.key] ?? DEFAULT_FAQ_ANSWERS[item.key] ?? "").trim(),
   })).filter((item) => item.answer || item.key === "oficial");
 
   if (items.length === 0) return null;

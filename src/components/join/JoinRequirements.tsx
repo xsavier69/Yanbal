@@ -1,5 +1,3 @@
-import { Filled } from "@/components/Pending";
-import { ph } from "@/lib/placeholder";
 import { isSectionVisible } from "@/lib/sections";
 import type { Settings } from "@/lib/types";
 
@@ -15,10 +13,7 @@ export default function JoinRequirements({
 }: {
   settings: Settings | null;
 }) {
-  const kit = ph(
-    settings?.kit_info,
-    "[PRECIO Y OPCIONES DEL KIT — confirmar en MAYA]"
-  );
+  const kit = (settings?.kit_info ?? "").trim();
   const benefits = (settings?.benefits ?? "").trim();
   const source = (settings?.benefits_source ?? "").trim();
   const showBenefits = isSectionVisible(settings, "benefits");
@@ -36,7 +31,8 @@ export default function JoinRequirements({
       </ul>
 
       <p className="mt-5 prose-measure">
-        <strong>Kit de bienvenida:</strong> <Filled value={kit} />
+        <strong>Kit de bienvenida (opcional):</strong> lo puedes elegir solo en
+        tu primer pedido, después de incorporarte.{kit ? ` ${kit}` : ""}
       </p>
       {settings?.credit_available && (
         <p className="mt-2 text-ink-soft prose-measure">
@@ -58,8 +54,9 @@ export default function JoinRequirements({
 
       {/* Obligatorio y siempre visible: nunca dentro de un desplegable */}
       <p className="notice mt-6 prose-measure">
-        Lo que ganes depende de tus ventas y del tiempo que le dediques. No es
-        un ingreso fijo ni garantizado.
+        Lo que ganes depende de las ventas que realices, de las personas que
+        logres unir a tu equipo y del tiempo que le dediques. No es un ingreso
+        fijo ni garantizado.
       </p>
     </section>
   );

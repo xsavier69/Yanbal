@@ -1,9 +1,9 @@
 import WhatsAppIcon from "@/components/catalog/WhatsAppIcon";
-import { Filled } from "@/components/Pending";
 import { buildJoinWhatsAppLink } from "@/lib/utils";
-import { ph } from "@/lib/placeholder";
 import { whatsappOf } from "@/lib/identity";
 import type { Settings } from "@/lib/types";
+
+const DEFAULT_CLOSING = "Te invito a pertenecer a la empresa. Te espero.";
 
 /** Cierre en un bloque de color coral, como la franja final del catálogo. */
 export default function JoinClosing({
@@ -13,7 +13,7 @@ export default function JoinClosing({
   settings: Settings | null;
   consultantName: string;
 }) {
-  const closing = ph(settings?.closing_text, "[LÍNEAS DE DESPEDIDA]");
+  const closing = settings?.closing_text?.trim() || DEFAULT_CLOSING;
   const whatsapp = whatsappOf(settings);
 
   return (
@@ -23,7 +23,7 @@ export default function JoinClosing({
           Un último mensaje
         </h2>
         <p className="font-heading text-[clamp(28px,7vw,38px)] leading-[1.15] prose-measure">
-          <Filled value={closing} />
+          {closing}
         </p>
 
         <a
@@ -33,7 +33,7 @@ export default function JoinClosing({
           className="btn-primary max-w-sm mt-8"
         >
           <WhatsAppIcon size={20} />
-          Escribirme por WhatsApp
+          Quiero más información
         </a>
       </div>
     </section>

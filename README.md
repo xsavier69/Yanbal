@@ -7,7 +7,6 @@ Página web de una consultora independiente de Yanbal. Tiene tres partes:
 | `/` | **Invitación** para empezar como consultora | Mujeres que buscan un ingreso extra |
 | `/productos` | Catálogo con pedidos por WhatsApp | Clientas que quieren comprar |
 | `/mi-tienda` | Panel de administración | Solo ella |
-| `/privacidad` | Qué pasa con los datos del formulario | Quien deje sus datos |
 
 El trabajo principal de la página es **invitar**. La tienda sigue existiendo,
 pero ya no es la portada.
@@ -72,7 +71,7 @@ Todo se llena desde **Mi tienda → Ajustes de mi página**, sin tocar código.
    - Antes de correr `schema.sql`, reemplaza `'CAMBIA-ESTO@ejemplo.com'`
      dentro de `is_admin()` por el correo real de ella.
    - Los tres archivos se pueden volver a correr cuando cambien: no borran
-     productos, ajustes ni personas interesadas.
+     productos ni ajustes.
    - Para no subir el correo a git, guarda tu copia como
      `supabase/schema.local.sql` (git la ignora).
 3. **Authentication → Users → Add user**: crea su cuenta con **Auto Confirm
@@ -125,9 +124,6 @@ Ver [`supabase/schema.sql`](./supabase/schema.sql) y las migraciones.
   `sections_visible` (jsonb) guarda el interruptor de cada sección.
 - **testimonials** — `type` distingue `'clienta'` (catálogo) de `'equipo'`
   (invitación).
-- **leads** — personas interesadas en ser consultoras. Datos personales: ver
-  [Privacidad](#privacidad-y-datos-personales).
-- **lead_throttle** — freno anti-spam. Guarda un hash, nunca una IP.
 
 Categorías fijas en el código (`src/lib/types.ts`), para que ella no tenga que
 administrar una lista más.
@@ -139,10 +135,9 @@ administrar una lista más.
 - Lectura pública de `products`, `settings` y los `testimonials` visibles.
 - Solo la cuenta de ella (`is_admin()`) escribe productos, ajustes y
   testimonios.
-- **`leads` no tiene política de lectura pública ni de inserción pública.** La
-  única puerta de entrada es la función `submit_lead()`, que valida el
-  consentimiento y aplica el freno anti-spam antes de escribir. Nadie puede
-  listar las personas interesadas desde fuera del panel.
+- **La página no guarda datos personales de nadie.** No hay formulario: quien
+  quiere más información escribe por WhatsApp. Por eso no hay tabla de
+  contactos, ni aviso de privacidad, ni freno anti-spam.
 - El bucket `product-images` es de lectura pública y escritura solo para
   `is_admin()`; acepta JPG, PNG y WebP de hasta 3 MB.
 - La base valida largos de texto y precios (`*_data_check`), además de la
@@ -151,44 +146,6 @@ administrar una lista más.
   `Cache-Control: private, no-store`.
 - El service worker solo guarda en caché el catálogo público; nunca
   `/mi-tienda` ni las llamadas a Supabase.
-
-### Anti-spam del formulario
-
-Sin captchas visuales, porque serían una barrera para el público al que va
-dirigida la página. En su lugar, tres señales baratas:
-
-1. **Campo trampa** (honeypot) que una persona nunca ve.
-2. **Tiempo mínimo**: un envío en menos de 3 segundos es un robot.
-3. **Freno por conexión y por número**: 5 envíos por hora, y un mismo número
-   no se repite en 24 horas.
-
-A los robots se les responde "ok" para que no aprendan qué los delató.
-
-**Limitación conocida:** el freno usa un hash de la conexión, y quien insista
-puede rotarlo. Para el tamaño de esta página es proporcionado; si algún día
-llega spam en serio, hay que meter el envío detrás de una llave de servidor.
-
----
-
-## Privacidad y datos personales
-
-El formulario recoge datos personales, así que aplica la **Ley Orgánica de
-Protección de Datos Personales del Ecuador**:
-
-- **Consentimiento obligatorio**, sin casilla premarcada. La base rechaza
-  cualquier registro con `consent = false`.
-- **No se pide cédula, correo ni datos de pago.** Eso va solo en el registro
-  oficial de Yanbal.
-- **No se guarda la dirección IP.** Para el freno anti-spam se usa un hash con
-  sal (`LEAD_SALT`), que no permite volver a la IP original.
-- **El correo de aviso no lleva el teléfono**, solo el nombre y la ciudad. El
-  detalle se ve dentro del panel, que está protegido.
-- **Botón de borrado** en cada persona del panel, para cumplir de inmediato si
-  alguien pide que borren sus datos.
-- [`/privacidad`](./src/app/privacidad/page.tsx) lo explica en lenguaje
-  sencillo.
-
----
 
 ## Decisiones de diseño
 
@@ -226,7 +183,11 @@ colores no se inventaron: se midieron del PDF de la campaña 10.
 
 El logotipo de Yanbal (vectorial, extraído del catálogo oficial) aparece
 **pequeño y de apoyo**: arriba a la izquierda (15px) y en el pie, en blanco
-(18px). Nunca como protagonista. Vive en `src/lib/yanbalLogo.ts`. Ver la nota
+(18px), siempre acompañado del **ícono de Yanbal** (la "Y" con hoja, en un
+cuadrado coral: `src/components/YanbalIcon.tsx`). El mismo ícono es el de la
+pestaña del navegador y el de la app instalada (`public/icon-*.png`,
+`src/app/favicon.ico`). Nunca son protagonistas. El logo vive en
+`src/lib/yanbalLogo.ts` y el ícono en `src/lib/yanbalIcon.ts`. Ver la nota
 legal al final: hay que confirmar con su directora el uso de la marca.
 
 ### Tipografía
@@ -330,16 +291,13 @@ Están metidas en el código, no solo en esta documentación:
 > sección *"Únete a mi equipo"* porque la incorporación tiene reglas propias y
 > formularios oficiales de Yanbal. Esa decisión se revirtió: invitar es ahora
 > el trabajo principal de la página. El registro sigue haciéndose en el
-> sistema oficial de Yanbal; esta página solo recoge el contacto y explica el
-> camino.
+> sistema oficial de Yanbal; esta página no recoge datos: explica el camino y
+> lleva a WhatsApp.
 
 ---
 
 ## Limitaciones conocidas
 
-- **El correo de aviso necesita una cuenta de Resend** con dominio verificado.
-  Sin `RESEND_API_KEY`, `NOTIFY_EMAIL` y `NOTIFY_FROM` no se envía nada, y el
-  registro se guarda igual.
 - **Quien ya tenga el enlace antiguo llega ahora a la invitación**, no a la
   tienda. Es lo buscado, pero conviene saberlo. Arriba hay un enlace discreto
   a `/productos`.
@@ -347,7 +305,6 @@ Están metidas en el código, no solo en esta documentación:
   necesita internet.
 - El número de WhatsApp se guarda como ella lo escribe (`0991234567`) y la app
   lo convierte a formato internacional para los enlaces.
-- El formulario solo acepta **celulares de Ecuador** (`09XXXXXXXX`).
 - "Historias de mi equipo" se oculta con menos de 2 testimonios, así que al
   principio no se verá.
 - El carrito de varios productos en un solo mensaje sigue sin construirse.
@@ -394,9 +351,9 @@ con su directora**:
 
 6. **Si puede usar el logo de Yanbal en su página.** Aparece pequeño, arriba
    y en el pie (`src/lib/yanbalLogo.ts`). Si no se permite, se quita
-   borrando los dos `<YanbalLogo />`; el resto no depende de él. Los colores
+   borrando los `<YanbalLogo />` y `<YanbalIcon />` (y cambiando los íconos de `public/`); el resto no depende de él. Los colores
    y la composición del catálogo son de la marca; las fotos y los textos
    deben ser suyos.
 
-Además: la página no recoge cédula, correo ni datos de pago, y el sello de
+Además: la página no recoge ningún dato personal, y el sello de
 "consultora independiente" aparece en la portada y en el pie.

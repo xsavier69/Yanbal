@@ -1161,49 +1161,6 @@ a:not(.btn-primary, .btn-secondary, .btn-whatsapp, .btn-danger, .pill-link, .foo
   font-weight: 600;
 }
 
-/* ---------- Panel: personas interesadas ---------- */
-
-.lead-alert {
-  display: block;
-  border-radius: var(--radius);
-  border-left: 6px solid var(--color-coral);
-  background: var(--color-sky);
-  padding: 1.1rem 1.25rem;
-  text-decoration: none;
-}
-
-.lead-card {
-  border: 1px solid var(--color-line-strong);
-  border-radius: var(--radius);
-  background: var(--color-white);
-  padding: 1rem;
-}
-.lead-card[data-status="nueva"] {
-  border-left: 5px solid var(--color-coral);
-}
-.lead-card[data-status="unida"] {
-  border-left: 5px solid var(--color-ok);
-}
-.lead-card[data-status="no_interesa"] {
-  opacity: 0.75;
-}
-
-.status-btn {
-  min-height: 52px;
-  border-radius: var(--radius);
-  border: 1px solid var(--color-line-strong);
-  background: var(--color-white);
-  font-size: 16px;
-  font-weight: 600;
-  padding: 0.35rem 0.5rem;
-  color: var(--color-ink);
-}
-.status-btn[aria-pressed="true"] {
-  border-color: var(--color-ink);
-  background: var(--color-ink);
-  color: var(--color-white);
-}
-
 /* ---------- Movimiento ---------- */
 
 @media (prefers-reduced-motion: reduce) {

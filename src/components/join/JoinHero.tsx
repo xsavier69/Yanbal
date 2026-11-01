@@ -1,6 +1,7 @@
 import Image from "next/image";
 import WhatsAppIcon from "@/components/catalog/WhatsAppIcon";
 import YanbalLogo from "@/components/YanbalLogo";
+import YanbalIcon from "@/components/YanbalIcon";
 import { Filled, PhotoPlaceholder } from "@/components/Pending";
 import { buildJoinWhatsAppLink } from "@/lib/utils";
 import { phNumber } from "@/lib/placeholder";
@@ -25,7 +26,10 @@ export default function JoinHero({
           viene a comprar, bien a la vista. */}
       <div className="top-bar">
         <div className="top-bar-inner">
-          <YanbalLogo height={15} />
+          <span className="flex items-center gap-2.5">
+            <YanbalIcon size={32} />
+            <YanbalLogo height={15} />
+          </span>
           <a
             href={catalogHref()}
             target="_blank"
@@ -82,17 +86,14 @@ export default function JoinHero({
           </p>
 
           <div className="hero-ctas">
-            <a href="#quiero-saber-mas" className="btn-primary">
-              Quiero saber cómo empezar
-            </a>
             <a
               href={buildJoinWhatsAppLink(whatsapp, consultantName)}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-secondary"
+              className="btn-primary"
             >
               <WhatsAppIcon size={20} />
-              Escribirme por WhatsApp
+              Quiero más información
             </a>
           </div>
         </div>

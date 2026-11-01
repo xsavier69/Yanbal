@@ -182,71 +182,27 @@ Si quieres que no salga ninguna franja de campaña, apaga el interruptor
 
 ## Cuando alguien quiere unirse a mi equipo
 
-Cuando una mujer llena el formulario de tu página, te llega aquí. **No se
-pierde ninguna.**
-
-### Ver quién te escribió
-
-1. Entra a **"Mi tienda"**.
-2. Si hay alguien nuevo, arriba de todo aparece un cuadro azul que dice, por
-   ejemplo, **"Tienes 3 personas nuevas interesadas"**. Tócalo.
-   - Si no aparece el cuadro, es que no hay nadie nuevo. Igual puedes entrar
-     con el botón **"Personas interesadas"**, abajo.
-3. Vas a ver una tarjeta por cada persona, con su nombre, su barrio, cuándo
-   escribió y cuánto tiempo le dedicaría.
-
-### Escribirle
-
-1. En su tarjeta, toca el botón verde **"Escribirle por WhatsApp"**.
-2. Se abre WhatsApp con el mensaje ya escrito. Solo tócale **enviar**.
-3. Puedes cambiar el mensaje antes de enviarlo si quieres.
-
-### Marcar en qué va
-
-Debajo de cada persona hay cuatro botones. Toca el que corresponda:
-
-- **Nueva** — todavía no le has escrito.
-- **Ya le escribí** — le mandaste el mensaje y estás esperando.
-- **Se unió** — ¡ya es consultora! 🎉
-- **No le interesa** — te dijo que no. Se guarda, pero deja de aparecer en la
-  lista, para que no te estorbe.
-
-El botón que está marcado se ve azul. Arriba de todo verás un resumen: *"Este
-mes: 5 interesadas, 1 se unió"*.
-
-### Si alguien te pide que borres sus datos
-
-Es su derecho, y tienes que hacerlo.
-
-1. Busca a esa persona en la lista.
-2. Abajo de su tarjeta, toca **"Borrar esta persona"** (en rojo).
-3. Te pregunta si estás segura. Toca **"Sí, borrar"**.
-
-Ojo: esto no se puede deshacer.
+La página ya no pide datos. Quien quiere saber más toca el botón
+**"Quiero más información"** y se abre **tu WhatsApp** con un mensaje ya
+escrito. Te llega como cualquier otro mensaje: respóndele ahí, con calma.
 
 ---
 
 ## Cómo compartir mi invitación
 
-Esta es la parte que más te va a servir. Tienes tres enlaces, y los tres
-llevan a la misma página. La diferencia es que te dejan saber **por dónde te
-encontraron**.
+Esta es la parte que más te va a servir: es **un solo enlace**, el de tu
+página.
 
-1. Entra a **"Mi tienda"** y luego a **"Personas interesadas"**.
-2. Baja hasta donde dice **"Compartir mi página para invitar"**.
+1. Entra a **"Mi tienda"** y toca **"Compartir mi página"** (abajo).
 
-### Por WhatsApp
+### Por WhatsApp o Facebook
 
-1. Toca **"Copiar enlace · Para WhatsApp"**. El botón te dice
+1. Toca **"Copiar el enlace de mi página"**. El botón te dice
    **"¡Copiado! ✓"**.
-2. Abre WhatsApp, entra al chat de la persona (o a tu estado).
+2. Abre WhatsApp, entra al chat de la persona (o a tu estado). En Facebook,
+   abre una publicación nueva.
 3. Mantén el dedo apretado sobre el cuadro de escribir y elige **"Pegar"**.
 4. Envía.
-
-### Por Facebook
-
-Igual que arriba, pero toca **"Copiar enlace · Para Facebook"** y pégalo en tu
-publicación.
 
 ### Con un papel impreso (el código QR)
 

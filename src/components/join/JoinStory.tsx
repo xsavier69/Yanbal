@@ -56,15 +56,18 @@ export default function JoinStory({
           Cómo empiezas
         </h2>
         <ol className="steps-stack prose-measure">
-          <li>Me escribes o dejas tus datos aquí.</li>
+          <li>Me escribes por WhatsApp.</li>
           <li>
-            Te llamo, te explico cómo funciona y resolvemos tus dudas.
+            Te explico cómo funciona y resolvemos tus dudas, sin compromiso.
           </li>
           <li>
             Te registras en Yanbal con tu nombre, cédula y correo.{" "}
             {consultantName} te acompaña en el proceso.
           </li>
-          <li>Recibes tu kit de bienvenida y empiezas a vender.</li>
+          <li>
+            En tu primer pedido puedes elegir, si quieres, el kit de
+            bienvenida. Y empiezas a vender.
+          </li>
         </ol>
       </section>
     </>

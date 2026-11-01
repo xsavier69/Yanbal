@@ -4,7 +4,6 @@ import { getSettings, getTeamTestimonials } from "@/lib/queries";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { DEMO_SETTINGS, DEMO_TEAM } from "@/lib/demoData";
 import { isSectionVisible } from "@/lib/sections";
-import { readSource } from "@/lib/join";
 import { buildJoinWhatsAppLink } from "@/lib/utils";
 import { catalogHref, cityOf, nameOf, whatsappOf } from "@/lib/identity";
 import WhatsAppFloatingButton from "@/components/catalog/WhatsAppFloatingButton";
@@ -13,7 +12,6 @@ import JoinStory from "@/components/join/JoinStory";
 import JoinRequirements from "@/components/join/JoinRequirements";
 import TeamStories from "@/components/join/TeamStories";
 import JoinFaqList from "@/components/join/JoinFaqList";
-import LeadForm from "@/components/join/LeadForm";
 import JoinClosing from "@/components/join/JoinClosing";
 import JoinFooter from "@/components/join/JoinFooter";
 
@@ -43,12 +41,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function InvitacionPage({
-  searchParams,
-}: PageProps<"/">) {
+export default async function InvitacionPage() {
   const { settings, team } = await loadJoin();
-  const params = await searchParams;
-  const source = readSource(params.origen);
 
   const consultantName = nameOf(settings).text;
   const whatsapp = whatsappOf(settings);
@@ -65,7 +59,6 @@ export default async function InvitacionPage({
       <JoinHero settings={settings} consultantName={consultantName} />
 
       <main id="contenido">
-
       <JoinStory settings={settings} consultantName={consultantName} />
 
       <JoinRequirements settings={settings} />
@@ -78,25 +71,6 @@ export default async function InvitacionPage({
           <JoinFaqList settings={settings} consultantName={consultantName} />
         )}
       </div>
-
-      <section
-        id="quiero-saber-mas"
-        aria-labelledby="quiero-saber-mas-titulo"
-        className="page-section"
-      >
-        <h2 id="quiero-saber-mas-titulo" className="section-title">
-          Quiero saber más
-        </h2>
-        <p className="prose-measure text-ink-soft mb-6">
-          Déjame tus datos y te escribo. No necesitas cédula ni correo para
-          esto: eso va después, en el registro oficial de Yanbal.
-        </p>
-        <LeadForm
-          consultantName={consultantName}
-          whatsappNumber={whatsapp}
-          source={source}
-        />
-      </section>
 
         <JoinClosing settings={settings} consultantName={consultantName} />
       </main>

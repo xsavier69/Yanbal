@@ -1,5 +1,5 @@
-import Link from "next/link";
 import YanbalLogo from "@/components/YanbalLogo";
+import YanbalIcon from "@/components/YanbalIcon";
 
 export default function JoinFooter({
   consultantName,
@@ -13,7 +13,10 @@ export default function JoinFooter({
   return (
     <footer className="site-footer has-fab on-midnight">
       <div className="flex flex-col items-center gap-4 px-5">
-        <YanbalLogo height={18} />
+        <span className="flex items-center gap-3">
+          <YanbalIcon size={36} />
+          <YanbalLogo height={18} />
+        </span>
         <p className="badge-consultora">
           Página de consultora independiente Yanbal
         </p>
@@ -26,9 +29,6 @@ export default function JoinFooter({
           >
             Ver mis productos
           </a>
-          <Link href="/privacidad" className="footer-link">
-            Cómo trato tus datos
-          </Link>
         </nav>
         <p className="text-ink-soft text-[16px]">
           © {year} {consultantName}

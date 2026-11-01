@@ -116,7 +116,7 @@ export default function InvitationSection({
           <input
             id="inv-city"
             type="text"
-            maxLength={LIMITS.leadCity}
+            maxLength={LIMITS.city}
             className="field-input"
             value={city}
             onChange={(e) => setCity(e.target.value)}

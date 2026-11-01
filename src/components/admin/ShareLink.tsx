@@ -3,24 +3,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import qrcode from "qrcode-generator";
 
-const ORIGINS = [
-  {
-    value: "whatsapp",
-    label: "Para WhatsApp",
-    hint: "Pégalo en un chat o en tu estado.",
-  },
-  {
-    value: "facebook",
-    label: "Para Facebook",
-    hint: "Pégalo en una publicación o en tu perfil.",
-  },
-  {
-    value: "volante",
-    label: "Para un volante impreso",
-    hint: "Se usa con el código de abajo.",
-  },
-] as const;
-
 /** Dibuja el QR en un canvas para poder descargarlo en buena calidad */
 function drawQr(canvas: HTMLCanvasElement, text: string, pixels: number) {
   const qr = qrcode(0, "M");
@@ -39,7 +21,7 @@ function drawQr(canvas: HTMLCanvasElement, text: string, pixels: number) {
 
   ctx.fillStyle = "#FFFFFF";
   ctx.fillRect(0, 0, size, size);
-  ctx.fillStyle = "#1A1F2B";
+  ctx.fillStyle = "#231F20";
   for (let row = 0; row < count; row++) {
     for (let col = 0; col < count; col++) {
       if (qr.isDark(row, col)) {
@@ -54,8 +36,8 @@ function drawQr(canvas: HTMLCanvasElement, text: string, pixels: number) {
   }
 }
 
-export default function ShareLinks() {
-  const [copied, setCopied] = useState<string | null>(null);
+export default function ShareLink() {
+  const [copied, setCopied] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -66,19 +48,17 @@ export default function ShareLinks() {
     () => ""
   );
 
-  const linkFor = (origin: string) => `${base}/?origen=${origin}`;
-
   useEffect(() => {
     if (!base || !canvasRef.current) return;
-    drawQr(canvasRef.current, `${base}/?origen=volante`, 1000);
+    drawQr(canvasRef.current, base, 1000);
   }, [base]);
 
-  async function copy(origin: string) {
+  async function copy() {
     setCopyFailed(false);
     try {
-      await navigator.clipboard.writeText(linkFor(origin));
-      setCopied(origin);
-      setTimeout(() => setCopied(null), 2500);
+      await navigator.clipboard.writeText(base);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
     } catch {
       setCopyFailed(true);
     }
@@ -100,10 +80,10 @@ export default function ShareLinks() {
     >
       <div>
         <h2 id="compartir" className="font-heading text-xl text-ink">
-          Compartir mi página para invitar
+          Compartir mi página
         </h2>
         <p className="text-ink-soft mt-1">
-          Cada enlace es el mismo, pero te deja ver por dónde te encontraron.
+          Pega este enlace en un chat de WhatsApp, en tu estado o en Facebook.
         </p>
       </div>
 
@@ -116,25 +96,12 @@ export default function ShareLinks() {
         )}
       </div>
 
-      <ul className="flex flex-col gap-4">
-        {ORIGINS.map((origin) => (
-          <li key={origin.value} className="flex flex-col gap-2">
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={() => copy(origin.value)}
-            >
-              {copied === origin.value
-                ? "¡Copiado! ✓"
-                : `Copiar enlace · ${origin.label}`}
-            </button>
-            <p className="text-ink-soft text-[16px]">{origin.hint}</p>
-            <p className="text-ink-soft text-[15px] break-all">
-              {base ? linkFor(origin.value) : ""}
-            </p>
-          </li>
-        ))}
-      </ul>
+      <div className="flex flex-col gap-2">
+        <button type="button" className="btn-primary" onClick={copy}>
+          {copied ? "¡Copiado! ✓" : "Copiar el enlace de mi página"}
+        </button>
+        <p className="text-ink-soft text-[15px] break-all">{base}</p>
+      </div>
 
       <div className="border-t border-line pt-5 flex flex-col gap-3">
         <h3 className="font-semibold text-ink">Código para imprimir</h3>
